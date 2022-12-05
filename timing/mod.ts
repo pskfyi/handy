@@ -1,1 +1,1 @@
-export * from "./mapAtInterval.ts";
+export * from "./oncePerInterval.ts";

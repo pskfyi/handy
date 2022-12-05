@@ -1,5 +1,9 @@
-/** Every `ms` milliseconds, invoke the `callback` on the next `array` item. */
-export async function mapAtInterval<T, U>(
+/**
+ * Every `ms` milliseconds, invoke the `callback` on the next `array` item.
+ *
+ * @returns a `Promise` resolving to the result of mapping over the `array`
+ */
+export async function oncePerInterval<T, U>(
   ms: number,
   array: T[],
   callback: (item: T) => U,

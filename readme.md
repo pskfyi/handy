@@ -15,5 +15,5 @@ import { findNearestFile } from "https://raw.githubusercontent.com/pskfyi/deno-u
 Timing-related utilities.
 
 ```ts
-import { mapAtInterval } from "https://raw.githubusercontent.com/pskfyi/deno-utils/main/timing/mod.ts";
+import { oncePerInterval } from "https://raw.githubusercontent.com/pskfyi/deno-utils/main/timing/mod.ts";
 ```
