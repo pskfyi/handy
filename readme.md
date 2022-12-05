@@ -1,3 +1,3 @@
 # Deno Utils
 
-Radically simple project setup.
+Utility functions in uncompiled TS, for Deno.
