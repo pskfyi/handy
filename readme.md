@@ -10,6 +10,14 @@ File system-related utilities.
 import { findNearestFile } from "https://raw.githubusercontent.com/pskfyi/deno-utils/main/fs/mod.ts";
 ```
 
+## `path`
+
+Path-related utilities.
+
+```ts
+import { globRoot } from "https://raw.githubusercontent.com/pskfyi/deno-utils/main/path/mod.ts";
+```
+
 ## `timing`
 
 Timing-related utilities.
