@@ -7,7 +7,11 @@ Utility functions in uncompiled TS, for Deno.
 File system-related utilities.
 
 ```ts
-import { findNearestFile } from "https://deno.land/x/pskfyi_deno_utils/fs/mod.ts";
+import {
+  findNearestFile,
+  glob,
+  globImport,
+} from "https://deno.land/x/pskfyi_deno_utils/fs/mod.ts";
 ```
 
 ## `path`
