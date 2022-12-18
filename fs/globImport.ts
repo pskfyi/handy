@@ -13,12 +13,9 @@ export type EagerImportMap = Record<string, any>;
 // deno-lint-ignore no-explicit-any
 export type ImportFactory = (filePath: string) => () => Promise<any>;
 
-export type FileHandlers = {
+export type FileHandler = ImportFactory | {
   [Extension: string]: ImportFactory;
 };
-
-export const DEFAULT_IMPORT_FACTORY: ImportFactory = (filePath: string) => () =>
-  import(filePath);
 
 export type GlobImportOptions = {
   /**
@@ -26,7 +23,11 @@ export type GlobImportOptions = {
    * returned.
    */
   eager?: boolean;
-  fileHandlers?: FileHandlers;
+  /**
+   * When provided alongside an object `FileHandler`, if a file extension is
+   * not found in the object, this fallback will be used rather than throwing.
+   */
+  fallbackHandler?: ImportFactory;
 };
 
 /**
@@ -57,33 +58,52 @@ export type GlobImportOptions = {
  */
 export async function globImport(
   globPattern: string,
-  options?: { eager?: false; fileHandlers?: FileHandlers },
+  fileHandler: FileHandler,
+  options?: { eager?: false },
 ): Promise<ImportMap>;
 export async function globImport(
   globPattern: string,
-  options: { eager: true; fileHandlers?: FileHandlers },
+  fileHandler: FileHandler,
+  options: { eager: true },
 ): Promise<EagerImportMap>;
 export async function globImport(
   globPattern: string,
+  fileHandler: FileHandler,
   options: GlobImportOptions,
 ): Promise<ImportMap | EagerImportMap>;
 export async function globImport(
   globPattern: string,
+  fileHandler: FileHandler,
   options: GlobImportOptions = {},
 ) {
-  const { eager = false, fileHandlers } = options;
-  const handlers = { ...fileHandlers };
+  const { eager = false, fallbackHandler } = options;
   const filePaths = await glob(globPattern);
+
+  function _getHandler(extension: string): ImportFactory {
+    if (typeof fileHandler === "function") return fileHandler;
+
+    if (extension in fileHandler) return fileHandler[extension];
+
+    if (fallbackHandler) return fallbackHandler;
+
+    const extensions = Object.keys(fileHandler);
+
+    throw new Error(
+      "Could not find a file handler for the following extension, and no fallback handler was registered.\n" +
+        `extension found: ${extension}\n` +
+        `registered extensions: ${JSON.stringify(extensions)}`,
+    );
+  }
 
   const entries = await Promise.all(
     filePaths.map(async (filePath) => {
-      const ext = extname(filePath);
+      const extension = extname(filePath);
 
-      if (!(ext in handlers)) handlers[ext] = DEFAULT_IMPORT_FACTORY;
+      const handler = _getHandler(extension);
 
-      const fn = handlers[ext](filePath);
+      const importFunction = handler(filePath);
 
-      return [filePath, eager ? await fn() : fn];
+      return [filePath, eager ? await importFunction() : importFunction];
     }),
   );
 

@@ -9,18 +9,25 @@ const globPattern = resolve(ROOT_DIR, "fixture", "**", "*.ts");
 const A_DIR = resolve(ROOT_DIR, "fixture", "a");
 const C_DIR = resolve(A_DIR, "b", "c");
 
-const A_FILE = resolve(A_DIR, "findme.ts");
-const C_FILE = resolve(C_DIR, "findme.ts");
+const A_TS = resolve(A_DIR, "findme.ts");
+const C_TS = resolve(C_DIR, "findme.ts");
+
+const stubFileHandler = () => async () => await 1;
+
+const importHandler = (filePath: string) => () => import(filePath);
 
 Deno.test("fs.globImport", async (t) => {
   await t.step(
     "finds files that match the glob pattern",
     async () => {
-      const importMap = await globImport(globPattern);
+      const importMap = await globImport(
+        globPattern,
+        stubFileHandler,
+      );
 
       assertEquals(
         Object.keys(importMap),
-        [A_FILE, C_FILE],
+        [A_TS, C_TS],
       );
     },
   );
@@ -28,7 +35,7 @@ Deno.test("fs.globImport", async (t) => {
   await t.step(
     "is lazy by default, not calling its import functions",
     async () => {
-      const importMap = await globImport(globPattern);
+      const importMap = await globImport(globPattern, stubFileHandler);
 
       assert(
         Object.values(importMap).every((val) => typeof val === "function"),
@@ -39,40 +46,46 @@ Deno.test("fs.globImport", async (t) => {
   await t.step(
     "options.eager causes all imports to be resolved",
     async () => {
-      const importMap = await globImport(globPattern, { eager: true });
+      const importMap = await globImport(
+        globPattern,
+        importHandler,
+        { eager: true },
+      );
 
       assertEquals(
         importMap,
         {
-          [A_FILE]: { name: "A" },
-          [C_FILE]: { name: "C" },
+          [A_TS]: { name: "A" },
+          [C_TS]: { name: "C" },
         },
       );
     },
   );
 
   await t.step(
-    "options.eager causes all imports to be resolved",
+    "fileHandler accepts a map from extensions to specific handlers",
     async () => {
-      const globPattern = resolve(ROOT_DIR, "fixture", "**", "*.md");
+      const globPattern = resolve(ROOT_DIR, "fixture", "**", "*.*");
 
-      const options = {
-        eager: true,
-        fileHandlers: {
+      const importMap = await globImport(
+        globPattern,
+        {
           ".md": (filePath: string) => () => Deno.readTextFile(filePath),
+          ".ts": importHandler,
         },
-      };
+        { eager: true },
+      );
 
-      const importMap = await globImport(globPattern, options);
-
-      const A = resolve(A_DIR, "findme.md");
-      const C = resolve(C_DIR, "findme.md");
+      const A_MD = resolve(A_DIR, "findme.md");
+      const C_MD = resolve(C_DIR, "findme.md");
 
       assertEquals(
         importMap,
         {
-          [A]: "A\n",
-          [C]: "C\n",
+          [A_MD]: "A\n",
+          [A_TS]: { name: "A" },
+          [C_MD]: "C\n",
+          [C_TS]: { name: "C" },
         },
       );
     },
