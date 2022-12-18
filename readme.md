@@ -29,3 +29,16 @@ Timing-related utilities.
 ```ts
 import { oncePerInterval } from "https://deno.land/x/pskfyi_deno_utils/timing/mod.ts";
 ```
+
+## `types`
+
+Utility types.
+
+```ts
+import {
+  JsonArray,
+  JsonObject,
+  JsonPrimitive,
+  JsonValue,
+} from "https://deno.land/x/pskfyi_deno_utils/types/mod.ts";
+```
