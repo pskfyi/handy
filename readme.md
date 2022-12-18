@@ -14,6 +14,16 @@ import {
 } from "https://deno.land/x/pskfyi_deno_utils/fs/mod.ts";
 ```
 
+## `object`
+
+Path-related utilities.
+
+```ts
+import {
+  setNestedEntry,
+} from "https://deno.land/x/pskfyi_deno_utils/object/mod.ts";
+```
+
 ## `path`
 
 Path-related utilities.
@@ -27,7 +37,9 @@ import { globRoot } from "https://deno.land/x/pskfyi_deno_utils/path/mod.ts";
 Timing-related utilities.
 
 ```ts
-import { oncePerInterval } from "https://deno.land/x/pskfyi_deno_utils/timing/mod.ts";
+import {
+  oncePerInterval,
+} from "https://deno.land/x/pskfyi_deno_utils/timing/mod.ts";
 ```
 
 ## `types`
