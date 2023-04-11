@@ -4,4 +4,4 @@ export {
   globToRegExp,
   isGlob,
   resolve,
-} from "https://deno.land/std@0.167.0/path/mod.ts";
+} from "https://deno.land/std@0.182.0/path/mod.ts";

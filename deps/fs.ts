@@ -1,1 +1,1 @@
-export { walk } from "https://deno.land/std@0.168.0/fs/walk.ts";
+export { walk } from "https://deno.land/std@0.182.0/fs/walk.ts";
