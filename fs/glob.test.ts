@@ -1,5 +1,5 @@
-import { resolve } from "https://deno.land/std@0.167.0/path/mod.ts";
-import { assertEquals } from "https://deno.land/std@0.167.0/testing/asserts.ts";
+import { resolve } from "../deps/path.ts";
+import { assertEquals } from "../deps/testing.ts";
 import { glob } from "./glob.ts";
 import { ROOT_DIR } from "../constants.ts";
 

@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.167.0/testing/asserts.ts";
+import { assertEquals } from "../deps/testing.ts";
 import { setNestedEntry } from "./setNestedEntry.ts";
 
 Deno.test("object.setNestedEntry", async () => {

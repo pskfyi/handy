@@ -1,5 +1,5 @@
-import { globToRegExp } from "https://deno.land/std@0.168.0/path/glob.ts";
-import { walk } from "https://deno.land/std@0.168.0/fs/walk.ts";
+import { globToRegExp } from "../deps/path.ts";
+import { walk } from "../deps/fs.ts";
 import { globRoot } from "../path/globRoot.ts";
 
 /**

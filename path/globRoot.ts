@@ -1,4 +1,4 @@
-import { isGlob } from "https://deno.land/std@0.168.0/path/mod.ts";
+import { isGlob } from "../deps/path.ts";
 
 /** Given a glob pattern, return its non-glob beginning. */
 export function globRoot(glob: string) {

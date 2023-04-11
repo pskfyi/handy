@@ -1,8 +1,7 @@
-import { resolve } from "https://deno.land/std@0.167.0/path/mod.ts";
-import { assertEquals } from "https://deno.land/std@0.167.0/testing/asserts.ts";
+import { resolve } from "../deps/path.ts";
+import { assert, assertEquals } from "../deps/testing.ts";
 import { globImport } from "./globImport.ts";
 import { ROOT_DIR } from "../constants.ts";
-import { assert } from "https://deno.land/std@0.168.0/_util/asserts.ts";
 
 const globPattern = resolve(ROOT_DIR, "fixture", "**", "*.ts");
 

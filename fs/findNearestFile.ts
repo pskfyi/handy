@@ -1,4 +1,4 @@
-import { dirname, resolve } from "https://deno.land/std@0.167.0/path/mod.ts";
+import { dirname, resolve } from "../deps/path.ts";
 
 /**
  * Searches `fromDir` and upwards for `fileName`

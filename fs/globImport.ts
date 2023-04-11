@@ -1,4 +1,4 @@
-import { extname } from "https://deno.land/std@0.168.0/path/mod.ts";
+import { extname } from "../deps/path.ts";
 import { glob } from "./glob.ts";
 
 /** A map from absolute filepaths to import() functions. */

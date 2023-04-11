@@ -1,4 +1,4 @@
-import { assertEquals } from "https://deno.land/std@0.167.0/testing/asserts.ts";
+import { assertEquals } from "../deps/testing.ts";
 import { oncePerInterval } from "./oncePerInterval.ts";
 
 Deno.test("timing.oncePerInterval", async () => {
