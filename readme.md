@@ -16,7 +16,7 @@ import {
 
 ## `object`
 
-Path-related utilities.
+Object-related utilities.
 
 ```ts
 import {
