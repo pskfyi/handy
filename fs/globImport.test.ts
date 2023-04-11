@@ -19,25 +19,19 @@ Deno.test("fs.globImport", async (t) => {
   await t.step(
     "finds files that match the glob pattern",
     async () => {
-      const importMap = await globImport(
-        globPattern,
-        stubFileHandler,
-      );
+      const modules = await globImport(globPattern, stubFileHandler);
 
-      assertEquals(
-        Object.keys(importMap),
-        [A_TS, C_TS],
-      );
+      assertEquals(Object.keys(modules), [A_TS, C_TS]);
     },
   );
 
   await t.step(
     "is lazy by default, not calling its import functions",
     async () => {
-      const importMap = await globImport(globPattern, stubFileHandler);
+      const modules = await globImport(globPattern, stubFileHandler);
 
       assert(
-        Object.values(importMap).every((val) => typeof val === "function"),
+        Object.values(modules).every((val) => typeof val === "function"),
       );
     },
   );
@@ -45,14 +39,14 @@ Deno.test("fs.globImport", async (t) => {
   await t.step(
     "options.eager causes all imports to be resolved",
     async () => {
-      const importMap = await globImport(
+      const modules = await globImport(
         globPattern,
         importHandler,
         { eager: true },
       );
 
       assertEquals(
-        importMap,
+        modules,
         {
           [A_TS]: { name: "A" },
           [C_TS]: { name: "C" },
@@ -66,7 +60,7 @@ Deno.test("fs.globImport", async (t) => {
     async () => {
       const globPattern = resolve(ROOT_DIR, "fixture", "**", "*.*");
 
-      const importMap = await globImport(
+      const modules = await globImport(
         globPattern,
         {
           ".md": (filePath: string) => () => Deno.readTextFile(filePath),
@@ -79,7 +73,7 @@ Deno.test("fs.globImport", async (t) => {
       const C_MD = resolve(C_DIR, "findme.md");
 
       assertEquals(
-        importMap,
+        modules,
         {
           [A_MD]: "A\n",
           [A_TS]: { name: "A" },

@@ -1,13 +1,13 @@
 import { extname } from "../deps/path.ts";
 import { glob } from "./glob.ts";
 
-/** A map from absolute filepaths to import() functions. */
+/** A map from absolute filepaths to `import()` functions. */
 // deno-lint-ignore no-explicit-any
-export type ImportMap = Record<string, () => Promise<any>>;
+export type Modules = Record<string, () => Promise<any>>;
 
-/** A map from absolute filepaths to import() results. */
+/** A map from absolute filepaths to `import()` results. */
 // deno-lint-ignore no-explicit-any
-export type EagerImportMap = Record<string, any>;
+export type EagerModules = Record<string, any>;
 
 /** Given a full `filePath`, return an import function. */
 // deno-lint-ignore no-explicit-any
@@ -54,23 +54,23 @@ export type GlobImportOptions = {
  *     () => Deno.readTextFile(filePath).then(JSON.parse)
  * }
  *
- * const importMap = await globImport(pattern, { eager: true, fileHandlers })
+ * const imports = await globImport(pattern, { eager: true, fileHandlers })
  */
 export async function globImport(
   globPattern: string,
   fileHandler: FileHandler,
   options?: { eager?: false },
-): Promise<ImportMap>;
+): Promise<Modules>;
 export async function globImport(
   globPattern: string,
   fileHandler: FileHandler,
   options: { eager: true },
-): Promise<EagerImportMap>;
+): Promise<EagerModules>;
 export async function globImport(
   globPattern: string,
   fileHandler: FileHandler,
   options: GlobImportOptions,
-): Promise<ImportMap | EagerImportMap>;
+): Promise<Modules | EagerModules>;
 export async function globImport(
   globPattern: string,
   fileHandler: FileHandler,
