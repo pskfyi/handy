@@ -2,6 +2,11 @@
  * Mutates `obj` adding or overwriting a `val` at the end of a chain of `keys`,
  * creating intermediate objects as needed.
  *
+ * Note that this diverges from many similar functions in that it does not
+ * create intermediate arrays when a number is encountered in the chain of
+ * keys. Only plain objects are created. It will still index into existing
+ * arrays.
+ *
  * @example
  * const s = Symbol("")
  * const val = () => {}
