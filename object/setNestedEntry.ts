@@ -5,7 +5,7 @@
  * @example
  * const s = Symbol("")
  * const val = () => {}
- * addNestedEntry({}, ["a", 2, 1], val) // { a: { 2: { [s]: val } } }
+ * addNestedEntry({}, ["a", 2, s], val) // { a: { 2: { [s]: val } } }
  */
 export function setNestedEntry<
   T extends Record<string | number | symbol, unknown>,
