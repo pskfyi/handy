@@ -1,11 +1,11 @@
 import { resolve } from "../deps/path.ts";
-import { assertEquals } from "../deps/testing.ts";
+import { assertEquals, describe, it } from "../deps/testing.ts";
 import { globRoot } from "./globRoot.ts";
 
 const PROJECT_ROOT_DIR = resolve(".");
 
-Deno.test("path.globRoot", async (t) => {
-  await t.step(
+describe("path.globRoot", () => {
+  it(
     "finds the root of an absolute glob pattern",
     () => {
       assertEquals(
@@ -15,7 +15,7 @@ Deno.test("path.globRoot", async (t) => {
     },
   );
 
-  await t.step(
+  it(
     "finds the root of a relative glob pattern",
     () => {
       assertEquals(
@@ -25,7 +25,7 @@ Deno.test("path.globRoot", async (t) => {
     },
   );
 
-  await t.step(
+  it(
     "returns a non-glob path as-is",
     () => {
       assertEquals(

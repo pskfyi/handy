@@ -1,5 +1,5 @@
 import { resolve } from "../deps/path.ts";
-import { assertEquals, assertRejects } from "../deps/testing.ts";
+import { assertEquals, assertRejects, describe, it } from "../deps/testing.ts";
 import { ROOT_DIR } from "../constants.ts";
 import { findNearestFile } from "./findNearestFile.ts";
 
@@ -7,8 +7,8 @@ const A_DIR = resolve(ROOT_DIR, "fixture", "a");
 const B_DIR = resolve(A_DIR, "b");
 const C_DIR = resolve(B_DIR, "c");
 
-Deno.test("fs.findNearestFile", async (t) => {
-  await t.step(
+describe("fs.findNearestFile", () => {
+  it(
     "rejects a filepath; dirpath is expected",
     async () => {
       await assertRejects(
@@ -17,7 +17,7 @@ Deno.test("fs.findNearestFile", async (t) => {
     },
   );
 
-  await t.step("locates nearest file of a given name", async () => {
+  it("locates nearest file of a given name", async () => {
     assertEquals(
       await findNearestFile(A_DIR, "findme.md"),
       resolve(A_DIR, "findme.md"),
@@ -32,7 +32,7 @@ Deno.test("fs.findNearestFile", async (t) => {
     );
   });
 
-  await t.step("", async () => {
+  it("", async () => {
     assertEquals(
       await findNearestFile(ROOT_DIR, "findme.md"),
       undefined,

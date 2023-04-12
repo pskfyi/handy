@@ -1,5 +1,5 @@
 import { resolve } from "../deps/path.ts";
-import { assert, assertEquals } from "../deps/testing.ts";
+import { assert, assertEquals, describe, it } from "../deps/testing.ts";
 import { globImport } from "./globImport.ts";
 import { ROOT_DIR } from "../constants.ts";
 
@@ -15,8 +15,8 @@ const stubFileHandler = () => async () => await 1;
 
 const importHandler = (filePath: string) => () => import(filePath);
 
-Deno.test("fs.globImport", async (t) => {
-  await t.step(
+describe("fs.globImport", () => {
+  it(
     "finds files that match the glob pattern",
     async () => {
       const modules = await globImport(globPattern, stubFileHandler);
@@ -25,7 +25,7 @@ Deno.test("fs.globImport", async (t) => {
     },
   );
 
-  await t.step(
+  it(
     "is lazy by default, not calling its import functions",
     async () => {
       const modules = await globImport(globPattern, stubFileHandler);
@@ -36,7 +36,7 @@ Deno.test("fs.globImport", async (t) => {
     },
   );
 
-  await t.step(
+  it(
     "options.eager causes all imports to be resolved",
     async () => {
       const modules = await globImport(
@@ -55,7 +55,7 @@ Deno.test("fs.globImport", async (t) => {
     },
   );
 
-  await t.step(
+  it(
     "fileHandler accepts a map from extensions to specific handlers",
     async () => {
       const globPattern = resolve(ROOT_DIR, "fixture", "**", "*.*");

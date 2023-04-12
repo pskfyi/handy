@@ -1,7 +1,7 @@
-import { assertEquals } from "../deps/testing.ts";
+import { assertEquals, describe } from "../deps/testing.ts";
 import { setNestedEntry } from "./setNestedEntry.ts";
 
-Deno.test("object.setNestedEntry", () => {
+describe("object.setNestedEntry", () => {
   const s = Symbol("");
   const val = () => {};
 

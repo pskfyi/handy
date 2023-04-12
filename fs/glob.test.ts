@@ -1,5 +1,5 @@
 import { resolve } from "../deps/path.ts";
-import { assertEquals } from "../deps/testing.ts";
+import { assertEquals, describe, it } from "../deps/testing.ts";
 import { glob } from "./glob.ts";
 import { ROOT_DIR } from "../constants.ts";
 
@@ -11,8 +11,8 @@ const C_DIR = resolve(A_DIR, "b", "c");
 const A_FILE = resolve(A_DIR, "findme.ts");
 const C_FILE = resolve(C_DIR, "findme.ts");
 
-Deno.test("fs.glob", async (t) => {
-  await t.step(
+describe("fs.glob", () => {
+  it(
     "finds files that match the glob pattern",
     async () => {
       const filePaths = await glob(GLOB);
