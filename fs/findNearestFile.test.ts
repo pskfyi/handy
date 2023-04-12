@@ -32,7 +32,7 @@ describe("fs.findNearestFile", () => {
     );
   });
 
-  it("", async () => {
+  it("falls back to undefined", async () => {
     assertEquals(
       await findNearestFile(ROOT_DIR, "findme.md"),
       undefined,
