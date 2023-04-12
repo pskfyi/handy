@@ -11,16 +11,6 @@ const C_DIR = resolve(A_DIR, "b", "c");
 const A_FILE = resolve(A_DIR, "findme.ts");
 const C_FILE = resolve(C_DIR, "findme.ts");
 
-describe("fs.glob", () => {
-  it(
-    "finds files that match the glob pattern",
-    async () => {
-      const filePaths = await glob(GLOB);
-
-      assertEquals(
-        filePaths,
-        [A_FILE, C_FILE],
-      );
-    },
-  );
-});
+describe("fs.glob", () =>
+  it("finds files that match the glob pattern", async () =>
+    assertEquals(await glob(GLOB), [A_FILE, C_FILE])));
