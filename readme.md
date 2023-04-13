@@ -1,6 +1,6 @@
 # Deno Utils
 
-Utility functions in uncompiled TS, for Deno.
+Utility functions, classes, and types in uncompiled TS, for Deno.
 
 ## `collection`
 
