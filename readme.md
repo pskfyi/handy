@@ -25,6 +25,16 @@ import {
 } from "https://deno.land/x/pskfyi_deno_utils/fs/mod.ts";
 ```
 
+## `graph`
+
+Graph-related utilities.
+
+```ts
+import {
+  DirectedGraph,
+} from "https://deno.land/x/pskfyi_deno_utils/graph/mod.ts";
+```
+
 ## `object`
 
 Object-related utilities.
