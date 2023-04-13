@@ -1,1 +1,1 @@
-export * from "./globRoot.ts";
+export * from "./utils.ts";
