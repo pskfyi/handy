@@ -2,6 +2,17 @@
 
 Utility functions in uncompiled TS, for Deno.
 
+## `collection`
+
+Utilities related to generic collection types, like `Iterable`s.
+
+```ts
+import {
+  largest,
+  smallest,
+} from "https://deno.land/x/pskfyi_deno_utils/collection/mod.ts";
+```
+
 ## `fs`
 
 File system-related utilities.
