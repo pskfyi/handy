@@ -3,9 +3,9 @@
  *
  * @returns a `Promise` resolving to the result of mapping over the `array`
  */
-export async function oncePerInterval<T, U>(
-  ms: number,
+export async function mapOnInterval<T, U>(
   array: T[],
+  ms: number,
   callback: (item: T) => U,
 ): Promise<Awaited<U>[]> {
   if (array.length === 0) return [];

@@ -1,10 +1,10 @@
 import { assertEquals, describe, it } from "../deps/testing.ts";
-import { oncePerInterval } from "./oncePerInterval.ts";
+import { mapOnInterval } from "./mapOnInterval.ts";
 
-describe("timing.oncePerInterval", () => {
+describe("array.mapOnInterval", () => {
   it("works with synchronous predicates", async () =>
     assertEquals(
-      await oncePerInterval(1, ["a", "b"], (l: string) => l.toUpperCase()),
+      await mapOnInterval(["a", "b"], 1, (l: string) => l.toUpperCase()),
       ["A", "B"],
     ));
 
@@ -12,7 +12,7 @@ describe("timing.oncePerInterval", () => {
     const asyncPredicate = async (l: string) => await l.toUpperCase();
 
     assertEquals(
-      await oncePerInterval(1, ["a", "b"], asyncPredicate),
+      await mapOnInterval(["a", "b"], 1, asyncPredicate),
       ["A", "B"],
     );
   });

@@ -4,8 +4,6 @@
 
 Utility functions, classes, and types in uncompiled TS, for Deno.
 
-# <<<<<<< HEAD
-
 ## `array`
 
 Array-related utilities.
@@ -19,8 +17,6 @@ mapOnInterval([3, 2, 1, "go!"], 1000, (item) => console.log(item));
 // 1sec later, logs: 1
 // 1sec later, logs: "go!"
 ```
-
-> 4c407b7 (.)
 
 ## `collection`
 
@@ -95,20 +91,6 @@ Path-related utilities.
 import { globRoot } from "https://deno.land/x/handy/path/utils.ts";
 
 globRoot("a/b/*.ts"); // "a/b/"
-```
-
-## `timing`
-
-Timing-related utilities.
-
-```ts
-import { oncePerInterval } from "https://deno.land/x/handy/timing/utils.ts";
-
-oncePerInterval(1000, [3, 2, 1, "go!"], (el) => console.log(e));
-// logs: 3
-// 1sec later, logs: 2
-// 1sec later, logs: 1
-// 1sec later, logs: "go!"
 ```
 
 ## `types`
