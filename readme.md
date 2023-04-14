@@ -79,10 +79,10 @@ import { DirectedGraph } from "https://deno.land/x/handy/graph/utils.ts";
 
 const graph = new DirectedGraph()
   .add("a")
-  .add("b", ["a", "c"])
-  .edges; // [["b", "a"], ["b", "c"]]
+  .add("b", ["a", "c"]);
 
 graph.vertices; // ["a", "b", "c"]
+graph.edges; // [["b", "a"], ["b", "c"]]
 ```
 
 ### `object`
