@@ -260,4 +260,8 @@ export class DirectedGraph<T> {
 
     return paths;
   }
+
+  [Symbol.for("Deno.customInspect")]() {
+    return `DirectedGraph(${this.#vertices.size} vertices, ${this.edges.size} edges)`;
+  }
 }
