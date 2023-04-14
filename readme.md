@@ -1,4 +1,6 @@
-# Deno Utils
+# 👋 Handy
+
+[![deno module](https://shield.deno.dev/x/handy)](https://deno.land/x/handy)
 
 Utility functions, classes, and types in uncompiled TS, for Deno.
 
@@ -10,7 +12,7 @@ Utilities related to generic collection types, like `Iterable`s.
 import {
   largest,
   smallest,
-} from "https://deno.land/x/pskfyi_deno_utils/collection/mod.ts";
+} from "https://deno.land/x/handy/collection/utils.ts";
 ```
 
 ## `fs`
@@ -22,7 +24,7 @@ import {
   findNearestFile,
   glob,
   globImport,
-} from "https://deno.land/x/pskfyi_deno_utils/fs/mod.ts";
+} from "https://deno.land/x/handy/fs/utils.ts";
 ```
 
 ## `graph`
@@ -30,9 +32,7 @@ import {
 Graph-related utilities.
 
 ```ts
-import {
-  DirectedGraph,
-} from "https://deno.land/x/pskfyi_deno_utils/graph/mod.ts";
+import { DirectedGraph } from "https://deno.land/x/handy/graph/utils.ts";
 ```
 
 ## `object`
@@ -40,9 +40,7 @@ import {
 Object-related utilities.
 
 ```ts
-import {
-  setNestedEntry,
-} from "https://deno.land/x/pskfyi_deno_utils/object/mod.ts";
+import { setNestedEntry } from "https://deno.land/x/handy/object/utils.ts";
 ```
 
 ## `path`
@@ -50,7 +48,7 @@ import {
 Path-related utilities.
 
 ```ts
-import { globRoot } from "https://deno.land/x/pskfyi_deno_utils/path/mod.ts";
+import { globRoot } from "https://deno.land/x/handy/path/utils.ts";
 ```
 
 ## `timing`
@@ -58,9 +56,7 @@ import { globRoot } from "https://deno.land/x/pskfyi_deno_utils/path/mod.ts";
 Timing-related utilities.
 
 ```ts
-import {
-  oncePerInterval,
-} from "https://deno.land/x/pskfyi_deno_utils/timing/mod.ts";
+import { oncePerInterval } from "https://deno.land/x/handy/timing/utils.ts";
 ```
 
 ## `types`
@@ -73,5 +69,10 @@ import {
   JsonObject,
   JsonPrimitive,
   JsonValue,
-} from "https://deno.land/x/pskfyi_deno_utils/types/mod.ts";
+} from "https://deno.land/x/handy/types/json.ts";
+
+const c: JsonPrimitive = "some string"; // or number, boolean, null
+const a: JsonArray = [1, ["2", true], { a: null }];
+const b: JsonObject = { a: 1, b: ["2", true], d: { e: null } };
+const d: JsonValue = // any of the above
 ```
