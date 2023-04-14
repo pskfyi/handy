@@ -264,4 +264,8 @@ export class DirectedGraph<T> {
   [Symbol.for("Deno.customInspect")]() {
     return `DirectedGraph(${this.#vertices.size} vertices, ${this.edges.size} edges)`;
   }
+
+  [Symbol.iterator](): IterableIterator<N<T>> {
+    return this.#vertices.values();
+  }
 }

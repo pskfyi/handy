@@ -230,4 +230,9 @@ describe("DirectedGraph", () => {
     graph.add("a", "b").add("b", "c").add("c", "d");
     assertEquals(Deno.inspect(graph), "DirectedGraph(4 vertices, 3 edges)");
   });
+
+  it("is iterable, yielding vertices", () => {
+    graph.add("a", "b").add("b", "c").add("c", "d");
+    assertEquals([...graph], ["a", "b", "c", "d"]);
+  });
 });
