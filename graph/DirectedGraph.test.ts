@@ -235,4 +235,14 @@ describe("DirectedGraph", () => {
     graph.add("a", "b").add("b", "c").add("c", "d");
     assertEquals([...graph], ["a", "b", "c", "d"]);
   });
+
+  it("has a getter for root vertices", () => {
+    graph.add("a", "b").add("b", "c").add("c", "d");
+    assertEquals(graph.roots, new Set("a"));
+  });
+
+  it("has a getter for leaf vertices", () => {
+    graph.add("a", "b").add("b", "c").add("c", "d");
+    assertEquals(graph.leaves, new Set(["d"]));
+  });
 });

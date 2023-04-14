@@ -59,6 +59,20 @@ export class DirectedGraph<T> {
     return edges;
   }
 
+  get roots() {
+    return new Set(
+      [...this.#vertices]
+        .filter((vertex) => this.#edgesTo.get(vertex)!.size === 0),
+    );
+  }
+
+  get leaves() {
+    return new Set(
+      [...this.#vertices]
+        .filter((vertex) => this.#edgesFrom.get(vertex)!.size === 0),
+    );
+  }
+
   #assertVertex(vertex: N<T>) {
     if (!this.#vertices.has(vertex)) throw new VertexError(vertex);
   }
