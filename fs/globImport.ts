@@ -1,4 +1,3 @@
-import { extname } from "../deps/path.ts";
 import { glob } from "./glob.ts";
 
 /** A map from absolute filepaths to `import()` functions. */
@@ -45,6 +44,21 @@ export type GlobImportOptions = {
    */
   fileHandler?: FileHandler;
 };
+
+function makeImportFunction(
+  filePath: string,
+  handlers: Record<string, ImportFactory>,
+) {
+  for (const [extension, handler] of Object.entries(handlers)) {
+    if (filePath.endsWith(extension)) return handler(filePath);
+  }
+
+  throw new Error(
+    "Could not find a file handler for the following extension, and no fallback handler was registered.\n" +
+      `filePath: ${filePath}\n` +
+      `registered extensions: ${JSON.stringify(Object.keys(handlers))}`,
+  );
+}
 
 /**
  * Given a glob pattern, returns a mapping from the identified filepaths to
@@ -95,36 +109,16 @@ export async function globImport(
 ): Promise<EagerModules>;
 export async function globImport(
   globPattern: string,
-  options?: GlobImportOptions,
-): Promise<Modules | EagerModules>;
-export async function globImport(
-  globPattern: string,
   options: GlobImportOptions = {},
 ) {
   const { eager = false, fileHandler = DEFAULT_FILE_HANDLER } = options;
   const filePaths = await glob(globPattern);
 
-  function _getHandler(extension: string): ImportFactory {
-    if (typeof fileHandler === "function") return fileHandler;
-
-    if (extension in fileHandler) return fileHandler[extension];
-
-    const extensions = Object.keys(fileHandler);
-
-    throw new Error(
-      "Could not find a file handler for the following extension, and no fallback handler was registered.\n" +
-        `extension found: ${extension}\n` +
-        `registered extensions: ${JSON.stringify(extensions)}`,
-    );
-  }
-
   const entries = await Promise.all(
     filePaths.map(async (filePath) => {
-      const extension = extname(filePath);
-
-      const handler = _getHandler(extension);
-
-      const importFunction = handler(filePath);
+      const importFunction = typeof fileHandler === "function"
+        ? fileHandler(filePath)
+        : makeImportFunction(filePath, fileHandler);
 
       return [filePath, eager ? await importFunction() : importFunction];
     }),
