@@ -225,4 +225,9 @@ describe("DirectedGraph", () => {
       assertEquals(sm("a", "d"), [["a", "b", "d"], ["a", "c", "d"]]);
     });
   });
+
+  it("has a custom console.log output", () => {
+    graph.add("a", "b").add("b", "c").add("c", "d");
+    assertEquals(Deno.inspect(graph), "DirectedGraph(4 vertices, 3 edges)");
+  });
 });
