@@ -8,14 +8,18 @@ export async function oncePerInterval<T, U>(
   array: T[],
   callback: (item: T) => U,
 ): Promise<Awaited<U>[]> {
-  return await Promise.all(
-    array.map(async (id, i) =>
-      await new Promise<Awaited<U>>((resolve) => {
-        setTimeout(
-          async () => resolve(await callback(id)),
-          (i + 1) * ms,
-        );
-      })
-    ),
-  );
+  if (array.length === 0) return [];
+
+  const arr = array.slice();
+  const result: Awaited<U>[] = [];
+
+  return await new Promise((resolve) => {
+    const ID = setInterval(async () => {
+      result.push(await callback(arr.shift()!));
+      if (arr.length === 0) {
+        clearInterval(ID);
+        resolve(result);
+      }
+    }, ms);
+  });
 }
