@@ -14,7 +14,11 @@ export async function evalCodeBlocks(
       (code, [search, replace]) => code.replace(search, replace),
       codeBlock[1],
     );
-    console.log(await Deno.run({ cmd: ["deno", "eval", code] }).status());
+
+    console.log(
+      await Deno.run({ cmd: ["deno", "eval", "--check", "--ext=ts", code] })
+        .status(),
+    );
   }
 }
 
