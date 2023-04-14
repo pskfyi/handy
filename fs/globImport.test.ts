@@ -1,6 +1,12 @@
 import { resolve } from "../deps/path.ts";
-import { assert, assertEquals, describe, it } from "../deps/testing.ts";
-import { globImport } from "./globImport.ts";
+import {
+  assert,
+  assertEquals,
+  assertRejects,
+  describe,
+  it,
+} from "../deps/testing.ts";
+import { FileHandlerError, globImport } from "./globImport.ts";
 import { ROOT_DIR } from "../constants.ts";
 
 const globPattern = resolve(ROOT_DIR, "fixture", "**", "*.ts");
@@ -54,4 +60,13 @@ describe("fs.globImport", () => {
         [C_TS]: { name: "C" },
       },
     ));
+
+  it("throws a custom error if no handler is found for a file", async () => {
+    const pattern = resolve(ROOT_DIR, "fixture", "**", "*.*");
+
+    await assertRejects(
+      () => globImport(pattern, { eager: true, fileHandler: {} }),
+      FileHandlerError,
+    );
+  });
 });

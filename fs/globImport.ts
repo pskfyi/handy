@@ -16,6 +16,20 @@ export type FileHandler = ImportFactory | {
   [Extension: string]: ImportFactory;
 };
 
+export class FileHandlerError extends Error {
+  constructor(
+    public readonly filePath: string,
+    public readonly handlers: Record<string, ImportFactory>,
+  ) {
+    super(
+      "Could not find a file handler for the following file:" +
+        `  filePath: ${filePath}\n` +
+        `  registered extensions: ${JSON.stringify(Object.keys(handlers))}`,
+    );
+    this.name = "FileHandlerError";
+  }
+}
+
 export const DEFAULT_FILE_HANDLER: FileHandler = {
   ".ts": (filePath) => () => import(filePath),
 };
@@ -53,11 +67,7 @@ function makeImportFunction(
     if (filePath.endsWith(extension)) return handler(filePath);
   }
 
-  throw new Error(
-    "Could not find a file handler for the following extension, and no fallback handler was registered.\n" +
-      `filePath: ${filePath}\n` +
-      `registered extensions: ${JSON.stringify(Object.keys(handlers))}`,
-  );
+  throw new FileHandlerError(filePath, handlers);
 }
 
 /**
