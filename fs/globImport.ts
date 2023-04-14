@@ -17,17 +17,33 @@ export type FileHandler = ImportFactory | {
   [Extension: string]: ImportFactory;
 };
 
+export const DEFAULT_FILE_HANDLER: FileHandler = {
+  ".ts": (filePath) => () => import(filePath),
+};
+
 export type GlobImportOptions = {
-  /**
-   * When true, import functions will be called and the results will be
-   * returned.
-   */
+  /** Return file contents rather than import functions. */
   eager?: boolean;
   /**
-   * When provided alongside an object `FileHandler`, if a file extension is
-   * not found in the object, this fallback will be used rather than throwing.
+   * A function that turns a file path into an import function, or an object
+   * mapping file extensions to such functions. When a file is found, it will
+   * match against the first entry that matches it. Use an empty string as an
+   * extension for a fallback handler.
+   *
+   * @default
+   * { ".ts", (filePath) => () => import(filePath) }
+   *
+   * @example
+   * const fileHandler = (filePath) => () => Deno.readTextFile(filePath);
+   *
+   * @example
+   * const fileHandlers = {
+   *   ".ts": (filePath) => () => import(filePath),
+   *   ".json": (path) => () => Deno.readTextFile(path).then(JSON.parse),
+   *   "": (filePath) => () => Deno.readTextFile(filePath), // fallback
+   * }
    */
-  fallbackHandler?: ImportFactory;
+  fileHandler?: FileHandler;
 };
 
 /**
@@ -41,50 +57,57 @@ export type GlobImportOptions = {
  *
  * Optionally you can pass a map of `FileHandlers`, which describe how to
  * create an import function for a given file extension. See the example below.
- * When a file is found whose extension is not found among the `FileHandlers`,
- * a regular import function will be created.
  *
  * @example
- * import path from "https://deno.land/std/path/mod.ts";
+ * const pattern = path.resolve(".", "**", "*.ts")
+ * const modules = await globImport(pattern)
  *
- * const pattern = path.resolve(".", "**", "*.*")
- *
- * const fileHandlers: FileHandlers = {
- *   ".json": (filePath) =>
- *     () => Deno.readTextFile(filePath).then(JSON.parse)
+ * for (const [filePath, importFn] of Object.entries(modules)) {
+ *    console.log(`Importing ${filePath}...`)
+ *    const module = await importFn()
  * }
  *
- * const imports = await globImport(pattern, { eager: true, fileHandlers })
+ * @example
+ * const pattern = path.resolve(".", "**", "*.json")
+ * const eager = true // will call each import function
+ * const fileHandler = (filePath) =>
+ *     () => Deno.readTextFile(filePath).then(JSON.parse)
+ *
+ * const jsonData = await globImport(pattern, { eager, fileHandler })
+ * console.log(jsonData.someFile.someKey[0].someOtherKey...)
+ *
+ * @example
+ * const pattern = path.resolve(".", "**", "*.*")
+ * const fileHandler = {
+ *   ".ts": (filePath) => () => import(filePath),
+ *   "": (filePath) => () => Deno.readTextFile(filePath), // fallback
+ * }
+ *
+ * const modules = await globImport(pattern, { fileHandler })
  */
 export async function globImport(
   globPattern: string,
-  fileHandler: FileHandler,
-  options?: { eager?: false },
+  options?: { eager?: false; fileHandler?: FileHandler },
 ): Promise<Modules>;
 export async function globImport(
   globPattern: string,
-  fileHandler: FileHandler,
-  options: { eager: true },
+  options: { eager: true; fileHandler?: FileHandler },
 ): Promise<EagerModules>;
 export async function globImport(
   globPattern: string,
-  fileHandler: FileHandler,
-  options: GlobImportOptions,
+  options?: GlobImportOptions,
 ): Promise<Modules | EagerModules>;
 export async function globImport(
   globPattern: string,
-  fileHandler: FileHandler,
   options: GlobImportOptions = {},
 ) {
-  const { eager = false, fallbackHandler } = options;
+  const { eager = false, fileHandler = DEFAULT_FILE_HANDLER } = options;
   const filePaths = await glob(globPattern);
 
   function _getHandler(extension: string): ImportFactory {
     if (typeof fileHandler === "function") return fileHandler;
 
     if (extension in fileHandler) return fileHandler[extension];
-
-    if (fallbackHandler) return fallbackHandler;
 
     const extensions = Object.keys(fileHandler);
 
