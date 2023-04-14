@@ -1,3 +1,11 @@
 {
-  "lock": false
+  "fmt": {
+    "options": {
+      "proseWrap": "never"
+    }
+  },
+  "lock": false,
+  "tasks": {
+    "test-readme": "deno run -A scripts/evalCodeBlocks.ts ./readme.md https://deno.land/x/handy ."
+  }
 }

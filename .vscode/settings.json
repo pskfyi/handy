@@ -11,5 +11,6 @@
   "cSpell.words": [
     "Deno",
     "uncompiled"
-  ]
+  ],
+  "markdown.extension.toc.levels": "2..3"
 }
