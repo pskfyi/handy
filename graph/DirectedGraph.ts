@@ -77,15 +77,14 @@ export class DirectedGraph<T> {
    * When `false` is returned, the `visited` nodes can be safely removed from
    * further consideration. */
   #hasCycle(vertex: N<T>, visited: Set<N<T>>) {
-    const stack = [vertex];
+    if (visited.has(vertex)) return true;
+    visited.add(vertex);
 
-    while (stack.length) {
-      const current = stack.pop()!;
-      if (visited.has(current)) return true;
-      visited.add(current);
-      stack.push(...this.#edgesFrom.get(current)!);
+    for (const child of this.#edgesFrom.get(vertex)!) {
+      if (this.#hasCycle(child, visited)) return true;
     }
 
+    visited.delete(vertex);
     return false;
   }
 
@@ -105,16 +104,41 @@ export class DirectedGraph<T> {
     return false;
   }
 
+  #isTree(root: N<T>) {
+    const visited = new Set<N<T>>();
+    const stack = [root];
+
+    while (stack.length) {
+      const current = stack.pop()!;
+      if (visited.has(current)) return false;
+      visited.add(current);
+      stack.push(...this.#edgesFrom.get(current)!);
+    }
+
+    return true;
+  }
+
   get isTree() {
     const roots = this.roots;
     if (roots.size !== 1) return false;
     if (this.isCyclic) return false;
 
-    const root = roots.values().next().value;
+    return this.#isTree(roots.values().next().value);
+  }
+
+  get isForest() {
+    if (this.isCyclic) return false;
+
+    const roots: Set<N<T>> = new Set();
 
     for (const vertex of this) {
-      const parents = this.edgesTo(vertex);
-      if (vertex !== root && parents.size !== 1) return false;
+      const edgesTo = this.#edgesTo.get(vertex)!;
+      if (edgesTo.size > 1) return false;
+      if (edgesTo.size === 0) roots.add(vertex);
+    }
+
+    for (const root of roots) {
+      if (!this.#isTree(root)) return false;
     }
 
     return true;

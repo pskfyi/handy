@@ -67,6 +67,7 @@ describe("DirectedGraph", () => {
       assert(new DirectedGraph(graph).add("d", "c").isCyclic);
       assert(new DirectedGraph(graph).add("d", "b").isCyclic);
       assert(new DirectedGraph().add("y", "z").add("z", "y").isCyclic);
+      assert(!new DirectedGraph(graph).add("a", "c").isCyclic);
     });
 
     it("can tell if it's a tree", () => {
@@ -77,6 +78,17 @@ describe("DirectedGraph", () => {
       assert(!new DirectedGraph(graph).add("d", "a").isTree);
       assert(!new DirectedGraph(graph).add("a", "c").isTree);
       assert(!new DirectedGraph(graph).add("y", "z").add("z", "y").isTree);
+    });
+
+    it("can tell if it's a forest", () => {
+      graph.add("a", "b").add("b", "c").add("c", "d");
+      graph.add("h", "i");
+      graph.add("v", "w").add("w", "x");
+      assert(graph.isForest);
+
+      assert(!new DirectedGraph(graph).add("b", "i").isForest);
+      assert(new DirectedGraph(graph).add("x", "h").isForest);
+      assert(new DirectedGraph(graph).add("d", "v").isForest);
     });
 
     it("has custom console.log output", () => {
