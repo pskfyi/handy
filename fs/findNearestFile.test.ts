@@ -8,12 +8,12 @@ const B_DIR = resolve(A_DIR, "b");
 const C_DIR = resolve(B_DIR, "c");
 
 describe("fs.findNearestFile", () => {
-  it("rejects a filepath; dirpath is expected", async () =>
+  it("rejects a filepath", async () =>
     void await assertRejects(() =>
       findNearestFile(resolve(A_DIR, "findme.md"), "")
     ));
 
-  it("locates nearest file of a given name", async () => {
+  it("locates nearest file by name", async () => {
     assertEquals(
       await findNearestFile(A_DIR, "findme.md"),
       resolve(A_DIR, "findme.md"),

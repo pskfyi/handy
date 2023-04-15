@@ -12,5 +12,5 @@ const A_FILE = resolve(A_DIR, "findme.ts");
 const C_FILE = resolve(C_DIR, "findme.ts");
 
 describe("fs.glob", () =>
-  it("finds files that match the glob pattern", async () =>
+  it("finds files matching the pattern", async () =>
     assertEquals(await glob(GLOB), [A_FILE, C_FILE])));
