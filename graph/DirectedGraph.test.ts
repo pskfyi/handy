@@ -59,6 +59,16 @@ describe("DirectedGraph", () => {
       assertEquals(graph.leaves, new Set(["d"]));
     });
 
+    it("can tell if it's cyclic", () => {
+      graph.add("a", "b").add("b", "c").add("c", "d");
+      assert(!graph.isCyclic);
+
+      assert(new DirectedGraph(graph).add("d", "a").isCyclic);
+      assert(new DirectedGraph(graph).add("d", "c").isCyclic);
+      assert(new DirectedGraph(graph).add("d", "b").isCyclic);
+      assert(new DirectedGraph().add("y", "z").add("z", "y").isCyclic);
+    });
+
     it("has custom console.log output", () => {
       graph.add("a", "b").add("b", "c").add("c", "d");
       assertEquals(Deno.inspect(graph), "DirectedGraph(4 vertices, 3 edges)");
@@ -141,6 +151,7 @@ describe("DirectedGraph", () => {
     assertThrows(() => graph.remove("z"), VertexError, " z");
     assertThrows(() => graph.edgesFrom("q"), VertexError, " q");
     assertThrows(() => graph.edgesFrom("x"), VertexError, " x");
+    assertThrows(() => graph.hasCycle("w"), VertexError, " w");
   });
 
   describe("graph.walk", () => {
@@ -225,6 +236,18 @@ describe("DirectedGraph", () => {
       ["a", "b", "c", "d"],
       ["a", "c", "d"],
     ]);
+  });
+
+  it("identifies if a vertex has cycles", () => {
+    graph.add("a", "b").add("b", "c");
+    assert(!graph.hasCycle("a"));
+    assert(!graph.hasCycle("b"));
+    assert(!graph.hasCycle("c"));
+
+    graph.add("c", "a");
+    assert(graph.hasCycle("a"));
+    assert(graph.hasCycle("b"));
+    assert(graph.hasCycle("c"));
   });
 
   describe("integration: collection.smallest", () => {
