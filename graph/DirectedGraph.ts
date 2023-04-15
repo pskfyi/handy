@@ -148,6 +148,10 @@ export class DirectedGraph<T> {
     if (!this.#vertices.has(vertex)) throw new VertexError(vertex);
   }
 
+  has(vertex: N<T>) {
+    return this.#vertices.has(vertex);
+  }
+
   /** Returns all vertices that have an edge to the given vertex. */
   edgesTo(target: N<T>) {
     this.#assertVertex(target);
