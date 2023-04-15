@@ -23,16 +23,16 @@ const C_TS = resolve(C_DIR, "findme.ts");
 const fileHandler = (filePath: string) => () => import(filePath);
 
 describe("fs.globImport", () => {
-  it("finds files that match the glob pattern", async () =>
+  it("finds files matching the pattern", async () =>
     assertEquals(Object.keys(await globImport(globPattern)), [A_TS, C_TS]));
 
-  it("is lazy by default, not calling its import functions", async () =>
+  it("returns import functions by default", async () =>
     assert(
       Object.values(await globImport(globPattern))
         .every((val) => typeof val === "function"),
     ));
 
-  it("options.eager causes all imports to be resolved", async () =>
+  it("can return resolved imports", async () =>
     assertEquals(
       await globImport(globPattern, { eager: true, fileHandler }),
       {
@@ -41,7 +41,7 @@ describe("fs.globImport", () => {
       },
     ));
 
-  it("accepts a map from extensions to specific handlers", async () =>
+  it("can handle files by extension", async () =>
     assertEquals(
       await globImport(
         resolve(ROOT_DIR, "fixture", "**", "*.*"),
@@ -61,7 +61,7 @@ describe("fs.globImport", () => {
       },
     ));
 
-  it("throws a custom error if no handler is found for a file", async () => {
+  it("throws custom error on unhandled files", async () => {
     const pattern = resolve(ROOT_DIR, "fixture", "**", "*.*");
 
     await assertRejects(
