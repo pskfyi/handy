@@ -105,6 +105,21 @@ export class DirectedGraph<T> {
     return false;
   }
 
+  get isTree() {
+    const roots = this.roots;
+    if (roots.size !== 1) return false;
+    if (this.isCyclic) return false;
+
+    const root = roots.values().next().value;
+
+    for (const vertex of this) {
+      const parents = this.edgesTo(vertex);
+      if (vertex !== root && parents.size !== 1) return false;
+    }
+
+    return true;
+  }
+
   #assertVertex(vertex: N<T>) {
     if (!this.#vertices.has(vertex)) throw new VertexError(vertex);
   }

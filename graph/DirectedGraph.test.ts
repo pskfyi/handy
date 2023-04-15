@@ -69,6 +69,16 @@ describe("DirectedGraph", () => {
       assert(new DirectedGraph().add("y", "z").add("z", "y").isCyclic);
     });
 
+    it("can tell if it's a tree", () => {
+      graph.add("a", "b").add("b", "c").add("c", "d");
+      graph.add("a", "e").add("b", "f");
+      assert(graph.isTree);
+
+      assert(!new DirectedGraph(graph).add("d", "a").isTree);
+      assert(!new DirectedGraph(graph).add("a", "c").isTree);
+      assert(!new DirectedGraph(graph).add("y", "z").add("z", "y").isTree);
+    });
+
     it("has custom console.log output", () => {
       graph.add("a", "b").add("b", "c").add("c", "d");
       assertEquals(Deno.inspect(graph), "DirectedGraph(4 vertices, 3 edges)");
