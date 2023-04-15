@@ -114,6 +114,7 @@ String-related utilities.
 ```ts
 import {
   dedent,
+  indent,
   mostConsecutive,
   sequences,
   splitOn,
@@ -121,6 +122,7 @@ import {
 } from "https://deno.land/x/handy/string/utils.ts";
 
 dedent("  a\n   b\n    c"); // "a\n b\n  c"
+indent("a\nb\nc", 2); // "  a\n  b\n  c"
 splitOnFirst("/", "a/b/c"); // ["a", "b/c"]
 splitOn(3, "\n", "a\nb\nc\nd\ne"); // ["a", "b", "c", "d\ne"]
 sequences("A", "ABAACA"); // ["A", "AA", "A"]
