@@ -179,6 +179,7 @@ describe("DirectedGraph", () => {
     assertThrows(() => graph.edgesFrom("q"), VertexError, " q");
     assertThrows(() => graph.edgesFrom("x"), VertexError, " x");
     assertThrows(() => graph.hasCycle("w"), VertexError, " w");
+    assertThrows(() => graph.subgraph(["a"]), VertexError, " a");
   });
 
   describe("graph.walk", () => {
@@ -275,6 +276,21 @@ describe("DirectedGraph", () => {
     assert(graph.hasCycle("a"));
     assert(graph.hasCycle("b"));
     assert(graph.hasCycle("c"));
+  });
+
+  it("creates subgraphs", () => {
+    graph.add("a", "b").add("b", "c").add("c", "d");
+    const subgraph = graph.subgraph(["a", "b", "c"]);
+    assertEquals(subgraph.vertices, new Set(["a", "b", "c"]));
+    assertEquals(subgraph.edges, new Set([["a", "b"], ["b", "c"]]));
+
+    const subgraph2 = graph.subgraph(["a", "b", "c", "d"]);
+    assertEquals(subgraph2.vertices, graph.vertices);
+    assertEquals(subgraph2.edges, graph.edges);
+
+    const subgraph3 = graph.subgraph(["b", "d"]);
+    assertEquals(subgraph3.vertices, new Set(["b", "d"]));
+    assertEquals(subgraph3.edges, new Set([]));
   });
 
   describe("integration: collection.smallest", () => {

@@ -350,6 +350,23 @@ export class DirectedGraph<T> {
     return paths;
   }
 
+  subgraph(vertices: I<N<T>>): DirectedGraph<T> {
+    const subgraph = new DirectedGraph<T>();
+
+    for (const vertex of vertices) {
+      this.#assertVertex(vertex);
+      subgraph.add(vertex);
+    }
+
+    for (const [source, target] of this.edges) {
+      if (subgraph.has(source) && subgraph.has(target)) {
+        subgraph.add(source, target);
+      }
+    }
+
+    return subgraph;
+  }
+
   [Symbol.for("Deno.customInspect")]() {
     return `DirectedGraph(${this.#vertices.size} vertices, ${this.edges.size} edges)`;
   }
