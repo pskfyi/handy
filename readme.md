@@ -11,6 +11,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
   - [`graph`](#graph)
   - [`object`](#object)
   - [`path`](#path)
+  - [`string`](#string)
   - [`types`](#types)
 - [Scripts](#scripts)
   - [Test Code Blocks](#test-code-blocks)
@@ -104,6 +105,20 @@ Path-related utilities.
 import { globRoot } from "https://deno.land/x/handy/path/utils.ts";
 
 globRoot("a/b/*.ts"); // "a/b/"
+```
+
+### `string`
+
+String-related utilities.
+
+```ts
+import {
+  splitOn,
+  splitOnFirst,
+} from "https://deno.land/x/handy/string/utils.ts";
+
+splitOnFirst("/", "a/b/c"); // ["a", "b/c"]
+splitOn(3, "\n", "a\nb\nc\nd\ne"); // ["a", "b", "c", "d\ne"]
 ```
 
 ### `types`
