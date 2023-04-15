@@ -113,12 +113,14 @@ String-related utilities.
 
 ```ts
 import {
+  dedent,
   mostConsecutive,
   sequences,
   splitOn,
   splitOnFirst,
 } from "https://deno.land/x/handy/string/utils.ts";
 
+dedent("  a\n   b\n    c"); // "a\n b\n  c"
 splitOnFirst("/", "a/b/c"); // ["a", "b/c"]
 splitOn(3, "\n", "a\nb\nc\nd\ne"); // ["a", "b", "c", "d\ne"]
 sequences("A", "ABAACA"); // ["A", "AA", "A"]
