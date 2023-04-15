@@ -9,6 +9,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
   - [`collection`](#collection)
   - [`fs`](#fs)
   - [`graph`](#graph)
+  - [`md`](#md)
   - [`object`](#object)
   - [`path`](#path)
   - [`string`](#string)
@@ -85,6 +86,19 @@ const graph = new DirectedGraph()
 graph.vertices; // ["a", "b", "c"]
 graph.edges; // [["b", "a"], ["b", "c"]]
 ```
+
+### `md`
+
+Markdown-related utilities.
+
+````ts
+import { codeBlock } from "https://deno.land/x/handy/md/utils.ts";
+
+codeBlock.create("grep"); // "    grep"
+codeBlock.create("const a: number = 1", { lang: "ts" });
+codeBlock.parse("```ts\nconst a: number = 1\n```");
+codeBlock.findAll("    grep\n```cd```"); // ["    grep", "```cd```"]
+````
 
 ### `object`
 

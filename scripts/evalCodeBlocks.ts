@@ -1,3 +1,8 @@
+import {
+  findAll as findAllCodeBlocks,
+  parse as parseCodeBlock,
+} from "../md/codeBlock/fenced.ts";
+
 /** Imports a markdown file and evaluates each TS code block using `deno eval`
  * Useful for confirming that imports and code samples in a readme are valid.
  */
@@ -6,18 +11,23 @@ export async function evalCodeBlocks(
   replace = [] as [string | RegExp, string][],
 ) {
   const markdown = await Deno.readTextFile(filePath);
-  const codeBlocks = markdown.matchAll(/```ts([\s\S]*?)```/g);
 
-  console.log(`Executing code blocks in ${filePath}}`);
-  for (const codeBlock of codeBlocks) {
-    const code = replace.reduce(
-      (code, [search, replace]) => code.replace(search, replace),
-      codeBlock[1],
+  console.log(`Executing code blocks in ${filePath}`);
+
+  for (const codeBlock of findAllCodeBlocks(markdown)) {
+    const { code, lang } = parseCodeBlock(codeBlock);
+
+    if (lang !== "ts") continue;
+
+    const replacedCode = replace.reduce(
+      (code, [search, replace]) => code.replaceAll(search, replace),
+      code,
     );
 
     console.log(
-      await Deno.run({ cmd: ["deno", "eval", "--check", "--ext=ts", code] })
-        .status(),
+      await Deno.run({
+        cmd: ["deno", "eval", "--check", "--ext=ts", replacedCode],
+      }).status(),
     );
   }
 }
