@@ -73,6 +73,38 @@ export class DirectedGraph<T> {
     );
   }
 
+  /** Mutates `visited`, providing information about which nodes were visited.
+   * When `false` is returned, the `visited` nodes can be safely removed from
+   * further consideration. */
+  #hasCycle(vertex: N<T>, visited: Set<N<T>>) {
+    const stack = [vertex];
+
+    while (stack.length) {
+      const current = stack.pop()!;
+      if (visited.has(current)) return true;
+      visited.add(current);
+      stack.push(...this.#edgesFrom.get(current)!);
+    }
+
+    return false;
+  }
+
+  hasCycle(vertex: N<T>): boolean {
+    this.#assertVertex(vertex);
+    return this.#hasCycle(vertex, new Set());
+  }
+
+  get isCyclic() {
+    const visited = new Set<N<T>>();
+
+    for (const vertex of this) {
+      if (visited.has(vertex)) continue;
+      if (this.#hasCycle(vertex, visited)) return true;
+    }
+
+    return false;
+  }
+
   #assertVertex(vertex: N<T>) {
     if (!this.#vertices.has(vertex)) throw new VertexError(vertex);
   }
