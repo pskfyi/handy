@@ -1,5 +1,5 @@
-import { resolve } from "../deps/path.ts";
-import { assertEquals, describe, it } from "../deps/testing.ts";
+import { resolve } from "../_deps/path.ts";
+import { assertEquals, describe, it } from "../_deps/testing.ts";
 import { globRoot } from "./globRoot.ts";
 
 const PROJECT_ROOT_DIR = resolve(".");

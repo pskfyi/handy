@@ -1,4 +1,4 @@
-import { assertEquals, describe, it } from "../deps/testing.ts";
+import { assertEquals, describe, it } from "../_deps/testing.ts";
 import { mostConsecutive, sequences } from "./sequence.ts";
 
 describe("sequences", () => {
