@@ -6,7 +6,7 @@ import {
   beforeEach,
   describe,
   it,
-} from "../deps/testing.ts";
+} from "../_deps/testing.ts";
 import { DirectedGraph } from "./DirectedGraph.ts";
 import { VertexError } from "./errors.ts";
 

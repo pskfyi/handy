@@ -1,4 +1,4 @@
-import { assertEquals, describe, it } from "../deps/testing.ts";
+import { assertEquals, describe, it } from "../_deps/testing.ts";
 import { mapOnInterval } from "./mapOnInterval.ts";
 
 describe("array.mapOnInterval", () => {

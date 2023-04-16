@@ -1,4 +1,4 @@
-import { isGlob } from "../deps/path.ts";
+import { isGlob } from "../_deps/path.ts";
 
 /** Given a glob pattern, return its non-glob beginning. */
 export function globRoot(glob: string) {

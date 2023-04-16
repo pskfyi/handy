@@ -1,5 +1,5 @@
-import { globToRegExp } from "../deps/path.ts";
-import { walk } from "../deps/fs.ts";
+import { globToRegExp } from "../_deps/path.ts";
+import { walk } from "../_deps/fs.ts";
 import { globRoot } from "../path/globRoot.ts";
 
 /**

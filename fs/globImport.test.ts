@@ -1,11 +1,11 @@
-import { resolve } from "../deps/path.ts";
+import { resolve } from "../_deps/path.ts";
 import {
   assert,
   assertEquals,
   assertRejects,
   describe,
   it,
-} from "../deps/testing.ts";
+} from "../_deps/testing.ts";
 import { FileHandlerError, globImport } from "./globImport.ts";
 import { FIXTURE_DIR } from "../_constants.ts";
 

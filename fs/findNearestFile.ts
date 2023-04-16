@@ -1,4 +1,4 @@
-import { dirname, resolve } from "../deps/path.ts";
+import { dirname, resolve } from "../_deps/path.ts";
 
 /**
  * Searches `fromDir` and upwards for `fileName`

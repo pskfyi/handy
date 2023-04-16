@@ -1,4 +1,4 @@
-import { assertEquals, assertThrows, describe, it } from "../deps/testing.ts";
+import { assertEquals, assertThrows, describe, it } from "../_deps/testing.ts";
 import { dedent } from "./dedent.ts";
 
 describe("dedent", () => {

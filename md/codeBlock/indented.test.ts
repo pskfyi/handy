@@ -3,7 +3,7 @@ import {
   assertThrows,
   describe,
   it,
-} from "../../deps/testing.ts";
+} from "../../_deps/testing.ts";
 import { create, findAll, parse } from "./indented.ts";
 
 describe("create", () => {
