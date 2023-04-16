@@ -7,11 +7,11 @@ import {
   it,
 } from "../deps/testing.ts";
 import { FileHandlerError, globImport } from "./globImport.ts";
-import { ROOT_DIR } from "../constants.ts";
+import { FIXTURE_DIR } from "../constants.ts";
 
-const globPattern = resolve(ROOT_DIR, "fixture", "**", "*.ts");
+const globPattern = resolve(FIXTURE_DIR, "**", "*.ts");
 
-const A_DIR = resolve(ROOT_DIR, "fixture", "a");
+const A_DIR = resolve(FIXTURE_DIR, "a");
 const C_DIR = resolve(A_DIR, "b", "c");
 
 const A_MD = resolve(A_DIR, "findme.md");
@@ -44,7 +44,7 @@ describe("fs.globImport", () => {
   it("can handle files by extension", async () =>
     assertEquals(
       await globImport(
-        resolve(ROOT_DIR, "fixture", "**", "*.*"),
+        resolve(FIXTURE_DIR, "a", "**", "*.*"),
         {
           eager: true,
           fileHandler: {
@@ -62,7 +62,7 @@ describe("fs.globImport", () => {
     ));
 
   it("throws custom error on unhandled files", async () => {
-    const pattern = resolve(ROOT_DIR, "fixture", "**", "*.*");
+    const pattern = resolve(FIXTURE_DIR, "**", "*.*");
 
     await assertRejects(
       () => globImport(pattern, { eager: true, fileHandler: {} }),

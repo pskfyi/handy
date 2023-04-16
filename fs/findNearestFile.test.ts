@@ -1,9 +1,9 @@
 import { resolve } from "../deps/path.ts";
 import { assertEquals, assertRejects, describe, it } from "../deps/testing.ts";
-import { ROOT_DIR } from "../constants.ts";
+import { FIXTURE_DIR } from "../constants.ts";
 import { findNearestFile } from "./findNearestFile.ts";
 
-const A_DIR = resolve(ROOT_DIR, "fixture", "a");
+const A_DIR = resolve(FIXTURE_DIR, "a");
 const B_DIR = resolve(A_DIR, "b");
 const C_DIR = resolve(B_DIR, "c");
 
@@ -30,7 +30,7 @@ describe("fs.findNearestFile", () => {
 
   it("falls back to undefined", async () =>
     assertEquals(
-      await findNearestFile(ROOT_DIR, "findme.md"),
+      await findNearestFile(FIXTURE_DIR, "findme.md"),
       undefined,
     ));
 });
