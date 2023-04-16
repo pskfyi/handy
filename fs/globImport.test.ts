@@ -7,7 +7,7 @@ import {
   it,
 } from "../deps/testing.ts";
 import { FileHandlerError, globImport } from "./globImport.ts";
-import { FIXTURE_DIR } from "../constants.ts";
+import { FIXTURE_DIR } from "../_constants.ts";
 
 const globPattern = resolve(FIXTURE_DIR, "**", "*.ts");
 

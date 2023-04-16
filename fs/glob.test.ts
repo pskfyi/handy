@@ -1,7 +1,7 @@
 import { resolve } from "../deps/path.ts";
 import { assertEquals, describe, it } from "../deps/testing.ts";
 import { glob } from "./glob.ts";
-import { FIXTURE_DIR } from "../constants.ts";
+import { FIXTURE_DIR } from "../_constants.ts";
 
 const GLOB = resolve(FIXTURE_DIR, "**", "*.ts");
 
