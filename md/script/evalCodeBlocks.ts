@@ -4,7 +4,7 @@ import {
   EvaluateOptions,
   NoLanguageError,
   UnknownLanguageError,
-} from "../md/codeBlock/eval.ts";
+} from "../codeBlock/eval.ts";
 
 export async function evalCodeBlocks(
   filePath: string,
