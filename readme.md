@@ -9,6 +9,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 - [`collection`](#collection)
 - [`fs`](#fs)
 - [`graph`](#graph)
+- [`io`](#io)
 - [`md`](#md)
   - [`script/evalCodeBlocks`](#scriptevalcodeblocks)
 - [`object`](#object)
@@ -92,6 +93,17 @@ const graph = new DirectedGraph()
 
 graph.vertices; // ["a", "b", "c"]
 graph.edges; // [["b", "a"], ["b", "c"]]
+```
+
+## `io`
+
+Assorted I/O utilities which don't fit in other categories.
+
+```ts
+import { clipboard } from "https://deno.land/x/handy/io/utils.ts";
+
+clipboard.copy("foo");
+clipboard.paste(); // "foo"
 ```
 
 ## `md`
