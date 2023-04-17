@@ -4,22 +4,18 @@
 
 Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 
-- [Library](#library)
-  - [`array`](#array)
-  - [`collection`](#collection)
-  - [`fs`](#fs)
-  - [`graph`](#graph)
-  - [`md`](#md)
-  - [`object`](#object)
-  - [`path`](#path)
-  - [`string`](#string)
-  - [`types`](#types)
-- [Scripts](#scripts)
-  - [Test Code Blocks](#test-code-blocks)
+- [`array`](#array)
+- [`collection`](#collection)
+- [`fs`](#fs)
+- [`graph`](#graph)
+- [`md`](#md)
+  - [`script/evalCodeBlocks`](#scriptevalcodeblocks)
+- [`object`](#object)
+- [`path`](#path)
+- [`string`](#string)
+- [`types`](#types)
 
-## Library
-
-### `array`
+## `array`
 
 Array-related utilities.
 
@@ -33,7 +29,7 @@ mapOnInterval([3, 2, 1, "go!"], 1000, (item) => console.log(item));
 // 1sec later, logs: "go!"
 ```
 
-### `collection`
+## `collection`
 
 Utilities related to generic collection types, like `Iterable`s.
 
@@ -50,7 +46,7 @@ largest("size", [new Set([1]), new Set([2, 3]), new Set()]); // new Set([2, 3])
 smallest("size", [new Set([1]), new Set([2, 3]), new Set()]); // new Set()
 ```
 
-### `fs`
+## `fs`
 
 File system-related utilities.
 
@@ -72,7 +68,7 @@ for (const [path, module] of Object.entries(modules)) {
 }
 ```
 
-### `graph`
+## `graph`
 
 Graph-related utilities.
 
@@ -87,7 +83,7 @@ graph.vertices; // ["a", "b", "c"]
 graph.edges; // [["b", "a"], ["b", "c"]]
 ```
 
-### `md`
+## `md`
 
 Markdown-related utilities.
 
@@ -103,7 +99,24 @@ codeBlock.evaluate(
 );
 ````
 
-### `object`
+### `script/evalCodeBlocks`
+
+For a markdown file, execute each TS code block in the file. Useful for checking imports and examples in a readme.
+
+```ts
+import { evalCodeBlocks } from "https://deno.land/x/handy/md/script/evalCodeBlocks.ts";
+```
+
+When run as a script, it will execute the code blocks in the file specified by the first argument. The second and third arguments are optional, and are used to find and replace a string in the file before executing the code blocks.
+
+```sh
+deno run --allow-read --allow-run \
+  https://deno.land/x/handy/scripts/evalCodeBlocks.ts \
+  ./readme.md \
+  "some string to find" "replacement string" # optional
+```
+
+## `object`
 
 Object-related utilities.
 
@@ -114,7 +127,7 @@ const S = Symbol("symbol");
 setNestedEntry({}, ["a", 10, S], "👋"); // { a: { 10: { [S]: "👋" } } }
 ```
 
-### `path`
+## `path`
 
 Path-related utilities.
 
@@ -124,7 +137,7 @@ import { globRoot } from "https://deno.land/x/handy/path/utils.ts";
 globRoot("a/b/*.ts"); // "a/b/"
 ```
 
-### `string`
+## `string`
 
 String-related utilities.
 
@@ -146,7 +159,7 @@ sequences("A", "ABAACA"); // ["A", "AA", "A"]
 mostConsecutive("A", "ABAACA"); // 2
 ```
 
-### `types`
+## `types`
 
 Utility types.
 
@@ -162,23 +175,4 @@ const a: JsonPrimitive = "some string"; // or number, boolean, null
 const b: JsonArray = [1, ["2", true], { a: null }];
 const c: JsonObject = { a: 1, b: ["2", true], d: { e: null } };
 // JsonValue = any of the above
-```
-
-## Scripts
-
-### Test Code Blocks
-
-For a markdown file, execute each TS code block in the file. Useful for checking imports and examples in a readme.
-
-```ts
-import { evalCodeBlocks } from "https://deno.land/x/handy/scripts/evalCodeBlocks.ts";
-```
-
-When run as a script, it will execute the code blocks in the file specified by the first argument. The second and third arguments are optional, and are used to find and replace a string in the file before executing the code blocks.
-
-```sh
-deno run --allow-read --allow-run \
-  https://deno.land/x/handy/scripts/evalCodeBlocks.ts \
-  ./readme.md \
-  "some string to find" "replacement string" # optional
 ```
