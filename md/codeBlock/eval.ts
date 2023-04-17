@@ -1,5 +1,6 @@
 import { parse as parseCodeBlock } from "./parse.ts";
 import { findAll as findAllCodeBlocks } from "./findAll.ts";
+import { cmd, CmdError, CmdResult } from "../../cli/cmd.ts";
 
 export class IndentedCodeBlockError extends Error {
   constructor() {
@@ -26,13 +27,6 @@ export type EvaluateOptions = {
   replace?: [string | RegExp, string][];
 };
 
-export type EvaluateResult = {
-  success: boolean;
-  exitCode: number;
-  stdout: string;
-  stderr: string;
-};
-
 type Details = ReturnType<typeof parseCodeBlock>;
 
 function _getCode(
@@ -54,28 +48,21 @@ function _getCode(
 }
 
 async function _eval(code: string) {
-  const process = Deno.run({
-    cmd: ["deno", "eval", "--check", "--ext=ts", code],
-    stdout: "piped",
-    stderr: "piped",
-  });
-
-  const status = await process.status();
-  const stdout = new TextDecoder().decode(await process.output());
-  const stderr = new TextDecoder().decode(await process.stderrOutput());
-
-  process.close();
-
-  const { success, code: exitCode } = status;
-
-  return { success, exitCode, stdout, stderr };
+  try {
+    return await cmd(
+      ["deno", "eval", "-q", "--check", "--ext=ts", code],
+      { fullResult: true },
+    );
+  } catch (error) {
+    return error as CmdError;
+  }
 }
 
 /** Passes a code block to `deno eval`. */
 export async function evaluate(
   codeBlock: string,
   { replace = [] }: EvaluateOptions = {},
-): Promise<EvaluateResult> {
+): Promise<CmdResult | CmdError> {
   const details = parseCodeBlock(codeBlock);
   const code = _getCode(details, replace);
 
@@ -90,7 +77,8 @@ export async function evaluateAll(
 ) {
   const results: Map<
     Details,
-    | EvaluateResult
+    | CmdResult
+    | CmdError
     | IndentedCodeBlockError
     | NoLanguageError
     | UnknownLanguageError
