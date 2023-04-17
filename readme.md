@@ -98,6 +98,9 @@ codeBlock.create("grep"); // "    grep"
 codeBlock.create("const a: number = 1", { lang: "ts" });
 codeBlock.parse("```ts\nconst a: number = 1\n```");
 codeBlock.findAll("    grep\n```cd```"); // ["    grep", "```cd```"]
+codeBlock.evaluate(
+  codeBlock.create('console.log("Hello!")', { lang: "ts" }),
+);
 ````
 
 ### `object`

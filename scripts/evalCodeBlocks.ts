@@ -1,34 +1,48 @@
+import { green, red } from "https://deno.land/std@0.182.0/fmt/colors.ts";
 import {
-  findAll as findAllCodeBlocks,
-  parse as parseCodeBlock,
-} from "../md/codeBlock/fenced.ts";
+  evaluateAll,
+  EvaluateOptions,
+  NoLanguageError,
+  UnknownLanguageError,
+} from "../md/codeBlock/eval.ts";
 
-/** Imports a markdown file and evaluates each TS code block using `deno eval`
- * Useful for confirming that imports and code samples in a readme are valid.
- */
 export async function evalCodeBlocks(
   filePath: string,
-  replace = [] as [string | RegExp, string][],
+  replace?: EvaluateOptions["replace"],
 ) {
   const markdown = await Deno.readTextFile(filePath);
-
   console.log(`Executing code blocks in ${filePath}`);
+  const consoleWidth = Deno.consoleSize().columns;
+  console.log("-".repeat(consoleWidth));
 
-  for (const codeBlock of findAllCodeBlocks(markdown)) {
-    const { code, lang } = parseCodeBlock(codeBlock);
+  const results = await evaluateAll(markdown, { replace });
 
-    if (lang !== "ts") continue;
+  for (const [details, result] of results) {
+    if (details.type === "indented") continue;
 
-    const replacedCode = replace.reduce(
-      (code, [search, replace]) => code.replaceAll(search, replace),
-      code,
-    );
+    const { lang, code } = details;
 
-    console.log(
-      await Deno.run({
-        cmd: ["deno", "eval", "--check", "--ext=ts", replacedCode],
-      }).status(),
-    );
+    const langLength = lang?.length ?? 0;
+    const inlineCode = code.trim().replace(/\n/g, "\\n");
+    const firstChars = inlineCode.slice(0, consoleWidth - langLength - 4);
+
+    const message = firstChars.length < inlineCode.length
+      ? `${details.lang} ${firstChars}...`
+      : `${details.lang} ${firstChars}`;
+
+    console.log(message);
+
+    if (result instanceof NoLanguageError) {
+      console.log("  No language code; skipping");
+    } else if (result instanceof UnknownLanguageError) {
+      console.log("  Unknown language code; skipping");
+    } else if (result instanceof Error) {
+      console.log("  Unknown error encountered outside of evaluation:");
+      console.error(result);
+    } else {
+      const status = result.success ? green("Success") : red("Failure");
+      console.log(`  ${status}`);
+    }
   }
 }
 
