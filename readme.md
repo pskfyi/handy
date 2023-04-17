@@ -5,6 +5,7 @@
 Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 
 - [`array`](#array)
+- [`cli`](#cli)
 - [`collection`](#collection)
 - [`fs`](#fs)
 - [`graph`](#graph)
@@ -27,6 +28,16 @@ mapOnInterval([3, 2, 1, "go!"], 1000, (item) => console.log(item));
 // 1sec later, logs: 2
 // 1sec later, logs: 1
 // 1sec later, logs: "go!"
+```
+
+## `cli`
+
+CLI-related utilities.
+
+```ts
+import { cmd } from "https://deno.land/x/handy/cli/utils.ts";
+
+await cmd("echo Hello!"); // "Hello!"
 ```
 
 ## `collection`
