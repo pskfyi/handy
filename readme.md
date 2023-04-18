@@ -86,10 +86,10 @@ for (const [path, module] of Object.entries(modules)) {
 Git-related utilities.
 
 ```ts
-import { tag } from "https://deno.land/x/handy/git/utils.ts";
+import { commit, tag } from "./git/utils.ts";
 
-await tag.get(); // ex. ["v1.0.0", "v1.0.1-alpha"]
 await tag.getLatest(); // ex. "v1.0.0"
+await commit.get("c32f42c"); // { message: "chore: rename to handy", ... }
 ```
 
 ## `graph`
