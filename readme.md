@@ -8,6 +8,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 - [`cli`](#cli)
 - [`collection`](#collection)
 - [`fs`](#fs)
+- [`git`](#git)
 - [`graph`](#graph)
 - [`io`](#io)
 - [`md`](#md)
@@ -78,6 +79,17 @@ for (const [path, module] of Object.entries(modules)) {
   console.log(path); // something.ts
   const data = await module(); // import something.ts
 }
+```
+
+## `git`
+
+Git-related utilities.
+
+```ts
+import { tag } from "https://deno.land/x/handy/git/utils.ts";
+
+await tag.get(); // ex. ["v1.0.0", "v1.0.1-alpha"]
+await tag.getLatest(); // ex. "v1.0.0"
 ```
 
 ## `graph`
