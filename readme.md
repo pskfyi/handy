@@ -90,6 +90,7 @@ import { commit, tag } from "./git/utils.ts";
 
 await tag.getLatest(); // ex. "v1.0.0"
 await commit.get("c32f42c"); // { message: "chore: rename to handy", ... }
+commit.conventional.parse("feat(scope)!: description"); // { type: "feat", ... }
 ```
 
 ## `graph`
