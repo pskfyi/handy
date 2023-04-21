@@ -9,6 +9,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 - [`collection`](#collection)
 - [`fs`](#fs)
 - [`git`](#git)
+  - [`script/makeReleaseNotes`](#scriptmakereleasenotes)
 - [`graph`](#graph)
 - [`io`](#io)
 - [`md`](#md)
@@ -91,6 +92,38 @@ import { commit, tag } from "./git/utils.ts";
 await tag.getLatest(); // ex. "v1.0.0"
 await commit.get("c32f42c"); // { message: "chore: rename to handy", ... }
 commit.conventional.parse("feat(scope)!: description"); // { type: "feat", ... }
+```
+
+### `script/makeReleaseNotes`
+
+For a git repo, scan the commit history for conventional commits since the last tag and generate a markdown-formatted list of features and fixes.
+
+```ts
+import { makeReleaseNotes } from "https://deno.land/x/handy/git/script/makeReleaseNotes.ts";
+```
+
+When run as a script, it will generate release notes for the repo in the current working directory. The directory can be overridden by the first argument, and the `--to-clipboard` flag will copy the release notes to the clipboard instead of printing them to stdout.
+
+```
+Usage:
+  deno run -A https://deno.land/x/handy/git/script/makeReleaseNotes.ts [options] [path]
+
+Options:
+  -h, --help          Show this help message
+  -c, --to-clipboard  Copy release notes to clipboard
+  -v, --verbose       Print verbose output
+  -g, --group-by-type Group commits by type using H2 headings
+  --commit=<commit>   Commit to use as base for release notes
+  --types=<types>     Comma-separated list of types to include
+  --<type>=<name>     Name to use for a type's H2 when grouping by type
+
+Examples:
+  deno run -A https://deno.land/x/make_release_notes/mod.ts -cgv
+
+  deno run -A https://deno.land/x/make_release_notes/mod.ts --commit v1.0.0
+
+  deno run -A https://deno.land/x/make_release_notes/mod.ts \
+    --types=feat,custom --custom="Custom Section Heading"
 ```
 
 ## `graph`
