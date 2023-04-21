@@ -153,6 +153,8 @@ function releaseNotesByType(
     const breakingCommits = breaking[type] ?? [];
     const nonBreakingCommits = nonBreaking[type] ?? [];
 
+    if (!breakingCommits.length && !nonBreakingCommits.length) continue;
+
     markdown += `## ${typeName(type, typeNames)}\n\n`;
 
     breakingCommits.length &&

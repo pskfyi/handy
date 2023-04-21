@@ -144,5 +144,19 @@ describe("makeReleaseNotes", () => {
       `).trim(),
     ));
 
+  it("skips empty type groups", async () =>
+    assertEquals(
+      await makeReleaseNotes({
+        types: ["move", "foo"],
+        groupByType: true,
+        typeNames: { move: "Moved Files" },
+      }),
+      dedent(`
+        ## Moved Files
+      
+        * **Breaking Change**: \`scripts/evalCodeBlocks\` -> \`md/scripts/evalCodeBlocks\` (ccc)
+      `).trim(),
+    ));
+
   afterAll(() => cmdStub.restore());
 });
