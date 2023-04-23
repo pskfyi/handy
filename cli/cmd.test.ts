@@ -9,7 +9,14 @@ import { cmd, CmdError } from "./cmd.ts";
 
 describe("cmd", () => {
   it("returns stdout", async () =>
-    assertEquals(await cmd("echo Hello!"), "Hello!"));
+    assertEquals(
+      await cmd(
+        Deno.build.os === "windows"
+          ? "powershell.exe echo Hello!"
+          : "echo Hello!",
+      ),
+      "Hello!",
+    ));
 
   describe("options.fullResult", () => {
     const fullResult = true as const;
