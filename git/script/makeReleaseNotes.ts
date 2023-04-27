@@ -36,7 +36,9 @@ async function getCommitsByType(
   log(`  Commits since ${commit}: ${rawCommits.length}`);
 
   const commits: CommitInfo[] = [];
-  const { columns: terminalWidth } = Deno.consoleSize();
+  const terminalWidth = Deno.isatty(Deno.stdout.rid)
+    ? Deno.consoleSize().columns
+    : 80;
 
   for (const { message, author, date, hash: longHash } of rawCommits) {
     const hash = longHash.substring(0, 7);
