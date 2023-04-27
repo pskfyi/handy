@@ -12,7 +12,10 @@ export async function evalCodeBlocks(
 ) {
   const markdown = await Deno.readTextFile(filePath);
   console.log(`Executing code blocks in ${filePath}`);
-  const consoleWidth = Deno.consoleSize().columns;
+
+  const consoleWidth = Deno.isatty(Deno.stdout.rid)
+    ? Deno.consoleSize().columns
+    : 80;
   console.log("-".repeat(consoleWidth));
 
   const results = await evaluateAll(markdown, { replace });
