@@ -35,12 +35,10 @@ jobs:
         if: (success() || failure()) && matrix.os == 'ubuntu-latest'
         run: deno fmt --check
 
-      # TODO: need to handle Deno.consoleSize() in CI
-      #
-      # - name: Test
-      #   # TODO: Get tests passing in Windows and Ubuntu.
-      #   if: matrix.os == 'macos-latest'
-      #   run: deno test -A --allow-none
+      - name: Test
+        # TODO: Get tests passing in Windows and Ubuntu.
+        if: matrix.os == 'macos-latest'
+        run: deno test -A --allow-none
       
       # TODO: once we can skip eval for the `mapOnInterval` test, we can run
       # this step without using too many billable minutes.
