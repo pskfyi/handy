@@ -3,9 +3,9 @@ import { assertArrayIncludes, describe, it } from "../_deps/testing.ts";
 import { glob } from "./glob.ts";
 import { FIXTURE_DIR } from "../_constants.ts";
 
-const GLOB = resolve(FIXTURE_DIR, "**", "*.ts");
+const GLOB = resolve(FIXTURE_DIR, "fs", "**", "*.ts");
 
-const A_DIR = resolve(FIXTURE_DIR, "a");
+const A_DIR = resolve(FIXTURE_DIR, "fs", "a");
 const C_DIR = resolve(A_DIR, "b", "c");
 
 const A_FILE = resolve(A_DIR, "findme.ts");
