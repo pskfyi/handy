@@ -18,19 +18,6 @@ describe("cmd", () => {
       "Hello!",
     ));
 
-  describe("options.fullResult", () => {
-    const fullResult = true as const;
-
-    it("indicates success", async () =>
-      assertEquals((await cmd("deno -V", { fullResult })).success, true));
-
-    it("provides the exit code", async () =>
-      assertEquals((await cmd("deno -V", { fullResult })).exitCode, 0));
-
-    it("provides stderr", async () =>
-      assertEquals((await cmd("deno -V", { fullResult })).stderr, ""));
-  });
-
   it("throws custom error on fail", async () =>
     void await assertRejects(() => cmd("deno LMAO"), CmdError));
 
@@ -41,10 +28,27 @@ describe("cmd", () => {
 
     it("provides fullResult", async () =>
       void await cmd("deno LMAO").catch((error) => {
+        assert(error instanceof CmdError);
         assertEquals(error.stdout, "");
         assertEquals(error.success, false);
-        assertEquals(error.exitCode, 1);
+        assertEquals(error.code, 1);
         assert(error.stderr.includes("unrecognized subcommand"));
       }));
+  });
+
+  describe("options.fullResult", () => {
+    const fullResult = true as const;
+
+    it("indicates success", async () =>
+      assertEquals((await cmd("deno -V", { fullResult })).success, true));
+
+    it("provides the exit code", async () =>
+      assertEquals((await cmd("deno -V", { fullResult })).code, 0));
+
+    it("provides stderr", async () =>
+      assertEquals((await cmd("deno -V", { fullResult })).stderr, ""));
+
+    it("doesn't throw", async () =>
+      assertEquals((await cmd("deno LMAO", { fullResult })).success, false));
   });
 });

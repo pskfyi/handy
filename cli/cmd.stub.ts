@@ -3,7 +3,7 @@ import { cmd, CmdOptions, CmdResult } from "./cmd.ts";
 
 export type CmdStub = Stub<{ cmd: typeof cmd }>;
 
-const DEFAULT_VALUE = { stdout: "", stderr: "", success: true, exitCode: 0 };
+const DEFAULT_VALUE = { stdout: "", stderr: "", success: true, code: 0 };
 
 export function stubCmd(
   internalsObj: { cmd: typeof cmd },

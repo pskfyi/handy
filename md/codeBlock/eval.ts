@@ -1,6 +1,6 @@
 import { parse as parseCodeBlock } from "./parse.ts";
 import { findAll as findAllCodeBlocks } from "./findAll.ts";
-import { cmd, CmdError, CmdResult } from "../../cli/cmd.ts";
+import { cmd, CmdResult } from "../../cli/cmd.ts";
 
 export class IndentedCodeBlockError extends Error {
   constructor() {
@@ -48,21 +48,17 @@ function _getCode(
 }
 
 async function _eval(code: string) {
-  try {
-    return await cmd(
-      ["deno", "eval", "-q", "--check", "--ext=ts", code],
-      { fullResult: true },
-    );
-  } catch (error) {
-    return error as CmdError;
-  }
+  return await cmd(
+    ["deno", "eval", "-q", "--check", "--ext=ts", code],
+    { fullResult: true },
+  );
 }
 
 /** Passes a code block to `deno eval`. */
 export async function evaluate(
   codeBlock: string,
   { replace = [] }: EvaluateOptions = {},
-): Promise<CmdResult | CmdError> {
+) {
   const details = parseCodeBlock(codeBlock);
   const code = _getCode(details, replace);
 
@@ -78,7 +74,6 @@ export async function evaluateAll(
   const results: Map<
     Details,
     | CmdResult
-    | CmdError
     | IndentedCodeBlockError
     | NoLanguageError
     | UnknownLanguageError
