@@ -1,6 +1,7 @@
 import { parse as parseCodeBlock } from "./parse.ts";
 import { findAll as findAllCodeBlocks } from "./findAll.ts";
-import { cmd, CmdResult } from "../../cli/cmd.ts";
+import { CmdResult } from "../../cli/cmd.ts";
+import { evaluate as evalTS } from "../../ts/evaluate.ts";
 
 export class IndentedCodeBlockError extends Error {
   constructor() {
@@ -47,13 +48,6 @@ function _getCode(
   );
 }
 
-async function _eval(code: string) {
-  return await cmd(
-    ["deno", "eval", "-q", "--check", "--ext=ts", code],
-    { fullResult: true },
-  );
-}
-
 /** Passes a code block to `deno eval`. */
 export async function evaluate(
   codeBlock: string,
@@ -62,7 +56,7 @@ export async function evaluate(
   const details = parseCodeBlock(codeBlock);
   const code = _getCode(details, replace);
 
-  return await _eval(code);
+  return await evalTS(code);
 }
 
 /** Evaluate each code block within a markdown string, handling each by its
@@ -84,7 +78,7 @@ export async function evaluateAll(
 
     try {
       const code = _getCode(details, replace);
-      const result = await _eval(code);
+      const result = await evalTS(code);
 
       results.set(details, result);
     } catch (error) {
