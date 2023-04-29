@@ -12,13 +12,13 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
   - [`script/makeReleaseNotes`](#scriptmakereleasenotes)
 - [`graph`](#graph)
 - [`io`](#io)
+- [`json`](#json)
 - [`md`](#md)
   - [`script/evalCodeBlocks`](#scriptevalcodeblocks)
 - [`object`](#object)
 - [`path`](#path)
 - [`string`](#string)
 - [`ts`](#ts)
-- [`types`](#types)
 
 ## `array`
 
@@ -156,6 +156,24 @@ clipboard.copy("foo");
 clipboard.paste(); // "foo"
 ```
 
+## `json`
+
+Utility types.
+
+```ts
+import {
+  JsonArray,
+  JsonObject,
+  JsonPrimitive,
+  JsonValue,
+} from "https://deno.land/x/handy/json/types.ts";
+
+const a: JsonPrimitive = "some string"; // or number, boolean, null
+const b: JsonArray = [1, ["2", true], { a: null }];
+const c: JsonObject = { a: 1, b: ["2", true], d: { e: null } };
+// JsonValue = any of the above
+```
+
 ## `md`
 
 Markdown-related utilities.
@@ -241,22 +259,4 @@ import { evaluate } from "https://deno.land/x/handy/ts/utils.ts";
 
 await evaluate("console.log('Hello!')")
   .then((res) => res.stdout); // "Hello!"
-```
-
-## `types`
-
-Utility types.
-
-```ts
-import {
-  JsonArray,
-  JsonObject,
-  JsonPrimitive,
-  JsonValue,
-} from "https://deno.land/x/handy/types/json.ts";
-
-const a: JsonPrimitive = "some string"; // or number, boolean, null
-const b: JsonArray = [1, ["2", true], { a: null }];
-const c: JsonObject = { a: 1, b: ["2", true], d: { e: null } };
-// JsonValue = any of the above
 ```
