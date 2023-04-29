@@ -5,7 +5,6 @@ import {
   describe,
   it,
 } from "../../_deps/testing.ts";
-import { CmdError } from "../../cli/cmd.ts";
 import {
   evaluate,
   evaluateAll,
@@ -43,7 +42,7 @@ describe("evaluate", () => {
     const result = await evaluate(fenced.create(throws, { lang: "ts" }));
 
     assertEquals(result.success, false);
-    assertEquals(result.exitCode, 1);
+    assertEquals(result.code, 1);
     assertEquals(result.stdout, "");
     assert(result.stderr.includes("throw new Error()"));
   });
@@ -101,15 +100,13 @@ describe("evaluateAll", () => {
       assertEquals(results.size, 2);
       for (const [node, result] of results) {
         assert(node.type === "fenced");
-        if (result instanceof CmdError) {
-          assertEquals(result.success, false);
-          assertEquals(result.exitCode, 1);
+        assert(!(result instanceof Error));
+        if (!result.success) {
+          assertEquals(result.code, 1);
           assertEquals(result.stdout, "");
           assert(result.stderr.includes("throw new Error()"));
         } else {
-          assert(!(result instanceof Error));
-          assertEquals(result.success, true);
-          assertEquals(result.exitCode, 0);
+          assertEquals(result.code, 0);
           assertEquals(result.stderr, "");
           assertEquals(result.stdout, '"Hello!"');
         }
