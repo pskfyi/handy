@@ -10,9 +10,9 @@ import {
 import { FileHandlerError, globImport } from "./globImport.ts";
 import { FIXTURE_DIR } from "../_constants.ts";
 
-const globPattern = resolve(FIXTURE_DIR, "**", "*.ts");
+const globPattern = resolve(FIXTURE_DIR, "fs", "**", "*.ts");
 
-const A_DIR = resolve(FIXTURE_DIR, "a");
+const A_DIR = resolve(FIXTURE_DIR, "fs", "a");
 const C_DIR = resolve(A_DIR, "b", "c");
 
 const A_MD = toFileUrl(resolve(A_DIR, "findme.md")).href;
@@ -52,7 +52,7 @@ describe("fs.globImport", () => {
   it("can handle files by extension", async () =>
     assertEquals(
       await globImport(
-        resolve(FIXTURE_DIR, "a", "**", "*.*"),
+        resolve(A_DIR, "**", "*.*"),
         {
           eager: true,
           fileHandler: {

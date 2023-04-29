@@ -3,7 +3,7 @@ import { assertEquals, assertRejects, describe, it } from "../_deps/testing.ts";
 import { FIXTURE_DIR } from "../_constants.ts";
 import { findNearestFile } from "./findNearestFile.ts";
 
-const A_DIR = resolve(FIXTURE_DIR, "a");
+const A_DIR = resolve(FIXTURE_DIR, "fs", "a");
 const B_DIR = resolve(A_DIR, "b");
 const C_DIR = resolve(B_DIR, "c");
 
