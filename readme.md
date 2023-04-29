@@ -17,6 +17,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 - [`object`](#object)
 - [`path`](#path)
 - [`string`](#string)
+- [`ts`](#ts)
 - [`types`](#types)
 
 ## `array`
@@ -226,6 +227,17 @@ splitOnFirst("/", "a/b/c"); // ["a", "b/c"]
 splitOn(3, "\n", "a\nb\nc\nd\ne"); // ["a", "b", "c", "d\ne"]
 sequences("A", "ABAACA"); // ["A", "AA", "A"]
 mostConsecutive("A", "ABAACA"); // 2
+```
+
+## `ts`
+
+TypeScript-related utilities.
+
+```ts
+import { evaluate } from "https://deno.land/x/handy/ts/utils.ts";
+
+await evaluate("console.log('Hello!')")
+  .then((res) => res.stdout); // "Hello!"
 ```
 
 ## `types`
