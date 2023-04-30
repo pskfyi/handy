@@ -1,25 +1,29 @@
 export async function copy(text: string) {
   const os = Deno.build.os;
 
-  let cmd: string[];
+  let cmd: string;
+  const args: string[] = [];
 
   if (os === "darwin") {
-    cmd = ["pbcopy"];
+    cmd = "pbcopy";
   } else if (os === "linux" || os === "freebsd") {
-    cmd = ["xclip", "-selection", "clipboard", "-i"];
+    cmd = "xclip";
+    args.push("-selection", "clipboard", "-i");
   } else if (os === "windows") {
-    cmd = ["powershell", "-Command", "Set-Clipboard"];
+    cmd = "powershell";
+    args.push("-Command", "Set-Clipboard");
   } else {
     throw new Error(`Unsupported operating system: ${os}`);
   }
 
-  const process = Deno.run({ cmd, stdin: "piped" });
-  process.stdin.write(new TextEncoder().encode(text));
-  process.stdin.close();
+  const process = new Deno.Command(cmd, { args, stdin: "piped" }).spawn();
 
-  const status = await process.status();
+  const writer = process.stdin.getWriter();
+  await writer.write(new TextEncoder().encode(text));
+  writer.releaseLock();
+  await process.stdin.close();
 
-  process.close();
+  const status = await process.status;
 
   if (!status.success) throw new Error(`Failed to copy text to clipboard.`);
 }
@@ -27,22 +31,21 @@ export async function copy(text: string) {
 export async function paste() {
   const os = Deno.build.os;
 
-  let cmd: string[];
+  let cmd: string;
+  const args: string[] = [];
 
   if (os === "darwin") {
-    cmd = ["pbpaste"];
+    cmd = "pbpaste";
   } else if (os === "linux" || os === "freebsd") {
-    cmd = ["xclip", "-selection", "clipboard", "-o"];
+    cmd = "xclip";
+    args.push("-selection", "clipboard", "-o");
   } else if (os === "windows") {
-    cmd = ["powershell", "-Command", "Get-Clipboard"];
+    cmd = "powershell", args.push("-Command", "Get-Clipboard");
   } else {
     throw new Error(`Unsupported operating system: ${os}`);
   }
 
-  const process = Deno.run({ cmd, stdout: "piped" });
-  const output = await process.output();
+  const output = await new Deno.Command(cmd, { args }).output();
 
-  process.close();
-
-  return new TextDecoder().decode(output);
+  return new TextDecoder().decode(output.stdout);
 }
