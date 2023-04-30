@@ -42,17 +42,15 @@ export async function cmd(
   command: string | string[],
   { cwd, env, fullResult = false }: CmdOptions = {},
 ): Promise<string | CmdResult> {
-  const cmd = Array.isArray(command) ? command : command.split(" ");
+  const [cmd, ...args] = Array.isArray(command) ? command : command.split(" ");
 
-  const process = Deno.run({ cmd, cwd, env, stdout: "piped", stderr: "piped" });
+  const res = await new Deno.Command(cmd, { args, cwd, env }).output();
 
-  const { code: exitCode, success } = await process.status();
+  const { code: exitCode, success } = res;
 
   const textDecoder = new TextDecoder();
-  const stdout = textDecoder.decode(await process.output()).trim();
-  const stderr = textDecoder.decode(await process.stderrOutput()).trim();
-
-  process.close();
+  const stdout = textDecoder.decode(res.stdout).trim();
+  const stderr = textDecoder.decode(res.stderr).trim();
 
   if (!success) throw new CmdError(command, "", stderr, exitCode);
 
