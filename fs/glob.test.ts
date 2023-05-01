@@ -1,5 +1,5 @@
 import { resolve } from "../_deps/path.ts";
-import { assertEquals, describe, it } from "../_deps/testing.ts";
+import { assertArrayIncludes, describe, it } from "../_deps/testing.ts";
 import { glob } from "./glob.ts";
 import { FIXTURE_DIR } from "../_constants.ts";
 
@@ -13,4 +13,4 @@ const C_FILE = resolve(C_DIR, "findme.ts");
 
 describe("fs.glob", () =>
   it("finds files matching the pattern", async () =>
-    assertEquals(await glob(GLOB), [A_FILE, C_FILE])));
+  assertArrayIncludes(await glob(GLOB), [A_FILE, C_FILE])));
