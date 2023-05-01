@@ -46,8 +46,16 @@ export async function get(
   }
 }
 
-/** Get all commits between the two given hashes, inclusive. The first hash
- * should be the newer commit. Also accepts `"HEAD"` and tags. */
+/** Get commits between two hashes or refs, excluding first commit by default.
+ *
+ * @example
+ * await getSpan(["abc1234", "def5678"]);
+ * // git log abc1234..def5678
+ * await getSpan(["abc1234", "def5678"], { inclusive: true });
+ * // git log abc1234^..def5678
+ *
+ * @example
+ * await getSpan(["1.0.0", "HEAD"]); */
 export async function getSpan(
   [start, end]: [string, string],
   { cwd, inclusive }: { cwd?: string; inclusive?: boolean } = {},
