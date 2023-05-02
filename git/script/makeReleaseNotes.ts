@@ -90,8 +90,8 @@ function sortTypes(
 }
 
 function asListItem(
-  { type, scope, description, body, breakingChange, hash }: CommitInfo,
-  groupByType: boolean,
+  { type, scope, description, body, footers, breakingChange, hash }: CommitInfo,
+  groupByType?: boolean,
 ) {
   const typeAndScope = groupByType
     ? scope ? `(${scope})` : ""
@@ -112,6 +112,14 @@ function asListItem(
   listItem += `${description} (${hash})`;
 
   if (body) listItem += `\n\n${indent(body, 2).replace(/^ +$/mg, "")}`;
+
+  if (footers?.length) {
+    const footersSegment = footers
+      .map(({ key, value }) => `${key}: ${value}`)
+      .join("\n\n");
+
+    listItem += `\n\n${indent(footersSegment, 2).replace(/^ +$/mg, "")}`;
+  }
 
   return listItem;
 }
