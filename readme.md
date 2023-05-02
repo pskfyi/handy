@@ -112,6 +112,7 @@ Usage:
 Options:
   -h, --help          Show this help message
   -c, --to-clipboard  Copy release notes to clipboard
+  -i, --inclusive     Include the first commit
   -v, --verbose       Print verbose output
   -g, --group-by-type Group commits by type using H2 headings
   --commit=<commit>   Commit to use as base for release notes
@@ -124,7 +125,7 @@ Examples:
   deno run -A https://deno.land/x/make_release_notes/mod.ts --commit v1.0.0
 
   deno run -A https://deno.land/x/make_release_notes/mod.ts \
-    --types=feat,custom --custom="Custom Section Heading"
+    --types=feat,custom --custom="Custom's Section Heading"
 ```
 
 ## `graph`

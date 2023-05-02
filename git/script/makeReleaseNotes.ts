@@ -25,13 +25,15 @@ const TYPE_NAMES: Record<string, string> = {
   revert: "Reverts",
 };
 
-async function getCommitsByType(
+async function commits(
   log: (message: string) => void,
   commit?: string,
   types?: string[],
+  inclusive = false,
 ) {
   commit ??= await getLatestTag();
-  const rawCommits = (await getCommitSpan([commit, "HEAD"])).reverse();
+  const rawCommits = (await getCommitSpan([commit, "HEAD"], { inclusive }))
+    .reverse();
 
   log(`  Commits since ${commit}: ${rawCommits.length}`);
 
@@ -180,6 +182,20 @@ function releaseNotesByType(
 export type MakeReleaseNotesOptions = {
   cwd?: string;
   commit?: string;
+  /** Whether to include the starting commit in the release notes.
+   *
+   * @example
+   * // find commits since latest tag, but not including it
+   * makeReleaseNotes()
+   * // include latest tag commit
+   * makeReleaseNotes({ inclusive: true })
+   *
+   * // find commits since commit abc1234, but not including it
+   * makeReleaseNotes({ commit: "abc1234" })
+   * // include commit abc1234
+   * makeReleaseNotes({ commit: "abc1234", inclusive: true })
+   */
+  inclusive?: boolean;
   verbose?: boolean;
   groupByType?: boolean;
   types?: string[];
@@ -187,13 +203,13 @@ export type MakeReleaseNotesOptions = {
 };
 
 export async function makeReleaseNotes(
-  { cwd, commit, verbose, groupByType, types, typeNames = {} }:
+  { cwd, commit, inclusive, verbose, groupByType, types, typeNames = {} }:
     MakeReleaseNotesOptions = {},
 ) {
   if (cwd) Deno.chdir(cwd);
 
   const log = (message: string) => verbose && console.log(message);
-  const [breaking, nonBreaking] = await getCommitsByType(log, commit, types);
+  const [breaking, nonBreaking] = await commits(log, commit, types, inclusive);
   const sortedTypes = types ? types : sortTypes(breaking, nonBreaking);
   const markdown = groupByType
     ? releaseNotesByType(sortedTypes, typeNames, breaking, nonBreaking)
@@ -227,6 +243,7 @@ Usage:
 Options:
   -h, --help          Show this help message
   -c, --to-clipboard  Copy release notes to clipboard
+  -i, --inclusive     Include the first commit
   -v, --verbose       Print verbose output
   -g, --group-by-type Group commits by type using H2 headings
   --commit=<commit>   Commit to use as base for release notes
