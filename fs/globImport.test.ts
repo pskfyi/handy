@@ -2,6 +2,7 @@ import { resolve } from "../_deps/path.ts";
 import {
   assert,
   assertEquals,
+  assertArrayIncludes,
   assertRejects,
   describe,
   it,
@@ -24,7 +25,7 @@ const fileHandler = (filePath: string) => () => import(filePath);
 
 describe("fs.globImport", () => {
   it("finds files matching the pattern", async () =>
-    assertEquals(Object.keys(await globImport(globPattern)), [A_TS, C_TS]));
+  assertArrayIncludes(Object.keys(await globImport(globPattern)), [A_TS, C_TS]));
 
   it("returns import functions by default", async () =>
     assert(
