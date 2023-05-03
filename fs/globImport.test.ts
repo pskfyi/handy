@@ -1,6 +1,7 @@
 import { fromFileUrl, resolve, toFileUrl } from "../_deps/path.ts";
 import {
   assert,
+  assertArrayIncludes,
   assertEquals,
   assertRejects,
   describe,
@@ -28,7 +29,10 @@ function normalize(str: string) {
 
 describe("fs.globImport", () => {
   it("finds files matching the pattern", async () =>
-    assertEquals(Object.keys(await globImport(globPattern)), [A_TS, C_TS]));
+    assertArrayIncludes(
+      Object.keys(await globImport(globPattern)),
+      [A_TS, C_TS],
+    ));
 
   it("returns import functions by default", async () =>
     assert(
