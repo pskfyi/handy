@@ -10,8 +10,8 @@ export async function copy(text: string) {
     cmd = "xclip";
     args.push("-selection", "clipboard", "-i");
   } else if (os === "windows") {
-    cmd = "powershell";
-    args.push("-Command", "Set-Clipboard");
+    cmd = "cmd";
+    args.push("/c", "clip");
   } else {
     throw new Error(`Unsupported operating system: ${os}`);
   }
@@ -46,6 +46,7 @@ export async function paste() {
   }
 
   const output = await new Deno.Command(cmd, { args }).output();
+  const text = new TextDecoder().decode(output.stdout);
 
-  return new TextDecoder().decode(output.stdout);
+  return os === "windows" ? text.replace(/\r\n$/, "") : text;
 }
