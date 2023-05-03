@@ -1,10 +1,10 @@
-import { isGlob } from "../_deps/path.ts";
+import { isGlob, sep } from "../_deps/path.ts";
 
 /** Given a glob pattern, return its non-glob beginning. */
 export function globRoot(glob: string) {
   let root = "";
 
-  const parts = glob.split("/");
+  const parts = glob.split(sep);
   const lastIndex = String(parts.length - 1);
 
   for (const i in parts) {
@@ -13,7 +13,7 @@ export function globRoot(glob: string) {
 
     root += part;
 
-    if (i !== lastIndex) root += "/";
+    if (i !== lastIndex) root += sep;
   }
 
   return root;
