@@ -1,4 +1,5 @@
 import { glob } from "./glob.ts";
+import { toFileUrl } from "../_deps/path.ts";
 
 /** A map from absolute filepaths to `import()` functions. */
 // deno-lint-ignore no-explicit-any
@@ -126,6 +127,7 @@ export async function globImport(
 
   const entries = await Promise.all(
     filePaths.map(async (filePath) => {
+      filePath = toFileUrl(filePath).href;
       const importFunction = typeof fileHandler === "function"
         ? fileHandler(filePath)
         : makeImportFunction(filePath, fileHandler);
