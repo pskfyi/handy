@@ -37,7 +37,7 @@ jobs:
 
       - name: Test
         # TODO: Get tests passing in Windows and Ubuntu.
-        if: matrix.os == 'macos-latest'
+        if: (matrix.os == 'macos-latest') || (matrix.os == 'windows-latest')
         run: deno test -A --allow-none
       
       # TODO: once we can skip eval for the `mapOnInterval` test, we can run
