@@ -1,3 +1,4 @@
+/** Only supports MacOS and Windows. */
 export async function copy(text: string) {
   const os = Deno.build.os;
 
@@ -6,9 +7,6 @@ export async function copy(text: string) {
 
   if (os === "darwin") {
     cmd = "pbcopy";
-  } else if (os === "linux" || os === "freebsd") {
-    cmd = "xclip";
-    args.push("-selection", "clipboard", "-i");
   } else if (os === "windows") {
     cmd = "cmd";
     args.push("/c", "clip");
@@ -28,6 +26,7 @@ export async function copy(text: string) {
   if (!status.success) throw new Error(`Failed to copy text to clipboard.`);
 }
 
+/** Only supports MacOS and Windows. */
 export async function paste() {
   const os = Deno.build.os;
 
@@ -36,9 +35,6 @@ export async function paste() {
 
   if (os === "darwin") {
     cmd = "pbpaste";
-  } else if (os === "linux" || os === "freebsd") {
-    cmd = "xclip";
-    args.push("-selection", "clipboard", "-o");
   } else if (os === "windows") {
     cmd = "powershell", args.push("-Command", "Get-Clipboard");
   } else {

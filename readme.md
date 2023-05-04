@@ -147,6 +147,8 @@ graph.edges; // [["b", "a"], ["b", "c"]]
 
 Assorted I/O utilities which don't fit in other categories.
 
+> NOTE: Only supports MacOS and Windows
+
 ```ts
 import { clipboard } from "https://deno.land/x/handy/io/utils.ts";
 
