@@ -7,7 +7,9 @@ import {
 } from "../_deps/testing.ts";
 import { copy, paste } from "./clipboard.ts";
 
-describe("copy & paste", () => {
+const ignore = Deno.build.os !== "darwin" && Deno.build.os !== "windows";
+
+describe("copy & paste", { ignore }, () => {
   let clipboardCache: string;
 
   beforeAll(async () => {
