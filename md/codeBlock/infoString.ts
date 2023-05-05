@@ -36,7 +36,7 @@ export type Info = {
 };
 
 /* See https://spec.commonmark.org/0.30/#info-string */
-export function stringify({ lang, meta }: Info = {}) {
+export function stringify({ lang, meta }: Info = {}): string {
   if (meta?.includes("\n")) throw new InfoStringError(meta);
   if (lang && /\s/.test(lang)) throw new LanguageError(lang);
 

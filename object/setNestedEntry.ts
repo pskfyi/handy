@@ -19,7 +19,7 @@ export function setNestedEntry<
   keys: Array<string | number | symbol>,
   // deno-lint-ignore no-explicit-any
   val: any,
-) {
+): T {
   const key = keys.shift() as keyof T;
 
   if (!(key in obj)) obj[key] = {} as T[keyof T];

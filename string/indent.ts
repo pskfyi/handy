@@ -1,4 +1,4 @@
-export function indent(str: string, indent: string | number) {
+export function indent(str: string, indent: string | number): string {
   indent = typeof indent === "number" ? " ".repeat(indent) : indent;
   let indented = "";
   const lines = str.split("\n");

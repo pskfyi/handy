@@ -37,7 +37,7 @@ export type CreateFencedOptions = infoString.Info & {
 export function create(
   code: string,
   { char = "`", ...info }: CreateFencedOptions = {},
-) {
+): string {
   const _infoString = infoString.stringify(info);
   _infoString.includes("`") && (char = "~");
 

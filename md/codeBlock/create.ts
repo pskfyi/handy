@@ -17,7 +17,7 @@ import { create as createIndented } from "./indented.ts";
 export function create(
   code: string,
   options: CreateFencedOptions = {},
-) {
+): string {
   const fenced = options.char || options.lang || options.meta;
 
   return fenced ? createFenced(code, options) : createIndented(code);

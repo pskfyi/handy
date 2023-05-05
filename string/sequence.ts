@@ -6,7 +6,7 @@
 export function sequences(
   target: string | RegExp,
   str: string,
-) {
+): string[] {
   if (!target || !str) return [];
 
   const pattern = typeof target === "string" ? target : target.source;
@@ -22,7 +22,7 @@ export function sequences(
 export function mostConsecutive(
   target: string,
   str: string,
-) {
+): number {
   if (!target || !str) return 0;
 
   const matches = str.match(new RegExp(`(${target})+`, "g"));

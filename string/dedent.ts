@@ -12,7 +12,7 @@ export function dedent(
 export function dedent(
   str: string,
   { char = " ", returnIndentation = false } = {},
-) {
+): string | [code: string, indentation: string] {
   if (str.length === 0) return returnIndentation ? ["", ""] : "";
 
   if (char.length !== 1) throw new Error("char must be a single character");

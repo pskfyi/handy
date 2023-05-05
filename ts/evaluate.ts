@@ -1,4 +1,4 @@
-import { cmd, CmdOptions } from "../cli/cmd.ts";
+import { cmd, CmdOptions, CmdResult } from "../cli/cmd.ts";
 
 export type EvaluateTypeScriptOptions = Pick<CmdOptions, "cwd" | "env"> & {
   typeCheck?: boolean;
@@ -6,7 +6,10 @@ export type EvaluateTypeScriptOptions = Pick<CmdOptions, "cwd" | "env"> & {
 
 /** Evaluates TypeScript code using `deno eval`, returning the full `CmdResult`.
  * Type checking is enabled by default. */
-export async function evaluate(code: string, opts?: EvaluateTypeScriptOptions) {
+export async function evaluate(
+  code: string,
+  opts?: EvaluateTypeScriptOptions,
+): Promise<CmdResult> {
   const { typeCheck = true, cwd, env } = opts ?? {};
 
   const command = typeCheck

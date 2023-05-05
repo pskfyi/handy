@@ -7,7 +7,7 @@ import { isGlob } from "../_deps/path.ts";
  * globRoot("C:\\\\foo\\bar\\*.ts") // "C:\\\\foo\\bar\\"
  * globRoot("foo/bar") // "foo/bar"
  */
-export function globRoot(glob: string) {
+export function globRoot(glob: string): string {
   let root = "";
 
   const parts = glob.split(/([\/\\])/);

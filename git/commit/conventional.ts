@@ -59,7 +59,14 @@ const FOOTER_SEGMENT_REGEX = /^((\S+|BREAKING CHANGE): .|\S+ #.)/;
 const FOOTER_REGEX =
   /^((?<colonKey>[\S]+|BREAKING CHANGE): (?<colonValue>[\s\S]*)|(?<hashKey>[\S]+) (?<hashValue>#[\s\S]*))/;
 
-function parseSubject(line: string) {
+function parseSubject(
+  line: string,
+): readonly [
+  type: string,
+  scope: string,
+  breakingChange: true | undefined,
+  description: string,
+] {
   const { type, breaking, scope, description } =
     line.match(SUBJECT_REGEX)?.groups ?? {};
 
@@ -68,7 +75,9 @@ function parseSubject(line: string) {
   return [type, scope, breakingChange, description] as const;
 }
 
-function parseRemainder(remainder: string) {
+function parseRemainder(
+  remainder: string,
+): readonly [bodySegments: string[], footers: ConventionalCommitFooter[]] {
   const bodySegments = [] as string[];
   const footers = [] as ConventionalCommitFooter[];
 

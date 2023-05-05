@@ -17,15 +17,13 @@ export function smallest<P extends string, T extends { [K in P]: number }>(
   property: P,
   items: Iterable<T>,
 ): T[];
-export function smallest(
-  // deno-lint-ignore no-explicit-any
-  arg1: string | Iterable<any>,
-  // deno-lint-ignore no-explicit-any
-  arg2?: Iterable<any>,
-) {
+export function smallest<P extends string, T extends { [K in P]: number }>(
+  arg1: P | Iterable<T>,
+  arg2?: Iterable<T>,
+): T[] {
   const [property, items] = typeof arg1 === "string"
     ? [arg1, arg2!]
-    : ["length", arg1];
+    : ["length" as P, arg1];
 
   const smallest = [];
   let smallestSize = Infinity;

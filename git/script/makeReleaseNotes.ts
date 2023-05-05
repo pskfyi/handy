@@ -30,7 +30,9 @@ async function commits(
   commit?: string,
   types?: string[],
   inclusive = false,
-) {
+): Promise<
+  readonly [Record<string, CommitInfo[]>, Record<string, CommitInfo[]>]
+> {
   commit ??= await getLatestTag();
   const rawCommits = (await getCommitSpan([commit, "HEAD"], { inclusive }))
     .reverse();
@@ -75,14 +77,14 @@ async function commits(
   return [breaking, nonBreaking] as const;
 }
 
-function typeName(type: string, typeNames: Record<string, string>) {
+function typeName(type: string, typeNames: Record<string, string>): string {
   return typeNames[type] ?? `${type[0].toUpperCase()}${type.slice(1)} Commits`;
 }
 
 function sortTypes(
   breaking: Record<string, CommitInfo[]>,
   nonBreaking: Record<string, CommitInfo[]>,
-) {
+): string[] {
   return [
     ...new Set([
       ...Object.keys(breaking),
@@ -94,7 +96,7 @@ function sortTypes(
 function asListItem(
   { type, scope, description, body, footers, breakingChange, hash }: CommitInfo,
   groupByType?: boolean,
-) {
+): string {
   const typeAndScope = groupByType
     ? scope ? `(${scope})` : ""
     : scope
@@ -126,7 +128,7 @@ function asListItem(
   return listItem;
 }
 
-function asUnorderedList(commits: CommitInfo[], groupByType = false) {
+function asUnorderedList(commits: CommitInfo[], groupByType = false): string {
   return commits.map((c) => asListItem(c, groupByType)).join("\n\n");
 }
 
@@ -134,7 +136,7 @@ function releaseNotesUngrouped(
   sortedTypes: string[],
   breaking: Record<string, CommitInfo[]>,
   nonBreaking: Record<string, CommitInfo[]>,
-) {
+): string {
   let breakingMarkdown = "";
   let nonBreakingMarkdown = "";
 
@@ -157,7 +159,7 @@ function releaseNotesByType(
   typeNames: Record<string, string>,
   breaking: Record<string, CommitInfo[]>,
   nonBreaking: Record<string, CommitInfo[]>,
-) {
+): string {
   typeNames = { ...TYPE_NAMES, ...typeNames };
   let markdown = "";
 
@@ -205,7 +207,7 @@ export type MakeReleaseNotesOptions = {
 export async function makeReleaseNotes(
   { cwd, commit, inclusive, verbose, groupByType, types, typeNames = {} }:
     MakeReleaseNotesOptions = {},
-) {
+): Promise<string> {
   if (cwd) Deno.chdir(cwd);
 
   const log = (message: string) => verbose && console.log(message);
@@ -218,7 +220,7 @@ export async function makeReleaseNotes(
   return markdown.trim();
 }
 
-function typeNames(flags: Record<string, unknown>) {
+function typeNames(flags: Record<string, unknown>): Record<string, string> {
   const typeNames: Record<string, string> = {};
 
   const isKnown = (flag: string) =>
