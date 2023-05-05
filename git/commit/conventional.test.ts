@@ -15,7 +15,7 @@ import {
   stringify,
 } from "./conventional.ts";
 
-function msg(str: string) {
+function msg(str: string): string {
   return dedent(str).trim();
 }
 

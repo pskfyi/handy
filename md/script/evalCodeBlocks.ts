@@ -9,7 +9,7 @@ import {
 export async function evalCodeBlocks(
   filePath: string,
   replace?: EvaluateOptions["replace"],
-) {
+): Promise<void> {
   const markdown = await Deno.readTextFile(filePath);
   console.log(`Executing code blocks in ${filePath}`);
 

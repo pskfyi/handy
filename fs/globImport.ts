@@ -63,7 +63,8 @@ export type GlobImportOptions = {
 function makeImportFunction(
   filePath: string,
   handlers: Record<string, ImportFactory>,
-) {
+  // deno-lint-ignore no-explicit-any
+): () => Promise<any> {
   for (const [extension, handler] of Object.entries(handlers)) {
     if (filePath.endsWith(extension)) return handler(filePath);
   }
@@ -121,7 +122,7 @@ export async function globImport(
 export async function globImport(
   globPattern: string,
   options: GlobImportOptions = {},
-) {
+): Promise<Modules | EagerModules> {
   const { eager = false, fileHandler = DEFAULT_FILE_HANDLER } = options;
   const filePaths = await glob(globPattern);
 

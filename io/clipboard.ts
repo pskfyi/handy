@@ -1,5 +1,5 @@
 /** Only supports MacOS and Windows. */
-export async function copy(text: string) {
+export async function copy(text: string): Promise<void> {
   const os = Deno.build.os;
 
   let cmd: string;
@@ -27,7 +27,7 @@ export async function copy(text: string) {
 }
 
 /** Only supports MacOS and Windows. */
-export async function paste() {
+export async function paste(): Promise<string> {
   const os = Deno.build.os;
 
   let cmd: string;

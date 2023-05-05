@@ -32,7 +32,7 @@ export type EvaluateOptions = {
 function _getCode(
   details: CodeBlockDetails,
   replace: Exclude<EvaluateOptions["replace"], undefined>,
-) {
+): string {
   if (details.type === "indented") throw new IndentedCodeBlockError();
 
   const { lang, code } = details;
@@ -51,7 +51,7 @@ function _getCode(
 export async function evaluate(
   codeBlock: string,
   { replace = [] }: EvaluateOptions = {},
-) {
+): Promise<CmdResult> {
   const details = parseCodeBlock(codeBlock);
   const code = _getCode(details, replace);
 
@@ -63,7 +63,12 @@ export async function evaluate(
 export async function evaluateAll(
   markdown: string,
   { replace = [] }: EvaluateOptions = {},
-) {
+): Promise<
+  Map<
+    CodeBlockDetails,
+    IndentedCodeBlockError | NoLanguageError | UnknownLanguageError | CmdResult
+  >
+> {
   const results: Map<
     CodeBlockDetails,
     | CmdResult

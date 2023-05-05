@@ -51,7 +51,7 @@ export async function cmd(
 export async function cmd(
   command: string | string[],
   { cwd, env, fullResult = false }: CmdOptions = {},
-) {
+): Promise<string | CmdResult> {
   const [cmd, ...args] = Array.isArray(command) ? command : command.split(" ");
 
   const res = await new Deno.Command(cmd, { args, cwd, env }).output();

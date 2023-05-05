@@ -7,7 +7,7 @@ export type IndentedCodeBlockDetails = {
   indentation: string;
 };
 
-export function create(code: string) {
+export function create(code: string): string {
   return indent(code, 4);
 }
 
