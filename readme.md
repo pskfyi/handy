@@ -106,7 +106,7 @@ import { makeReleaseNotes } from "https://deno.land/x/handy/git/script/makeRelea
 
 When run as a script, it will generate release notes for the repo in the current working directory. The directory can be overridden by the first argument, and the `--to-clipboard` flag will copy the release notes to the clipboard instead of printing them to stdout.
 
-```
+```no-eval
 Usage:
   deno run -A https://deno.land/x/handy/git/script/makeReleaseNotes.ts [options] [path]
 
@@ -181,9 +181,21 @@ For a markdown file, execute each TS code block in the file. Useful for checking
 import { evalCodeBlocks } from "https://deno.land/x/handy/md/script/evalCodeBlocks.ts";
 ```
 
+Code blocks can individually opt out of evaluation by placing `no-eval` in the [info string](https://spec.commonmark.org/0.30/#info-string).
+
+````no-eval
+```no-eval
+Without language code.
+```
+
+```ts no-eval
+console.log("With language code.");
+```
+````
+
 When run as a script, it will execute the code blocks in the file specified by the first argument. The second and third arguments are optional, and are used to find and replace a string in the file before executing the code blocks.
 
-```sh
+```sh no-eval
 deno run --allow-read --allow-run \
   https://deno.land/x/handy/scripts/evalCodeBlocks.ts \
   ./readme.md \
