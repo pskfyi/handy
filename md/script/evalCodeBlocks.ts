@@ -1,4 +1,4 @@
-import { gray, green, red } from "https://deno.land/std@0.182.0/fmt/colors.ts";
+import { gray, green, red } from "../../_deps/fmt.ts";
 import {
   evaluateAll,
   EvaluateOptions,
