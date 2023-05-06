@@ -1,11 +1,17 @@
 import { indent } from "../../string/indent.ts";
 import { INDENTED_CODE_BLOCK_REGEX } from "./regex.ts";
 
+export type IndentedCodeBlockDetails = {
+  type: "indented";
+  code: string;
+  indentation: string;
+};
+
 export function create(code: string) {
   return indent(code, 4);
 }
 
-export function parse(codeBlock: string) {
+export function parse(codeBlock: string): IndentedCodeBlockDetails {
   const lines = codeBlock.split("\n");
   const regex = /^ {4,}/;
   const indent = Math.min(...lines

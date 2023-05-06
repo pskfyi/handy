@@ -2,6 +2,13 @@ import { mostConsecutive } from "../../string/sequence.ts";
 import * as infoString from "./infoString.ts";
 import { FENCED_CODE_BLOCK_REGEX } from "./regex.ts";
 
+export type FencedCodeBlockDetails = infoString.Info & {
+  type: "fenced";
+  char: FenceChar;
+  fence: string;
+  code: string;
+};
+
 export type FenceChar = "`" | "~";
 
 export type CreateFencedOptions = infoString.Info & {
@@ -39,14 +46,19 @@ export function create(
   return fence + _infoString + "\n" + code + "\n" + fence;
 }
 
-export function parse(codeBlock: string) {
+export function parse(codeBlock: string): FencedCodeBlockDetails {
   const match = codeBlock.match(FENCED_CODE_BLOCK_REGEX);
   const { fence, infoString: _infoString, code = "" } = match?.groups ?? {};
   const { lang, meta } = infoString.parse(_infoString);
   const char = fence[0] as FenceChar;
   const type = "fenced" as const;
 
-  return { type, char, fence, lang, meta, code };
+  const data: FencedCodeBlockDetails = { type, char, fence, code };
+
+  if (lang) data.lang = lang;
+  if (meta) data.meta = meta;
+
+  return data;
 }
 
 export function findAll(markdown: string): string[] {
