@@ -96,6 +96,17 @@ describe("parse", () => {
     it("gets rest of info string", () =>
       assertEquals(parse("```lang meta data\n```").meta, "meta data"));
   });
+
+  it("handles Windows newlines", () =>
+    assertEquals(
+      parse("```\r\nHello!\r\n```"),
+      {
+        type: "fenced",
+        char: "`",
+        fence: "```",
+        code: "Hello!",
+      },
+    ));
 });
 
 describe("findAll", () => {
