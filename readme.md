@@ -28,7 +28,7 @@ Array-related utilities.
 ```ts
 import { mapOnInterval } from "https://deno.land/x/handy/array/utils.ts";
 
-mapOnInterval([3, 2, 1, "go!"], 1000, (item) => console.log(item));
+mapOnInterval([3, 2, 1, "go!"], 100, (item) => console.log(item));
 // logs: 3
 // 1sec later, logs: 2
 // 1sec later, logs: 1
