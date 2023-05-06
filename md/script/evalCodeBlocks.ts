@@ -1,4 +1,4 @@
-import { green, red } from "https://deno.land/std@0.182.0/fmt/colors.ts";
+import { gray, green, red } from "https://deno.land/std@0.182.0/fmt/colors.ts";
 import {
   evaluateAll,
   EvaluateOptions,
@@ -29,27 +29,33 @@ export async function evalCodeBlocks(
 
     const { lang, code } = details;
 
-    const langLength = lang?.length ?? 0;
-    const inlineCode = code.trim().replace(/\r?\n/g, "\\n");
-    const firstChars = inlineCode.slice(0, consoleWidth - langLength - 4);
+    const icon = (result instanceof NoLanguageError ||
+        result instanceof UnknownLanguageError)
+      ? "skip"
+      : (result instanceof Error || !result.success)
+      ? "✗"
+      : "✔️";
+
+    const colorIcon = icon === "✗"
+      ? red(icon)
+      : icon === "✔️"
+      ? green(icon)
+      : gray(icon);
+
+    const iconLength = icon === "skip" ? 4 : 1;
+    const langLength = String(lang).length;
+
+    const inlineCode = code.trim().replace(/\s+/g, " ");
+    const firstChars = inlineCode.slice(
+      0,
+      consoleWidth - langLength - iconLength - 5,
+    );
 
     const message = firstChars.length < inlineCode.length
-      ? `${details.lang} ${firstChars}...`
-      : `${details.lang} ${firstChars}`;
+      ? `${colorIcon} ${details.lang} ${firstChars}...`
+      : `${colorIcon} ${details.lang} ${firstChars}`;
 
     console.log(message);
-
-    if (result instanceof NoLanguageError) {
-      console.log("  No language code; skipping");
-    } else if (result instanceof UnknownLanguageError) {
-      console.log("  Unknown language code; skipping");
-    } else if (result instanceof Error) {
-      console.log("  Unknown error encountered outside of evaluation:");
-      console.error(result);
-    } else {
-      const status = result.success ? green("Success") : red("Failure");
-      console.log(`  ${status}`);
-    }
   }
 }
 
