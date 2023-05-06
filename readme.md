@@ -205,9 +205,13 @@ setNestedEntry({}, ["a", 10, S], "👋"); // { a: { 10: { [S]: "👋" } } }
 Path-related utilities.
 
 ```ts
-import { globRoot } from "https://deno.land/x/handy/path/utils.ts";
+import { dir, globRoot } from "https://deno.land/x/handy/path/utils.ts";
 
-globRoot("a/b/*.ts"); // "a/b/"
+dir(import.meta); // Node.js __dirname
+dir("/path/to/file"); // "/path/to"
+dir("C:\\\\a\\b\\c"); // "C:\\a\\b"
+
+globRoot("a/b/**/*.ts"); // "a/b/"
 ```
 
 ## `string`
