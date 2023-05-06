@@ -39,5 +39,5 @@ jobs:
         run: deno test -A --allow-none
       
       - name: Test Readme
-        if: (success() || failure()) && matrix.os == 'ubuntu-latest'
+        if: (success() || failure())
         run: deno task test-readme
