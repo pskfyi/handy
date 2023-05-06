@@ -30,7 +30,7 @@ export async function evalCodeBlocks(
     const { lang, code } = details;
 
     const langLength = lang?.length ?? 0;
-    const inlineCode = code.trim().replace(/\n/g, "\\n");
+    const inlineCode = code.trim().replace(/\r?\n/g, "\\n");
     const firstChars = inlineCode.slice(0, consoleWidth - langLength - 4);
 
     const message = firstChars.length < inlineCode.length
