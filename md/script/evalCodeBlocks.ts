@@ -22,6 +22,10 @@ export async function evalCodeBlocks(
 
   for (const [details, result] of results) {
     if (details.type === "indented") continue;
+    if (details.lang === "no-eval") continue;
+
+    const metaArgs = (details.meta ?? "").split(/ +/);
+    if (metaArgs.includes("no-eval")) continue;
 
     const { lang, code } = details;
 
