@@ -15,6 +15,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 - [`md`](#md)
   - [`script/evalCodeBlocks`](#scriptevalcodeblocks)
 - [`object`](#object)
+- [`os`](#os)
 - [`path`](#path)
 - [`string`](#string)
 - [`ts`](#ts)
@@ -198,6 +199,16 @@ import { setNestedEntry } from "https://deno.land/x/handy/object/utils.ts";
 
 const S = Symbol("symbol");
 setNestedEntry({}, ["a", 10, S], "👋"); // { a: { 10: { [S]: "👋" } } }
+```
+
+## `os`
+
+OS-related utilities.
+
+```ts
+import { posixNewlines } from "https://deno.land/x/handy/os/utils.ts";
+
+posixNewlines("A\r\nB\rC"); // "A\nB\nC"
 ```
 
 ## `path`
