@@ -1,15 +1,26 @@
 import { gray, green, red } from "../../_deps/fmt.ts";
+import { CmdResult } from "../../cli/cmd.ts";
 import {
   evaluateAll,
   EvaluateOptions,
+  IndentedCodeBlockError,
   NoLanguageError,
   UnknownLanguageError,
 } from "../codeBlock/eval.ts";
+import { CodeBlockDetails } from "../codeBlock/types.ts";
 
 export async function evalCodeBlocks(
   filePath: string,
   replace?: EvaluateOptions["replace"],
-): Promise<void> {
+): Promise<
+  Map<
+    CodeBlockDetails,
+    | IndentedCodeBlockError
+    | NoLanguageError
+    | UnknownLanguageError
+    | CmdResult
+  >
+> {
   const markdown = await Deno.readTextFile(filePath);
   console.log(`Executing code blocks in ${filePath}`);
 
@@ -57,6 +68,8 @@ export async function evalCodeBlocks(
 
     console.log(message);
   }
+
+  return results;
 }
 
 if (import.meta.main) {
@@ -71,5 +84,9 @@ if (import.meta.main) {
     ? [[search, _replace]] as [string, string][]
     : undefined;
 
-  await evalCodeBlocks(filePath, replace);
+  const results = await evalCodeBlocks(filePath, replace);
+
+  results.forEach((result) => {
+    if (!(result instanceof Error) && !result.success) Deno.exit(1);
+  });
 }
