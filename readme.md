@@ -91,8 +91,8 @@ Git-related utilities.
 ```ts
 import { commit, tag } from "./git/utils.ts";
 
-await tag.getLatest(); // ex. "v1.0.0"
-await commit.get("c32f42c"); // { message: "chore: rename to handy", ... }
+await tag.getLatest().catch(console.log); // ex. "v1.0.0"
+await commit.get("HEAD").catch(console.log); // { message: "...", ... }
 commit.conventional.parse("feat(scope)!: description"); // { type: "feat", ... }
 ```
 
@@ -153,8 +153,8 @@ Assorted I/O utilities which don't fit in other categories.
 ```ts
 import { clipboard } from "https://deno.land/x/handy/io/utils.ts";
 
-clipboard.copy("foo");
-clipboard.paste(); // "foo"
+clipboard.copy("foo").catch(console.log);
+clipboard.paste().catch(console.log); // "foo"
 ```
 
 ## `md`
