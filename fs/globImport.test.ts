@@ -9,6 +9,7 @@ import {
 } from "../_deps/testing.ts";
 import { FileHandlerError, globImport } from "./globImport.ts";
 import { FIXTURE_DIR } from "../_constants.ts";
+import { posixNewlines } from "../os/newlines.ts";
 
 const globPattern = resolve(FIXTURE_DIR, "**", "*.ts");
 
@@ -22,10 +23,6 @@ const A_TS = toFileUrl(resolve(A_DIR, "findme.ts")).href;
 const C_TS = toFileUrl(resolve(C_DIR, "findme.ts")).href;
 
 const fileHandler = (filePath: string) => () => import(filePath);
-
-function normalize(str: string) {
-  return Deno.build.os === "windows" ? str.replace(/\n/g, "\r\n") : str;
-}
 
 describe("fs.globImport", () => {
   it("finds files matching the pattern", async () =>
@@ -56,16 +53,16 @@ describe("fs.globImport", () => {
         {
           eager: true,
           fileHandler: {
-            ".md": (filePath: string) => () =>
-              Deno.readTextFile(fromFileUrl(filePath)),
+            ".md": (filePath: string) => async () =>
+              posixNewlines(await Deno.readTextFile(fromFileUrl(filePath))),
             ".ts": fileHandler,
           },
         },
       ),
       {
-        [A_MD]: normalize("A\n"),
+        [A_MD]: "A\n",
         [A_TS]: { name: "A" },
-        [C_MD]: normalize("C\n"),
+        [C_MD]: "C\n",
         [C_TS]: { name: "C" },
       },
     ));
