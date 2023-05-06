@@ -2,6 +2,7 @@ import { parse as parseCodeBlock } from "./parse.ts";
 import { findAll as findAllCodeBlocks } from "./findAll.ts";
 import { CmdResult } from "../../cli/cmd.ts";
 import { evaluate as evalTS } from "../../ts/evaluate.ts";
+import { CodeBlockDetails } from "./types.ts";
 
 export class IndentedCodeBlockError extends Error {
   constructor() {
@@ -28,10 +29,8 @@ export type EvaluateOptions = {
   replace?: [string | RegExp, string][];
 };
 
-type Details = ReturnType<typeof parseCodeBlock>;
-
 function _getCode(
-  details: Details,
+  details: CodeBlockDetails,
   replace: Exclude<EvaluateOptions["replace"], undefined>,
 ) {
   if (details.type === "indented") throw new IndentedCodeBlockError();
@@ -66,7 +65,7 @@ export async function evaluateAll(
   { replace = [] }: EvaluateOptions = {},
 ) {
   const results: Map<
-    Details,
+    CodeBlockDetails,
     | CmdResult
     | IndentedCodeBlockError
     | NoLanguageError

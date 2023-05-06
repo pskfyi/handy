@@ -6,3 +6,4 @@ export * from "./create.ts";
 export * from "./eval.ts";
 export * from "./findAll.ts";
 export * from "./parse.ts";
+export * from "./types.ts";
