@@ -261,8 +261,14 @@ Examples:
 
 if (import.meta.main) {
   const flags = parse(Deno.args, {
-    alias: { c: "to-clipboard", v: "verbose", g: "group-by-type", h: "help" },
-    boolean: ["to-clipboard", "verbose", "group-by-type", "help"],
+    alias: {
+      c: "to-clipboard",
+      v: "verbose",
+      g: "group-by-type",
+      h: "help",
+      i: "inclusive",
+    },
+    boolean: ["to-clipboard", "verbose", "group-by-type", "help", "inclusive"],
     string: ["_", "types", "commit"],
     stopEarly: true,
   });
@@ -276,6 +282,7 @@ if (import.meta.main) {
     cwd: flags._[0],
     commit: flags.commit,
     verbose: flags.verbose,
+    inclusive: flags.inclusive,
     groupByType: flags["group-by-type"],
     types: flags["types"]?.split(","),
     typeNames: typeNames(flags),
