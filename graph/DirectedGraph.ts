@@ -1,10 +1,10 @@
 import { VertexError } from "./errors.ts";
 
-type N<T> = NonNullable<T>;
-type I<T> = Iterable<NonNullable<T>>;
-
-export type Path<T> = [N<T>, ...N<T>[]];
-export type Visitor<T, R> = (vertex: N<T>, path: Path<T>) => R;
+export type Vertex<T> = NonNullable<T>;
+export type Vertices<T> = Set<Vertex<T>>;
+export type Edge<T> = [from: Vertex<T>, to: Vertex<T>];
+export type Path<T> = [Vertex<T>, ...Vertex<T>[]];
+export type Visitor<T, R> = (vertex: Vertex<T>, path: Path<T>) => R;
 export type WalkOptions = {
   breadthFirst?: boolean;
   includeSource?: boolean;
@@ -17,14 +17,14 @@ export declare namespace DirectedGraph {
 }
 
 export class DirectedGraph<T> {
-  #vertices = new Set<N<T>>();
-  #edgesTo = new Map<N<T>, Set<N<T>>>();
-  #edgesFrom = new Map<N<T>, Set<N<T>>>();
+  #vertices = new Set<Vertex<T>>();
+  #edgesTo = new Map<Vertex<T>, Vertices<T>>();
+  #edgesFrom = new Map<Vertex<T>, Vertices<T>>();
 
   constructor(
     graphLike?: {
-      vertices?: I<T>;
-      edges?: Iterable<[N<T>, N<T>]>;
+      vertices?: Iterable<Vertex<T>>;
+      edges?: Iterable<Edge<T>>;
     },
   ) {
     if (graphLike) {
@@ -43,12 +43,12 @@ export class DirectedGraph<T> {
     }
   }
 
-  get vertices(): Set<N<T>> {
+  get vertices(): Vertices<T> {
     return new Set(this.#vertices);
   }
 
-  get edges(): Set<[N<T>, N<T>]> {
-    const edges = new Set<[N<T>, N<T>]>();
+  get edges(): Set<Edge<T>> {
+    const edges = new Set<Edge<T>>();
 
     for (const [source, targets] of this.#edgesFrom) {
       for (const target of targets) {
@@ -59,14 +59,14 @@ export class DirectedGraph<T> {
     return edges;
   }
 
-  get roots(): Set<N<T>> {
+  get roots(): Vertices<T> {
     return new Set(
       [...this.#vertices]
         .filter((vertex) => this.#edgesTo.get(vertex)!.size === 0),
     );
   }
 
-  get leaves(): Set<N<T>> {
+  get leaves(): Vertices<T> {
     return new Set(
       [...this.#vertices]
         .filter((vertex) => this.#edgesFrom.get(vertex)!.size === 0),
@@ -76,7 +76,7 @@ export class DirectedGraph<T> {
   /** Mutates `visited`, providing information about which nodes were visited.
    * When `false` is returned, the `visited` nodes can be safely removed from
    * further consideration. */
-  #hasCycle(vertex: N<T>, visited: Set<N<T>>): boolean {
+  #hasCycle(vertex: Vertex<T>, visited: Vertices<T>): boolean {
     if (visited.has(vertex)) return true;
     visited.add(vertex);
 
@@ -88,13 +88,13 @@ export class DirectedGraph<T> {
     return false;
   }
 
-  hasCycle(vertex: N<T>): boolean {
+  hasCycle(vertex: Vertex<T>): boolean {
     this.#assertVertex(vertex);
     return this.#hasCycle(vertex, new Set());
   }
 
   get isCyclic(): boolean {
-    const visited = new Set<N<T>>();
+    const visited: Vertices<T> = new Set();
 
     for (const vertex of this) {
       if (visited.has(vertex)) continue;
@@ -104,8 +104,8 @@ export class DirectedGraph<T> {
     return false;
   }
 
-  #isTree(root: N<T>): boolean {
-    const visited = new Set<N<T>>();
+  #isTree(root: Vertex<T>): boolean {
+    const visited: Vertices<T> = new Set();
     const stack = [root];
 
     while (stack.length) {
@@ -129,7 +129,7 @@ export class DirectedGraph<T> {
   get isForest(): boolean {
     if (this.isCyclic) return false;
 
-    const roots: Set<N<T>> = new Set();
+    const roots: Vertices<T> = new Set();
 
     for (const vertex of this) {
       const edgesTo = this.#edgesTo.get(vertex)!;
@@ -144,42 +144,42 @@ export class DirectedGraph<T> {
     return true;
   }
 
-  #assertVertex(vertex: N<T>): void {
+  #assertVertex(vertex: Vertex<T>): void {
     if (!this.#vertices.has(vertex)) throw new VertexError(vertex);
   }
 
-  has(vertex: N<T>): boolean {
+  has(vertex: Vertex<T>): boolean {
     return this.#vertices.has(vertex);
   }
 
   /** Returns all vertices that have an edge to the given vertex. */
-  edgesTo(target: N<T>): Set<N<T>> {
+  edgesTo(target: Vertex<T>): Vertices<T> {
     this.#assertVertex(target);
 
     return new Set(this.#edgesTo.get(target)!);
   }
 
   /** Returns all vertices that have an edge from the given vertex. */
-  edgesFrom(source: N<T>): Set<N<T>> {
+  edgesFrom(source: Vertex<T>): Vertices<T> {
     this.#assertVertex(source);
 
     return new Set(this.#edgesFrom.get(source)!);
   }
 
-  #addVertex(vertex: N<T>): void {
+  #addVertex(vertex: Vertex<T>): void {
     this.#vertices.add(vertex);
     !this.#edgesFrom.has(vertex) && this.#edgesFrom.set(vertex, new Set());
     !this.#edgesTo.has(vertex) && this.#edgesTo.set(vertex, new Set());
   }
 
-  #addEdge(source: N<T>, target: N<T>): void {
+  #addEdge(source: Vertex<T>, target: Vertex<T>): void {
     this.#addVertex(source);
     this.#addVertex(target);
     this.#edgesFrom.get(source)!.add(target);
     this.#edgesTo.get(target)!.add(source);
   }
 
-  #addEdges(source: N<T>, targets: I<T>): void {
+  #addEdges(source: Vertex<T>, targets: Iterable<Vertex<T>>): void {
     this.#addVertex(source);
     for (const target of targets) {
       this.#addVertex(target);
@@ -188,7 +188,7 @@ export class DirectedGraph<T> {
     }
   }
 
-  add(vertex: N<T>): this;
+  add(vertex: Vertex<T>): this;
   /** Add vertices to the graph if they don't exist, and add edges from the
    * source vertex to the target vertices.
    *
@@ -197,8 +197,8 @@ export class DirectedGraph<T> {
    * graph.add("a", "b"); // add a, b, a -> b
    * graph.add("d", ["e", "f"]); // add d, e, f, d -> e, d -> f
    */
-  add(source: N<T>, targets: N<T> | I<T>): this;
-  add(source: N<T>, targets?: N<T> | I<T>): this {
+  add(source: Vertex<T>, targets: Vertex<T> | Iterable<Vertex<T>>): this;
+  add(source: Vertex<T>, targets?: Vertex<T> | Iterable<Vertex<T>>): this {
     targets === undefined
       ? this.#addVertex(source)
       : typeof targets === "object" && Symbol.iterator in targets
@@ -208,7 +208,7 @@ export class DirectedGraph<T> {
     return this;
   }
 
-  #removeVertex(vertex: N<T>): this {
+  #removeVertex(vertex: Vertex<T>): this {
     this.#assertVertex(vertex);
     this.#vertices.delete(vertex);
 
@@ -225,7 +225,7 @@ export class DirectedGraph<T> {
     return this;
   }
 
-  #removeEdge(source: N<T>, target: N<T>): void {
+  #removeEdge(source: Vertex<T>, target: Vertex<T>): void {
     this.#assertVertex(source);
     this.#assertVertex(target);
 
@@ -233,7 +233,7 @@ export class DirectedGraph<T> {
     this.#edgesTo.get(target)!.delete(source);
   }
 
-  #removeEdges(source: N<T>, targets: I<T>): void {
+  #removeEdges(source: Vertex<T>, targets: Iterable<Vertex<T>>): void {
     this.#assertVertex(source);
 
     for (const target of targets) {
@@ -244,7 +244,7 @@ export class DirectedGraph<T> {
     }
   }
 
-  remove(vertex: N<T>): this;
+  remove(vertex: Vertex<T>): this;
   /** Remove edges from the source vertex to the target vertices.
    *
    * @example
@@ -252,8 +252,8 @@ export class DirectedGraph<T> {
    * graph.add("a", "b"); // add a, b, a -> b
    * graph.remove("a", "b"); // remove a -> b
    */
-  remove(source: N<T>, targets: N<T> | I<T>): this;
-  remove(source: N<T>, targets?: N<T> | I<T>): this {
+  remove(source: Vertex<T>, targets: Vertex<T> | Iterable<Vertex<T>>): this;
+  remove(source: Vertex<T>, targets?: Vertex<T> | Iterable<Vertex<T>>): this {
     targets === undefined
       ? this.#removeVertex(source)
       : typeof targets === "object" && Symbol.iterator in targets
@@ -264,7 +264,7 @@ export class DirectedGraph<T> {
   }
 
   #walkBreadthFirst<R>(
-    source: N<T>,
+    source: Vertex<T>,
     path: Path<T>,
     visitor: Visitor<T, R>,
     reverse = false,
@@ -288,7 +288,7 @@ export class DirectedGraph<T> {
   }
 
   #walkDepthFirst<R>(
-    source: N<T>,
+    source: Vertex<T>,
     path: Path<T>,
     visitor: Visitor<T, R>,
     reverse = false,
@@ -322,7 +322,7 @@ export class DirectedGraph<T> {
    * @returns The value returned by the visitor function, or undefined if the visitor function never returned a value.
    */
   walk<R>(
-    source: N<T>,
+    source: Vertex<T>,
     visitor: Visitor<T, R>,
     options?: WalkOptions,
   ): R | undefined {
@@ -340,7 +340,7 @@ export class DirectedGraph<T> {
       : this.#walkDepthFirst(source, [source], visitor, reverse, skipVisited);
   }
 
-  paths(source: N<T>, target: N<T>): Path<T>[] {
+  paths(source: Vertex<T>, target: Vertex<T>): Path<T>[] {
     this.#assertVertex(source);
     this.#assertVertex(target);
 
@@ -350,7 +350,7 @@ export class DirectedGraph<T> {
     return paths;
   }
 
-  subgraph(vertices: I<N<T>>): DirectedGraph<T> {
+  subgraph(vertices: Iterable<Vertex<T>>): DirectedGraph<T> {
     const subgraph = new DirectedGraph<T>();
 
     for (const vertex of vertices) {
@@ -371,7 +371,7 @@ export class DirectedGraph<T> {
     return `DirectedGraph(${this.#vertices.size} vertices, ${this.edges.size} edges)`;
   }
 
-  [Symbol.iterator](): IterableIterator<N<T>> {
+  [Symbol.iterator](): IterableIterator<Vertex<T>> {
     return this.#vertices.values();
   }
 }
