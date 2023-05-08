@@ -1,8 +1,10 @@
 import { cmd, CmdOptions, CmdResult } from "../cli/cmd.ts";
+import type { Intersect } from "./types.ts";
 
-export type EvaluateTypeScriptOptions = Pick<CmdOptions, "cwd" | "env"> & {
-  typeCheck?: boolean;
-};
+export type EvaluateTypeScriptOptions = Intersect<
+  & Pick<CmdOptions, "cwd" | "env">
+  & { typeCheck?: boolean }
+>;
 
 /** Evaluates TypeScript code using `deno eval`, returning the full `CmdResult`.
  * Type checking is enabled by default. */

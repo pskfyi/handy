@@ -1,13 +1,15 @@
+import type { Intersect } from "../ts/types.ts";
+
 export type CmdOptions = {
   cwd?: string;
   env?: Record<string, string>;
   fullResult?: boolean;
 };
 
-export type CmdResult = Pick<Deno.CommandOutput, "code" | "success"> & {
-  stdout: string;
-  stderr: string;
-};
+export type CmdResult = Intersect<
+  & Pick<Deno.CommandOutput, "code" | "success">
+  & { stdout: string; stderr: string }
+>;
 
 export class CmdError extends Error implements CmdResult {
   readonly success = false;
