@@ -1,21 +1,28 @@
 import { mostConsecutive } from "../../string/sequence.ts";
+import type { Intersect } from "../../ts/types.ts";
 import * as infoString from "./infoString.ts";
 import { FENCED_CODE_BLOCK_REGEX } from "./regex.ts";
 
-export type FencedCodeBlockDetails = infoString.Info & {
-  type: "fenced";
-  char: FenceChar;
-  fence: string;
-  code: string;
-};
+export type FencedCodeBlockDetails = Intersect<
+  & {
+    type: "fenced";
+    char: FenceChar;
+    fence: string;
+    code: string;
+  }
+  & infoString.Info
+>;
 
 export type FenceChar = "`" | "~";
 
-export type CreateFencedOptions = infoString.Info & {
-  /** If `lang` or `meta` contain backticks, `char` will be set to "~" and
-   * this option will be ignored. */
-  char?: FenceChar;
-};
+export type CreateFencedOptions = Intersect<
+  & {
+    /** If `lang` or `meta` contain backticks, `char` will be set to "~" and
+     * this option will be ignored. */
+    char?: FenceChar;
+  }
+  & infoString.Info
+>;
 
 /** Create a fenced code block with optional language and metadata.
  *
