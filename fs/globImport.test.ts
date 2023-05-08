@@ -8,7 +8,7 @@ import {
   it,
 } from "../_deps/testing.ts";
 import { FileHandlerError, globImport } from "./globImport.ts";
-import { FIXTURE_DIR } from "../_constants.ts";
+import { FIXTURE_DIR } from "../_test/constants.ts";
 import { posixNewlines } from "../os/newlines.ts";
 
 const globPattern = resolve(FIXTURE_DIR, "fs", "**", "*.ts");
