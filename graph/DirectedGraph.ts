@@ -286,32 +286,21 @@ export class DirectedGraph<T> {
     this.#edgesTo.get(target)!.delete(source);
   }
 
-  #removeEdges(source: Vertex<T>, targets: Iterable<Vertex<T>>): void {
-    this.#assertVertex(source);
-
-    for (const target of targets) {
-      this.#assertVertex(target);
-
-      this.#edgesFrom.get(source)!.delete(target);
-      this.#edgesTo.get(target)!.delete(source);
+  #removePath(path: Path<T>): void {
+    for (let i = 0; i < path.length - 1; i++) {
+      const j = i + 1;
+      this.#removeEdge(path[i], path[j]);
     }
   }
 
-  remove(vertex: Vertex<T>): this;
-  /** Remove edges from the source vertex to the target vertices.
-   *
-   * @example
-   * const graph = new DirectedGraph<string>();
-   * graph.add(["a", "b"]); // add a, b, a -> b
-   * graph.remove("a", "b"); // remove a -> b
-   */
-  remove(source: Vertex<T>, targets: Vertex<T> | Iterable<Vertex<T>>): this;
-  remove(source: Vertex<T>, targets?: Vertex<T> | Iterable<Vertex<T>>): this {
-    targets === undefined
-      ? this.#removeVertex(source)
-      : typeof targets === "object" && Symbol.iterator in targets
-      ? this.#removeEdges(source, targets)
-      : this.#removeEdge(source, targets);
+  remove(...inputs: Array<Vertex<T> | Edge<T> | Path<T>>): this {
+    for (const input of inputs) {
+      if (Array.isArray(input)) {
+        this.#removePath(input as Edge<T> | Path<T>);
+      } else {
+        this.#removeVertex(input);
+      }
+    }
 
     return this;
   }
