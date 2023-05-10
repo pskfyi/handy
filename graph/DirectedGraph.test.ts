@@ -29,8 +29,7 @@ describe("DirectedGraph", () => {
     it("can clone a graph", () => {
       graph.add("a", "b");
       const clone = new DirectedGraph(graph);
-      assert(clone.has("a"));
-      assert(clone.has("b"));
+      assert(clone.has("a", "b"));
       assert(clone.edgesFrom("a").has("b"));
       assert(clone.edgesTo("b").has("a"));
 
@@ -39,8 +38,7 @@ describe("DirectedGraph", () => {
       assert(!clone.has("a"));
 
       clone.add("c", "d");
-      assert(!graph.has("c"));
-      assert(!graph.has("d"));
+      assert(!graph.has("c", "d"));
     });
   });
 
@@ -105,9 +103,36 @@ describe("DirectedGraph", () => {
   it("has chainable add/remove methods", () =>
     assert(graph.add("a").remove("a") === graph));
 
-  it("tells if it has a vertex", () => {
-    assert(!graph.has("a"));
-    assert(graph.add("a").has("a"));
+  describe("graph.has()", () => {
+    it("accepts a vertex", () => {
+      assert(!graph.has("a"));
+      assert(graph.add("a").has("a"));
+    });
+
+    it("accepts an edge", () => {
+      assert(!graph.has(["a", "b"]));
+      assert(graph.add("a", "b").has(["a", "b"]));
+    });
+
+    it("accepts a path", () => {
+      assert(!graph.has(["a", "b", "c", "d"]));
+      assert(
+        graph.add("a", "b").add("b", "c").add("c", "d")
+          .has(["a", "b", "c", "d"]),
+      );
+    });
+
+    it("treats a single-element path as a vertex", () => {
+      assert(graph.add("a").has(["a"]));
+    });
+
+    it("accepts multiple inputs", () => {
+      assert(!graph.has(["a", "b"], "c", ["d", "e", "f"]));
+      assert(
+        graph.add("a", "b").add("c").add("d", "e").add("e", "f")
+          .has(["a", "b"], "c", ["d", "e", "f"]),
+      );
+    });
   });
 
   it("adds vertices", () => {
@@ -116,13 +141,10 @@ describe("DirectedGraph", () => {
   });
 
   it("adds edges", () => {
-    assert(!graph.has("a"));
-    assert(!graph.has("b"));
+    assert(!graph.has("a", "b"));
 
     graph.add("a", "b").add("a", "c");
-    assert(graph.has("a"));
-    assert(graph.has("b"));
-    assert(graph.has("c"));
+    assert(graph.has("a", "b", "c"));
     assert(graph.edgesFrom("a").has("b"));
     assert(graph.edgesFrom("a").has("c"));
     assert(graph.edgesFrom("a").size === 2);
@@ -146,8 +168,7 @@ describe("DirectedGraph", () => {
 
   it("removes edges", () => {
     graph.add("a", "b").remove("a", "b");
-    assert(graph.has("a"));
-    assert(graph.has("b"));
+    assert(graph.has("a", "b"));
     assert(!graph.edgesFrom("a").has("b"));
     assert(!graph.edgesTo("b").has("a"));
   });
@@ -155,8 +176,7 @@ describe("DirectedGraph", () => {
   it("removes edges of a removed vertex", () => {
     graph.add("a", "b").add("a", "c").remove("a");
     assert(!graph.has("a"));
-    assert(graph.has("b"));
-    assert(graph.has("c"));
+    assert(graph.has("b", "c"));
     assert(!graph.edgesTo("b").has("a"));
     assert(!graph.edgesTo("c").has("a"));
   });
