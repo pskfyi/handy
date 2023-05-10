@@ -140,8 +140,8 @@ const graph = new DirectedGraph<string>()
   .add("a")
   .add("b", ["a", "c"]);
 
-graph.vertices; // ["a", "b", "c"]
-graph.edges; // [["b", "a"], ["b", "c"]]
+graph.vertices; // new Set(["a", "b", "c"])
+graph.edges; // new Set([["a", "c"]])
 ```
 
 ## `io`

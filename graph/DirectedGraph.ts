@@ -35,19 +35,19 @@ export class DirectedGraph<T> {
    * @example
    * const graph = new DirectedGraph<string>();
    *
-   * graph.add("a", "b");
+   * graph.add(["a", "b"]);
    * // adds vertices "a" and "b" and the edge "a" -> "b"
    *
    * @example
-   * new DirectedGraph<number>().add(1, 2).add(3).remove(2);
+   * new DirectedGraph<number>().add([1, 2], 3).remove(2);
    *
    * @example
    * new DirectedGraph<symbol>()
-   *   .add(Symbol.for("1"), Symbol.for("2"));
+   *   .add([Symbol.for("1"), Symbol.for("2")]);
    *
    * @example
    * new DirectedGraph<{ name: string }>()
-   *   .add({ name: "a" }, { name: "b" });
+   *   .add([{ name: "a" }, { name: "b" }]);
    *
    * @example
    * new DirectedGraph({
@@ -238,31 +238,25 @@ export class DirectedGraph<T> {
     this.#edgesTo.get(target)!.add(source);
   }
 
-  #addEdges(source: Vertex<T>, targets: Iterable<Vertex<T>>): void {
-    this.#addVertex(source);
-    for (const target of targets) {
-      this.#addVertex(target);
-      this.#edgesFrom.get(source)!.add(target);
-      this.#edgesTo.get(target)!.add(source);
+  #addPath(path: Path<T>): void {
+    if (path.length === 1) {
+      this.#addVertex(path[0]);
+    } else {
+      for (let i = 0; i < path.length - 1; i++) {
+        const j = i + 1;
+        this.#addEdge(path[i], path[j]);
+      }
     }
   }
 
-  add(vertex: Vertex<T>): this;
-  /** Add vertices to the graph if they don't exist, and add edges from the
-   * source vertex to the target vertices.
-   *
-   * @example
-   * const graph = new DirectedGraph<string>();
-   * graph.add("a", "b"); // add a, b, a -> b
-   * graph.add("d", ["e", "f"]); // add d, e, f, d -> e, d -> f
-   */
-  add(source: Vertex<T>, targets: Vertex<T> | Iterable<Vertex<T>>): this;
-  add(source: Vertex<T>, targets?: Vertex<T> | Iterable<Vertex<T>>): this {
-    targets === undefined
-      ? this.#addVertex(source)
-      : typeof targets === "object" && Symbol.iterator in targets
-      ? this.#addEdges(source, targets)
-      : this.#addEdge(source, targets);
+  add(...inputs: Array<Vertex<T> | Edge<T> | Path<T>>): this {
+    for (const input of inputs) {
+      if (Array.isArray(input)) {
+        this.#addPath(input as Edge<T> | Path<T>);
+      } else {
+        this.#addVertex(input);
+      }
+    }
 
     return this;
   }
@@ -308,7 +302,7 @@ export class DirectedGraph<T> {
    *
    * @example
    * const graph = new DirectedGraph<string>();
-   * graph.add("a", "b"); // add a, b, a -> b
+   * graph.add(["a", "b"]); // add a, b, a -> b
    * graph.remove("a", "b"); // remove a -> b
    */
   remove(source: Vertex<T>, targets: Vertex<T> | Iterable<Vertex<T>>): this;
@@ -438,7 +432,7 @@ export class DirectedGraph<T> {
 
     for (const [source, target] of this.edges) {
       if (subgraph.has(source, target)) {
-        subgraph.add(source, target);
+        subgraph.add([source, target]);
       }
     }
 
