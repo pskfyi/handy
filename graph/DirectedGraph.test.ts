@@ -66,7 +66,7 @@ describe("DirectedGraph", () => {
       assert(new DirectedGraph(graph).add("d", "a").isCyclic);
       assert(new DirectedGraph(graph).add("d", "c").isCyclic);
       assert(new DirectedGraph(graph).add("d", "b").isCyclic);
-      assert(new DirectedGraph().add("y", "z").add("z", "y").isCyclic);
+      assert(new DirectedGraph<string>().add("y", "z").add("z", "y").isCyclic);
       assert(!new DirectedGraph(graph).add("a", "c").isCyclic);
     });
 
