@@ -27,7 +27,7 @@ describe("DirectedGraph", () => {
 
   describe("constructor", () => {
     it("can clone a graph", () => {
-      graph.add("a", "b");
+      graph.add(["a", "b"]);
       const clone = new DirectedGraph(graph);
       assert(clone.has("a", "b"));
       assert(clone.edgesFrom("a").has("b"));
@@ -37,7 +37,7 @@ describe("DirectedGraph", () => {
       assert(graph.has("a"));
       assert(!clone.has("a"));
 
-      clone.add("c", "d");
+      clone.add(["c", "d"]);
       assert(!graph.has("c", "d"));
     });
   });
@@ -48,54 +48,51 @@ describe("DirectedGraph", () => {
     it("has edges", () => assert(graph.edges instanceof Set));
 
     it("has root vertices", () => {
-      graph.add("a", "b").add("b", "c").add("c", "d");
+      graph.add(["a", "b", "c", "d"]);
       assertEquals(graph.roots, new Set("a"));
     });
 
     it("has leaf vertices", () => {
-      graph.add("a", "b").add("b", "c").add("c", "d");
+      graph.add(["a", "b", "c", "d"]);
       assertEquals(graph.leaves, new Set(["d"]));
     });
 
     it("can tell if it's cyclic", () => {
-      graph.add("a", "b").add("b", "c").add("c", "d");
+      graph.add(["a", "b", "c", "d"]);
       assert(!graph.isCyclic);
 
-      assert(new DirectedGraph(graph).add("d", "a").isCyclic);
-      assert(new DirectedGraph(graph).add("d", "c").isCyclic);
-      assert(new DirectedGraph(graph).add("d", "b").isCyclic);
-      assert(new DirectedGraph<string>().add("y", "z").add("z", "y").isCyclic);
-      assert(!new DirectedGraph(graph).add("a", "c").isCyclic);
+      assert(new DirectedGraph(graph).add(["d", "a"]).isCyclic);
+      assert(new DirectedGraph(graph).add(["d", "c"]).isCyclic);
+      assert(new DirectedGraph(graph).add(["d", "b"]).isCyclic);
+      assert(new DirectedGraph<string>().add(["y", "z", "y"]).isCyclic);
+      assert(!new DirectedGraph(graph).add(["a", "c"]).isCyclic);
     });
 
     it("can tell if it's a tree", () => {
-      graph.add("a", "b").add("b", "c").add("c", "d");
-      graph.add("a", "e").add("b", "f");
+      graph.add(["a", "b", "c", "d"], ["a", "e"], ["b", "f"]);
       assert(graph.isTree);
 
-      assert(!new DirectedGraph(graph).add("d", "a").isTree);
-      assert(!new DirectedGraph(graph).add("a", "c").isTree);
-      assert(!new DirectedGraph(graph).add("y", "z").add("z", "y").isTree);
+      assert(!new DirectedGraph(graph).add(["d", "a"]).isTree);
+      assert(!new DirectedGraph(graph).add(["a", "c"]).isTree);
+      assert(!new DirectedGraph(graph).add(["y", "z", "y"]).isTree);
     });
 
     it("can tell if it's a forest", () => {
-      graph.add("a", "b").add("b", "c").add("c", "d");
-      graph.add("h", "i");
-      graph.add("v", "w").add("w", "x");
+      graph.add(["a", "b", "c", "d"], ["h", "i"], ["v", "w", "x"]);
       assert(graph.isForest);
 
-      assert(!new DirectedGraph(graph).add("b", "i").isForest);
-      assert(new DirectedGraph(graph).add("x", "h").isForest);
-      assert(new DirectedGraph(graph).add("d", "v").isForest);
+      assert(!new DirectedGraph(graph).add(["b", "i"]).isForest);
+      assert(new DirectedGraph(graph).add(["x", "h"]).isForest);
+      assert(new DirectedGraph(graph).add(["d", "v"]).isForest);
     });
 
     it("has custom console.log output", () => {
-      graph.add("a", "b").add("b", "c").add("c", "d");
+      graph.add(["a", "b", "c", "d"]);
       assertEquals(Deno.inspect(graph), "DirectedGraph(4 vertices, 3 edges)");
     });
 
     it("is iterable, yielding vertices", () => {
-      graph.add("a", "b").add("b", "c").add("c", "d");
+      graph.add(["a", "b", "c", "d"]);
       assertEquals([...graph], ["a", "b", "c", "d"]);
     });
   });
@@ -111,15 +108,12 @@ describe("DirectedGraph", () => {
 
     it("accepts an edge", () => {
       assert(!graph.has(["a", "b"]));
-      assert(graph.add("a", "b").has(["a", "b"]));
+      assert(graph.add(["a", "b"]).has(["a", "b"]));
     });
 
     it("accepts a path", () => {
       assert(!graph.has(["a", "b", "c", "d"]));
-      assert(
-        graph.add("a", "b").add("b", "c").add("c", "d")
-          .has(["a", "b", "c", "d"]),
-      );
+      assert(graph.add(["a", "b", "c", "d"]).has(["a", "b", "c", "d"]));
     });
 
     it("treats a single-element path as a vertex", () => {
@@ -129,36 +123,44 @@ describe("DirectedGraph", () => {
     it("accepts multiple inputs", () => {
       assert(!graph.has(["a", "b"], "c", ["d", "e", "f"]));
       assert(
-        graph.add("a", "b").add("c").add("d", "e").add("e", "f")
+        graph.add(["a", "b"], "c", ["d", "e", "f"])
           .has(["a", "b"], "c", ["d", "e", "f"]),
       );
     });
   });
 
-  it("adds vertices", () => {
-    assert(!graph.has("a"));
-    assert(graph.add("a").has("a"));
-  });
+  describe("graph.add()", () => {
+    it("adds vertices", () => assert(graph.add("a").has("a")));
 
-  it("adds edges", () => {
-    assert(!graph.has("a", "b"));
+    it("adds edges", () => {
+      graph.add(["a", "b"], ["a", "c"]);
+      assertEquals(graph.vertices, new Set(["a", "b", "c"]));
+      assertEquals(graph.edges, new Set([["a", "b"], ["a", "c"]]));
+    });
 
-    graph.add("a", "b").add("a", "c");
-    assert(graph.has("a", "b", "c"));
-    assert(graph.edgesFrom("a").has("b"));
-    assert(graph.edgesFrom("a").has("c"));
-    assert(graph.edgesFrom("a").size === 2);
-    assert(graph.edgesTo("b").has("a"));
-    assert(graph.edgesTo("b").size === 1);
-    assert(graph.edgesTo("c").has("a"));
-    assert(graph.edgesTo("c").size === 1);
-  });
+    it("deduplicates edges", () => {
+      graph.add(["a", "b"], ["a", "b"]);
+      assertEquals(graph.vertices, new Set(["a", "b"]));
+      assertEquals(graph.edges, new Set([["a", "b"]]));
+    });
 
-  it("deduplicates edges", () => {
-    graph.add("a", "b").add("a", "b");
-    assert(graph.edges.size === 1);
-    assert(graph.edgesFrom("a").size === 1);
-    assert(graph.edgesTo("b").size === 1);
+    it("adds paths", () => {
+      graph.add(["a", "b", "c"]);
+      assertVertices(graph, "a", "b", "c");
+      assertEdges(graph, ["a", "b"], ["b", "c"]);
+    });
+
+    it("treats a single-element path as a vertex", () => {
+      graph.add(["a"]);
+      assertVertices(graph, "a");
+      assertEdges(graph);
+    });
+
+    it("handles multiple inputs", () => {
+      graph.add(["a", "b"], "c", ["d", "e", "f"]);
+      assertVertices(graph, "a", "b", "c", "d", "e", "f");
+      assertEdges(graph, ["a", "b"], ["d", "e"], ["e", "f"]);
+    });
   });
 
   it("removes vertices", () => {
@@ -167,14 +169,14 @@ describe("DirectedGraph", () => {
   });
 
   it("removes edges", () => {
-    graph.add("a", "b").remove("a", "b");
+    graph.add(["a", "b"]).remove("a", "b");
     assert(graph.has("a", "b"));
     assert(!graph.edgesFrom("a").has("b"));
     assert(!graph.edgesTo("b").has("a"));
   });
 
   it("removes edges of a removed vertex", () => {
-    graph.add("a", "b").add("a", "c").remove("a");
+    graph.add(["a", "b"], ["a", "c"]).remove("a");
     assert(!graph.has("a"));
     assert(graph.has("b", "c"));
     assert(!graph.edgesTo("b").has("a"));
@@ -182,7 +184,7 @@ describe("DirectedGraph", () => {
   });
 
   it("returns new vertices and edges", () => {
-    const vertices = graph.add("a", "b").vertices;
+    const vertices = graph.add(["a", "b"]).vertices;
     vertices.delete("a");
     assert(graph.has("a"));
     assert(!vertices.has("a"));
@@ -204,21 +206,21 @@ describe("DirectedGraph", () => {
 
   describe("graph.walk", () => {
     it("traverses depth-first", () => {
-      graph.add("a", ["b", "c", "d"]).add("b", ["e", "f"]);
+      graph.add(["a", "b", "e"], ["a", "c"], ["a", "d"], ["b", "f"]);
       const visited: string[] = [];
       graph.walk("a", (vertex) => void visited.push(vertex));
       assertEquals(visited, ["b", "e", "f", "c", "d"]);
     });
 
     it("can walk in reverse", () => {
-      graph.add("a", "z").add("b", "z").add("c", "z");
+      graph.add(["a", "z"], ["b", "z"], ["c", "z"]);
       const visited: string[] = [];
       graph.walk("z", (vertex) => void visited.push(vertex), { reverse: true });
       assertEquals(visited, ["a", "b", "c"]);
     });
 
     it("can return a value", () => {
-      graph.add("a", ["b", "c", "d"]);
+      graph.add(["a", "b"], ["a", "c"], ["a", "d"]);
       const visited: string[] = [];
       const result = graph
         .walk("a", (v) => v === "c" ? "stopped at c!" : void visited.push(v));
@@ -227,7 +229,7 @@ describe("DirectedGraph", () => {
     });
 
     it("can visit the source vertex", () => {
-      graph.add("a", ["b", "c", "d"]);
+      graph.add(["a", "b"], ["a", "c"], ["a", "d"]);
       const visited: string[] = [];
       graph.walk(
         "a",
@@ -238,21 +240,21 @@ describe("DirectedGraph", () => {
     });
 
     it("can traverse breadth-first", () => {
-      graph.add("a", ["b", "c", "d"]).add("b", ["e", "f"]);
+      graph.add(["a", "b", "e"], ["a", "c"], ["a", "d"], ["b", "f"]);
       const visited: string[] = [];
       graph.walk("a", (v) => void visited.push(v), { breadthFirst: true });
       assertEquals(visited, ["b", "c", "d", "e", "f"]);
     });
 
     it("skips visited vertices", () => {
-      graph.add("a", "b").add("b", "a");
+      graph.add(["a", "b", "a"]);
       const visited: string[] = [];
       graph.walk("a", (v) => void visited.push(v));
       assertEquals(visited, ["b"]);
     });
 
     it("can revisit vertices", () => {
-      graph.add("a", "b").add("b", "a");
+      graph.add(["a", "b", "a"]);
       const visited: string[] = [];
       graph.walk(
         "a",
@@ -272,12 +274,12 @@ describe("DirectedGraph", () => {
   });
 
   it("finds paths between vertices", () => {
-    graph.add("a", "b").add("b", "c").add("c", "d");
+    graph.add(["a", "b", "c", "d"]);
     assertEquals(graph.paths("a", "b"), [["a", "b"]]);
     assertEquals(graph.paths("a", "c"), [["a", "b", "c"]]);
     assertEquals(graph.paths("a", "d"), [["a", "b", "c", "d"]]);
 
-    graph.add("a", "c");
+    graph.add(["a", "c"]);
     assertEquals(graph.paths("a", "b"), [["a", "b"]]);
     assertEquals(graph.paths("a", "c"), [["a", "b", "c"], ["a", "c"]]);
     assertEquals(graph.paths("a", "d"), [
@@ -287,19 +289,19 @@ describe("DirectedGraph", () => {
   });
 
   it("identifies if a vertex has cycles", () => {
-    graph.add("a", "b").add("b", "c");
+    graph.add(["a", "b", "c"]);
     assert(!graph.hasCycle("a"));
     assert(!graph.hasCycle("b"));
     assert(!graph.hasCycle("c"));
 
-    graph.add("c", "a");
+    graph.add(["c", "a"]);
     assert(graph.hasCycle("a"));
     assert(graph.hasCycle("b"));
     assert(graph.hasCycle("c"));
   });
 
   it("creates subgraphs", () => {
-    graph.add("a", "b").add("b", "c").add("c", "d");
+    graph.add(["a", "b", "c", "d"]);
     const subgraph = graph.subgraph(["a", "b", "c"]);
     assertEquals(subgraph.vertices, new Set(["a", "b", "c"]));
     assertEquals(subgraph.edges, new Set([["a", "b"], ["b", "c"]]));
@@ -319,17 +321,17 @@ describe("DirectedGraph", () => {
       const graph = new DirectedGraph<T>();
       const sm = (a: T, b: T) => smallest(graph.paths(a, b));
 
-      graph.add("a", "b").add("b", "c").add("c", "d");
+      graph.add(["a", "b", "c", "d"]);
       assertEquals(sm("a", "b"), [["a", "b"]]);
       assertEquals(sm("a", "c"), [["a", "b", "c"]]);
       assertEquals(sm("a", "d"), [["a", "b", "c", "d"]]);
 
-      graph.add("a", "c");
+      graph.add(["a", "c"]);
       assertEquals(sm("a", "b"), [["a", "b"]]);
       assertEquals(sm("a", "c"), [["a", "c"]]);
       assertEquals(sm("a", "d"), [["a", "c", "d"]]);
 
-      graph.add("b", "d");
+      graph.add(["b", "d"]);
       assertEquals(sm("a", "b"), [["a", "b"]]);
       assertEquals(sm("a", "c"), [["a", "c"]]);
       assertEquals(sm("a", "d"), [["a", "b", "d"], ["a", "c", "d"]]);
