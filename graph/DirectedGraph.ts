@@ -59,17 +59,27 @@ export class DirectedGraph<T> {
   }
 
   get roots(): Vertices<T> {
-    return new Set(
-      [...this.#vertices]
-        .filter((vertex) => this.#edgesTo.get(vertex)!.size === 0),
-    );
+    const vertices: Vertices<T> = new Set();
+
+    for (const vertex of this.#vertices) {
+      if (this.#edgesTo.get(vertex)!.size === 0) {
+        vertices.add(vertex);
+      }
+    }
+
+    return vertices;
   }
 
   get leaves(): Vertices<T> {
-    return new Set(
-      [...this.#vertices]
-        .filter((vertex) => this.#edgesFrom.get(vertex)!.size === 0),
-    );
+    const vertices: Vertices<T> = new Set();
+
+    for (const vertex of this.#vertices) {
+      if (this.#edgesFrom.get(vertex)!.size === 0) {
+        vertices.add(vertex);
+      }
+    }
+
+    return vertices;
   }
 
   /** Mutates `visited`, providing information about which nodes were visited.
