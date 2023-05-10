@@ -163,24 +163,43 @@ describe("DirectedGraph", () => {
     });
   });
 
-  it("removes vertices", () => {
-    assert(graph.add("a").has("a"));
-    assert(!graph.remove("a").has("a"));
-  });
+  describe("graph.remove()", () => {
+    it("removes vertices", () => {
+      assert(graph.add("a").has("a"));
+      assert(!graph.remove("a").has("a"));
+    });
 
-  it("removes edges", () => {
-    graph.add(["a", "b"]).remove("a", "b");
-    assert(graph.has("a", "b"));
-    assert(!graph.edgesFrom("a").has("b"));
-    assert(!graph.edgesTo("b").has("a"));
-  });
+    it("removes edges", () => {
+      graph.add(["a", "b"]).remove(["a", "b"]);
+      assertEquals(graph.vertices, new Set(["a", "b"]));
+      assertEquals(graph.edges, new Set());
+    });
 
-  it("removes edges of a removed vertex", () => {
-    graph.add(["a", "b"], ["a", "c"]).remove("a");
-    assert(!graph.has("a"));
-    assert(graph.has("b", "c"));
-    assert(!graph.edgesTo("b").has("a"));
-    assert(!graph.edgesTo("c").has("a"));
+    it("removes paths", () => {
+      graph.add(["a", "b", "c", "d", "e"]).remove(["b", "c", "d"]);
+      assertEquals(graph.vertices, new Set(["a", "b", "c", "d", "e"]));
+      assertEquals(graph.edges, new Set([["a", "b"], ["d", "e"]]));
+    });
+
+    it("ignores single-element paths", () => {
+      graph.add(["a", "b", "c"]).remove(["b"]);
+      assertVertices(graph, "a", "b", "c");
+      assertEdges(graph, ["a", "b"], ["b", "c"]);
+    });
+
+    it("removes mixed inputs", () => {
+      graph.add(["a", "b", "c", "d", "e"], "f").remove(["a", "b", "c"], "e");
+      assertEquals(graph.vertices, new Set(["a", "b", "c", "d", "f"]));
+      assertEquals(graph.edges, new Set([["c", "d"]]));
+    });
+
+    it("removes edges of a removed vertex", () => {
+      graph.add(["a", "b"], ["a", "c"]).remove("a");
+      assert(!graph.has("a"));
+      assert(graph.has("b", "c"));
+      assert(!graph.edgesTo("b").has("a"));
+      assert(!graph.edgesTo("c").has("a"));
+    });
   });
 
   it("returns new vertices and edges", () => {
