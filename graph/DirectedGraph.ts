@@ -190,8 +190,25 @@ export class DirectedGraph<T> {
     if (!this.#vertices.has(vertex)) throw new VertexError(vertex);
   }
 
-  has(vertex: Vertex<T>): boolean {
-    return this.#vertices.has(vertex);
+  #hasPath(path: Path<T>): boolean {
+    for (let i = 0; i < path.length - 1; i++) {
+      const j = i + 1;
+      if (!this.#edgesFrom.get(path[i])?.has(path[j])) return false;
+    }
+
+    return true;
+  }
+
+  has(...inputs: Array<Vertex<T> | Edge<T> | Path<T>>): boolean {
+    for (const input of inputs) {
+      const _has = Array.isArray(input)
+        ? this.#hasPath(input as Edge<T> | Path<T>)
+        : this.#vertices.has(input);
+
+      if (!_has) return false;
+    }
+
+    return true;
   }
 
   /** Returns all vertices that have an edge to the given vertex. */
@@ -420,7 +437,7 @@ export class DirectedGraph<T> {
     }
 
     for (const [source, target] of this.edges) {
-      if (subgraph.has(source) && subgraph.has(target)) {
+      if (subgraph.has(source, target)) {
         subgraph.add(source, target);
       }
     }
