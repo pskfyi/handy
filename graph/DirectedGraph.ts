@@ -36,7 +36,6 @@ export class DirectedGraph<T> {
 
       if (graphLike.edges) {
         for (const [source, target] of graphLike.edges) {
-          this.#addVertex(source);
           this.#addEdge(source, target);
         }
       }
