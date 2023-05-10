@@ -30,7 +30,30 @@ export class DirectedGraph<T> {
   #edgesTo = new Map<Vertex<T>, Vertices<T>>();
   #edgesFrom = new Map<Vertex<T>, Vertices<T>>();
 
-  /** Vertices can be `string`, `number`, `symbol`, or non-Array objects. */
+  /** Vertices can be `string`, `number`, `symbol`, or non-Array objects.
+   *
+   * @example
+   * const graph = new DirectedGraph<string>();
+   *
+   * graph.add("a", "b");
+   * // adds vertices "a" and "b" and the edge "a" -> "b"
+   *
+   * @example
+   * new DirectedGraph<number>().add(1, 2).add(3).remove(2);
+   *
+   * @example
+   * new DirectedGraph<symbol>()
+   *   .add(Symbol.for("1"), Symbol.for("2"));
+   *
+   * @example
+   * new DirectedGraph<{ name: string }>()
+   *   .add({ name: "a" }, { name: "b" });
+   *
+   * @example
+   * new DirectedGraph({
+   *   vertices: ["a", "b", "c"],
+   *   edges: [["a", "b"], ["b", "c"]],
+   * }) */
   constructor(
     graphLike?: {
       vertices?: Iterable<Vertex<T>>;
@@ -339,7 +362,13 @@ export class DirectedGraph<T> {
    * @param options.reverse If true, walk the graph in reverse
    * @param options.includeSource If true, call the visitor function for the source vertex
    * @returns The value returned by the visitor function, or undefined if the visitor function never returned a value.
-   */
+   *
+   * @example
+   * new DirectedGraph({ edges: [["a", "b"], ["b", "c"], ["c", "d"]] })
+   *   .walk("a", (v, path) => console.log(v, path));
+   * // "b" ["a", "b"]
+   * // "c" ["a", "b", "c"]
+   * // "d" ["a", "b", "c", "d"] */
   walk<R>(
     source: Vertex<T>,
     visitor: Visitor<T, R>,
@@ -359,6 +388,12 @@ export class DirectedGraph<T> {
       : this.#walkDepthFirst(source, [source], visitor, reverse, skipVisited);
   }
 
+  /** Return all paths from the source vertex to the target vertex.
+   *
+   * @example
+   * new DirectedGraph({ edges: [["a", "b"], ["b", "c"], ["a", "c"]] })
+   *   .paths("a", "c");
+   * // [["a", "b", "c"], ["a", "c"]] */
   paths(source: Vertex<T>, target: Vertex<T>): Path<T>[] {
     this.#assertVertex(source);
     this.#assertVertex(target);
@@ -369,6 +404,13 @@ export class DirectedGraph<T> {
     return paths;
   }
 
+  /** Return a new graph containing only the given vertices and the edges
+   * between them.
+   *
+   * @example
+   * new DirectedGraph({ edges: [["a", "b"], ["b", "c"]] })
+   *   .subgraph(["a", "b"]);
+   * //    ^ contains vertices "a" and "b" and the edge "a" -> "b" */
   subgraph(vertices: Iterable<Vertex<T>>): DirectedGraph<T> {
     const subgraph = new DirectedGraph<T>();
 
