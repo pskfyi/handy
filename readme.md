@@ -136,7 +136,7 @@ Graph-related utilities.
 ```ts
 import { DirectedGraph } from "https://deno.land/x/handy/graph/utils.ts";
 
-const graph = new DirectedGraph()
+const graph = new DirectedGraph<string>()
   .add("a")
   .add("b", ["a", "c"]);
 

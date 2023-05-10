@@ -1,6 +1,15 @@
 import { VertexError } from "./errors.ts";
 
-export type Vertex<T> = NonNullable<T>;
+/** A `string`, `number`, `symbol`, or non-Array object member of the graph. */
+// deno-lint-ignore no-explicit-any
+export type Vertex<T> = T extends any[] ? never
+  // deno-lint-ignore no-explicit-any
+  : T extends Record<any, any> ? T
+  : T extends string ? T
+  : T extends number ? T
+  : T extends symbol ? T
+  : never;
+
 export type Vertices<T> = Set<Vertex<T>>;
 export type Edge<T> = [from: Vertex<T>, to: Vertex<T>];
 export type Path<T> = [Vertex<T>, ...Vertex<T>[]];
@@ -21,6 +30,7 @@ export class DirectedGraph<T> {
   #edgesTo = new Map<Vertex<T>, Vertices<T>>();
   #edgesFrom = new Map<Vertex<T>, Vertices<T>>();
 
+  /** Vertices can be `string`, `number`, `symbol`, or non-Array objects. */
   constructor(
     graphLike?: {
       vertices?: Iterable<Vertex<T>>;
