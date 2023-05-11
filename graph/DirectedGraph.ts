@@ -22,7 +22,7 @@ export type WalkOptions = {
 };
 
 export declare namespace DirectedGraph {
-  export { Path, Visitor, WalkOptions };
+  export { Edge, Path, Vertex, Vertices, Visitor, WalkOptions };
 }
 
 export class DirectedGraph<T> {

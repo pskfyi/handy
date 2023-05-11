@@ -33,6 +33,9 @@ describe("DirectedGraph", () => {
 
   describe("namespace", () => {
     it("includes its related types", () => {
+      const _vertex: DirectedGraph.Vertex<string> = "a";
+      const _vertices: DirectedGraph.Vertices<string> = new Set("a");
+      const _edge: DirectedGraph.Edge<string> = ["a", "b"];
       const _path: DirectedGraph.Path<string> = ["a", "b", "c"];
       const _visitor: DirectedGraph.Visitor<string, void> = () => {};
       const _options: DirectedGraph.WalkOptions = { includeSource: true };
