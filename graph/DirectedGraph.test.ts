@@ -13,6 +13,20 @@ import { VertexError } from "./errors.ts";
 describe("DirectedGraph", () => {
   let graph: DirectedGraph<string>;
 
+  function assertVertices(
+    graph: DirectedGraph<string>,
+    ...vertices: string[]
+  ): void {
+    assertEquals(graph.vertices, new Set(vertices));
+  }
+
+  function assertEdges(
+    graph: DirectedGraph<string>,
+    ...edges: [string, string][]
+  ): void {
+    assertEquals(graph.edges, new Set(edges));
+  }
+
   beforeEach(() => {
     graph = new DirectedGraph();
   });
@@ -29,16 +43,18 @@ describe("DirectedGraph", () => {
     it("can clone a graph", () => {
       graph.add(["a", "b"]);
       const clone = new DirectedGraph(graph);
-      assert(clone.has("a", "b"));
-      assert(clone.edgesFrom("a").has("b"));
-      assert(clone.edgesTo("b").has("a"));
+      assertVertices(clone, "a", "b");
+      assertEdges(clone, ["a", "b"]);
 
       clone.remove("a");
-      assert(graph.has("a"));
-      assert(!clone.has("a"));
+      assertVertices(graph, "a", "b");
+      assertVertices(clone, "b");
 
       clone.add(["c", "d"]);
-      assert(!graph.has("c", "d"));
+      assertVertices(graph, "a", "b");
+      assertEdges(graph, ["a", "b"]);
+      assertVertices(clone, "b", "c", "d");
+      assertEdges(clone, ["c", "d"]);
     });
   });
 
@@ -134,14 +150,14 @@ describe("DirectedGraph", () => {
 
     it("adds edges", () => {
       graph.add(["a", "b"], ["a", "c"]);
-      assertEquals(graph.vertices, new Set(["a", "b", "c"]));
-      assertEquals(graph.edges, new Set([["a", "b"], ["a", "c"]]));
+      assertVertices(graph, "a", "b", "c");
+      assertEdges(graph, ["a", "b"], ["a", "c"]);
     });
 
     it("deduplicates edges", () => {
       graph.add(["a", "b"], ["a", "b"]);
-      assertEquals(graph.vertices, new Set(["a", "b"]));
-      assertEquals(graph.edges, new Set([["a", "b"]]));
+      assertVertices(graph, "a", "b");
+      assertEdges(graph, ["a", "b"]);
     });
 
     it("adds paths", () => {
@@ -171,14 +187,14 @@ describe("DirectedGraph", () => {
 
     it("removes edges", () => {
       graph.add(["a", "b"]).remove(["a", "b"]);
-      assertEquals(graph.vertices, new Set(["a", "b"]));
-      assertEquals(graph.edges, new Set());
+      assertVertices(graph, "a", "b");
+      assertEdges(graph);
     });
 
     it("removes paths", () => {
       graph.add(["a", "b", "c", "d", "e"]).remove(["b", "c", "d"]);
-      assertEquals(graph.vertices, new Set(["a", "b", "c", "d", "e"]));
-      assertEquals(graph.edges, new Set([["a", "b"], ["d", "e"]]));
+      assertVertices(graph, "a", "b", "c", "d", "e");
+      assertEdges(graph, ["a", "b"], ["d", "e"]);
     });
 
     it("ignores single-element paths", () => {
@@ -189,16 +205,14 @@ describe("DirectedGraph", () => {
 
     it("removes mixed inputs", () => {
       graph.add(["a", "b", "c", "d", "e"], "f").remove(["a", "b", "c"], "e");
-      assertEquals(graph.vertices, new Set(["a", "b", "c", "d", "f"]));
-      assertEquals(graph.edges, new Set([["c", "d"]]));
+      assertVertices(graph, "a", "b", "c", "d", "f");
+      assertEdges(graph, ["c", "d"]);
     });
 
     it("removes edges of a removed vertex", () => {
       graph.add(["a", "b"], ["a", "c"]).remove("a");
-      assert(!graph.has("a"));
-      assert(graph.has("b", "c"));
-      assert(!graph.edgesTo("b").has("a"));
-      assert(!graph.edgesTo("c").has("a"));
+      assertVertices(graph, "b", "c");
+      assertEdges(graph);
     });
   });
 
@@ -322,16 +336,16 @@ describe("DirectedGraph", () => {
   it("creates subgraphs", () => {
     graph.add(["a", "b", "c", "d"]);
     const subgraph = graph.subgraph(["a", "b", "c"]);
-    assertEquals(subgraph.vertices, new Set(["a", "b", "c"]));
-    assertEquals(subgraph.edges, new Set([["a", "b"], ["b", "c"]]));
+    assertVertices(subgraph, "a", "b", "c");
+    assertEdges(subgraph, ["a", "b"], ["b", "c"]);
 
     const subgraph2 = graph.subgraph(["a", "b", "c", "d"]);
-    assertEquals(subgraph2.vertices, graph.vertices);
-    assertEquals(subgraph2.edges, graph.edges);
+    assertVertices(subgraph2, ...graph.vertices);
+    assertEdges(subgraph2, ...graph.edges);
 
     const subgraph3 = graph.subgraph(["b", "d"]);
-    assertEquals(subgraph3.vertices, new Set(["b", "d"]));
-    assertEquals(subgraph3.edges, new Set([]));
+    assertVertices(subgraph3, "b", "d");
+    assertEdges(subgraph3);
   });
 
   describe("integration: collection.smallest", () => {
