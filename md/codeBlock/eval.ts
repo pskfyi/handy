@@ -78,7 +78,7 @@ export async function evaluateAll(
   > = new Map();
 
   for (const codeBlock of findAllCodeBlocks(markdown)) {
-    const details = parseCodeBlock(codeBlock);
+    const details = parseCodeBlock(codeBlock.code, codeBlock.lineNumber);
 
     try {
       const code = _getCode(details, replace);
