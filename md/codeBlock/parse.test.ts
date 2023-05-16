@@ -9,6 +9,7 @@ describe("parse", () => {
         type: "indented",
         indentation: "    ",
         code: "foo\nbar",
+        lineNumber: 1,
       },
     ));
 
@@ -22,6 +23,7 @@ describe("parse", () => {
         lang: "lang",
         meta: "meta data",
         code: "foo\nbar",
+        lineNumber: 1,
       },
     ));
 });

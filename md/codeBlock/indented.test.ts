@@ -58,12 +58,15 @@ describe("parse", () => {
 });
 
 describe("findAll", () => {
-  it("finds all code blocks in a string", () =>
+  it("finds all indented code blocks in a string", () =>
     assertEquals(
       findAll(
         "ex\n    foo\n\n    bar\n\n```baz\nqux\n```\n" +
           "      quux\n\n```corge\ngrault\n```",
       ),
-      ["    foo\n\n    bar", "      quux"],
+      [{ code: "    foo\n\n    bar", lineNumber: 2 }, {
+        code: "      quux",
+        lineNumber: 9,
+      }],
     ));
 });
