@@ -59,7 +59,7 @@ export async function evalCodeBlocks(
     const inlineCode = code.trim().replace(/\s+/g, " ");
     const firstChars = inlineCode.slice(
       0,
-      consoleWidth - langLength - iconLength - 5,
+      consoleWidth - langLength - iconLength - 6,
     );
 
     const message = firstChars.length < inlineCode.length
@@ -67,6 +67,10 @@ export async function evalCodeBlocks(
       : `${colorIcon} ${details.lang} ${firstChars}`;
 
     console.log(message);
+    if (result instanceof Error || !result.success) {
+      const source = `→ error evaluating at ${filePath}:${details.lineNumber}`;
+      console.log(source);
+    }
   }
 
   return results;
