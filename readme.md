@@ -263,6 +263,7 @@ String-related utilities.
 import {
   dedent,
   indent,
+  location,
   mostConsecutive,
   sequences,
   splitOn,
@@ -271,6 +272,7 @@ import {
 
 dedent("  a\n   b\n    c"); // "a\n b\n  c"
 indent("a\nb\nc", 2); // "  a\n  b\n  c"
+location("a\nb\nc", 5); // { line: 2, column: 2, offset: 5 }
 splitOnFirst("/", "a/b/c"); // ["a", "b/c"]
 splitOn(3, "\n", "a\nb\nc\nd\ne"); // ["a", "b", "c", "d\ne"]
 sequences("A", "ABAACA"); // ["A", "AA", "A"]
