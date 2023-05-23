@@ -30,9 +30,9 @@ import { mapOnInterval } from "https://deno.land/x/handy/array/utils.ts";
 
 mapOnInterval([3, 2, 1, "go!"], 100, (item) => console.log(item));
 // logs: 3
-// 1sec later, logs: 2
-// 1sec later, logs: 1
-// 1sec later, logs: "go!"
+// 100ms later, logs: 2
+// 100ms later, logs: 1
+// 100ms later, logs: "go!"
 ```
 
 ## `cli`
