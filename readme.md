@@ -51,9 +51,10 @@ type Deed = Tuple.FromIndices<["d", "e"], [0, 1, 1, 0]>; // ["d", "e", "e", "d"]
 CLI-related utilities.
 
 ```ts
-import { cmd } from "https://deno.land/x/handy/cli/utils.ts";
+import { cmd, consoleWidth } from "https://deno.land/x/handy/cli/utils.ts";
 
 await cmd("echo Hello!"); // "Hello!"
+consoleWidth(80); // real width of terminal, or fallback of 80
 ```
 
 ## `collection`
