@@ -35,6 +35,17 @@ mapOnInterval([3, 2, 1, "go!"], 100, (item) => console.log(item));
 // 100ms later, logs: "go!"
 ```
 
+```ts
+import type { Tuple } from "https://deno.land/x/handy/array/types.ts";
+
+type Filled = Tuple.Fill<["a", "b"], 7>; // [7, 7]
+type Flattened = Tuple.Flat<[[1, 2], [3, 4]]>; // [1, 2, 3, 4]
+type Indices = Tuple.Indices<["a", "b", "c"]>; // [0, 1, 2]
+type Index = Tuple.Index<["a", "b", "c"]>; // 0 | 1 | 2
+type Reversed = Tuple.Reverse<[1, 2, 3]>; // [3, 2, 1]
+type Deed = Tuple.FromIndices<["d", "e"], [0, 1, 1, 0]>; // ["d", "e", "e", "d"]
+```
+
 ## `cli`
 
 CLI-related utilities.
