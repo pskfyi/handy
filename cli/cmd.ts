@@ -1,4 +1,4 @@
-import type { Intersect } from "../ts/types.ts";
+import type { Pretty } from "../ts/types.ts";
 
 export type CmdOptions = {
   cwd?: string;
@@ -6,7 +6,7 @@ export type CmdOptions = {
   fullResult?: boolean;
 };
 
-export type CmdResult = Intersect<
+export type CmdResult = Pretty<
   & Pick<Deno.CommandOutput, "code" | "success">
   & { stdout: string; stderr: string }
 >;
