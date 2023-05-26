@@ -1,7 +1,7 @@
 import { cmd, CmdOptions, CmdResult } from "../cli/cmd.ts";
-import type { Intersect } from "./types.ts";
+import type { Pretty } from "./types.ts";
 
-export type EvaluateTypeScriptOptions = Intersect<
+export type EvaluateTypeScriptOptions = Pretty<
   & Pick<CmdOptions, "cwd" | "env">
   & { typeCheck?: boolean }
 >;
