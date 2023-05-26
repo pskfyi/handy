@@ -9,6 +9,7 @@ import { getSpan as getCommitSpan } from "../commit/get.ts";
 import { CommitDescription } from "../commit/types.ts";
 import { getLatest as getLatestTag } from "../tag.ts";
 import { consoleWidth } from "../../cli/consoleSize.ts";
+import { elideEnd } from "../../string/elide.ts";
 
 type CommitInfo = ConventionalCommit & Omit<CommitDescription, "message">;
 
@@ -58,7 +59,7 @@ async function commits(
       commits.push({ hash, author, date, ...conventionalCommit });
     } catch {
       log(`  Ignoring unconventional commit  ${hash}`);
-      log(`    ${message.substring(0, terminalWidth - 7)}...`);
+      log(`    ${elideEnd(message, { maxLength: terminalWidth - 4 })}`);
     }
   }
 

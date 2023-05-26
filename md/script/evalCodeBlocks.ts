@@ -1,6 +1,7 @@
 import { gray, green, red } from "../../_deps/fmt.ts";
 import { CmdResult } from "../../cli/cmd.ts";
 import { consoleWidth } from "../../cli/consoleSize.ts";
+import { elideEnd } from "../../string/elide.ts";
 import {
   evaluateAll,
   EvaluateOptions,
@@ -55,15 +56,13 @@ export async function evalCodeBlocks(
     const iconLength = icon === "skip" ? 4 : 1;
     const langLength = String(lang).length;
 
-    const inlineCode = code.trim().replace(/\s+/g, " ");
-    const firstChars = inlineCode.slice(
-      0,
-      width - langLength - iconLength - 5,
-    );
+    const prefix = `${colorIcon} ${details.lang} `;
+    const spacesInPrefix = 2;
 
-    const message = firstChars.length < inlineCode.length
-      ? `${colorIcon} ${details.lang} ${firstChars}...`
-      : `${colorIcon} ${details.lang} ${firstChars}`;
+    const inlineCode = code.trim().replace(/\s+/g, " ");
+    const maxLength = width - langLength - iconLength - spacesInPrefix;
+
+    const message = `${prefix}${elideEnd(inlineCode, { maxLength })}`;
 
     console.log(message);
   }
