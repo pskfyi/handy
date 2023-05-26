@@ -300,3 +300,13 @@ import { evaluate } from "https://deno.land/x/handy/ts/utils.ts";
 await evaluate("console.log('Hello!')")
   .then((res) => res.stdout); // "Hello!"
 ```
+
+```ts
+import type { Pretty } from "https://deno.land/x/handy/ts/types.ts";
+
+type Input = { a: number } & { b: string };
+//     ^? { a: number } & { b: string }
+
+type Prettified = Pretty<Input>;
+//     ^? { a: number; b: string }
+```
