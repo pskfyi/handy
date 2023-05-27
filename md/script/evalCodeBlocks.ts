@@ -1,5 +1,6 @@
 import { gray, green, red } from "../../_deps/fmt.ts";
 import { CmdResult } from "../../cli/cmd.ts";
+import { consoleWidth } from "../../cli/consoleSize.ts";
 import {
   evaluateAll,
   EvaluateOptions,
@@ -27,10 +28,8 @@ export async function evalCodeBlocks(
   const markdown = await Deno.readTextFile(filePath);
   console.log(`Executing code blocks in ${filePath}`);
 
-  const consoleWidth = Deno.isatty(Deno.stdout.rid)
-    ? Deno.consoleSize().columns
-    : 80;
-  console.log("-".repeat(consoleWidth));
+  const width = consoleWidth(80);
+  console.log("-".repeat(width));
 
   const results = await evaluateAll(markdown, { replace });
 
@@ -58,6 +57,10 @@ export async function evalCodeBlocks(
       : gray(icon);
 
     const inlineCode = code.trim().replace(/\s+/g, " ");
+    const firstChars = inlineCode.slice(
+      0,
+      width - langLength - iconLength - 5,
+    );
 
     const message = `${colorIcon} ${lang} ${inlineCode}`;
 

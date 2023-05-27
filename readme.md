@@ -51,9 +51,10 @@ type Deed = Tuple.FromIndices<["d", "e"], [0, 1, 1, 0]>; // ["d", "e", "e", "d"]
 CLI-related utilities.
 
 ```ts
-import { cmd } from "https://deno.land/x/handy/cli/utils.ts";
+import { cmd, consoleWidth } from "https://deno.land/x/handy/cli/utils.ts";
 
 await cmd("echo Hello!"); // "Hello!"
+consoleWidth(80); // real width of terminal, or fallback of 80
 ```
 
 ## `collection`
@@ -240,6 +241,18 @@ import { setNestedEntry } from "https://deno.land/x/handy/object/utils.ts";
 
 const S = Symbol("symbol");
 setNestedEntry({}, ["a", 10, S], "👋"); // { a: { 10: { [S]: "👋" } } }
+```
+
+```ts
+import type { Obj } from "https://deno.land/x/handy/object/types.ts";
+
+type Key = Obj.Key; // string | number | symbol
+type Empty = Obj.Entry; // Record<Key, never>
+type Entry = Obj.Entry<any>; // [Key, any]
+type Pair = Obj.Pair<"a", number>; // { "a": number }
+type EntryToPair = Obj.EntryToPair<Entry>; // Pair
+type MyObj = Obj.FromEntries<[["a", 1], ["b", null]]>; // { a: 1, b: null }
+type Entries = Obj.ToEntries<MyObj>; // Array<["a", 1], ["b", null]>
 ```
 
 ## `os`
