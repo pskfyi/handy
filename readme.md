@@ -322,6 +322,15 @@ sequences("A", "ABAACA"); // ["A", "AA", "A"]
 mostConsecutive("A", "ABAACA"); // 2
 ```
 
+```ts
+import { Str } from "https://deno.land/x/handy/string/types.ts";
+
+type Char = Str.Char<"ABC">; // "A" | "B" | "C"
+type Index = Str.Index<"ABC">; // 0 | 1 | 2
+type Indices = Str.Indices<"ABC">; // [0, 1, 2]
+type Tuple = Str.ToTuple<"ABC">; // ["A", "B", "C"]
+```
+
 ## `ts`
 
 TypeScript-related utilities.
