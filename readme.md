@@ -308,11 +308,15 @@ await evaluate("console.log('Hello!')")
 ```
 
 ```ts
-import type { Pretty } from "https://deno.land/x/handy/ts/types.ts";
+import type { Pretty, Satisfies } from "https://deno.land/x/handy/ts/types.ts";
 
 type Input = { a: number } & { b: string };
 //     ^? { a: number } & { b: string }
 
 type Prettified = Pretty<Input>;
 //     ^? { a: number; b: string }
+
+type Str<T> = T extends string ? T : never;
+type T = Satisfies<Str<"ABC">>; // true
+type F = Satisfies<Str<123>>; // false
 ```

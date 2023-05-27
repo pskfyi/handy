@@ -13,3 +13,11 @@
  * //   ^? { city: string, state: string, street: string, zip: string } */
 // deno-lint-ignore ban-types
 export type Pretty<T> = { [K in keyof T]: T[K] } & {};
+
+/** Returns `true` if `T` is not `never`, otherwise `false`. Useful in
+ * conditional types.
+ *
+ * @example
+ * type N = Satisfies<never> // false
+ * type Y = Satisfies<1> // true */
+export type Satisfies<T> = [T] extends [never] ? false : true;
