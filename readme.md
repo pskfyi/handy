@@ -71,6 +71,7 @@ Utilities related to generic collection types, like `Iterable`s.
 ```ts
 import {
   largest,
+  position,
   smallest,
 } from "https://deno.land/x/handy/collection/utils.ts";
 
@@ -79,6 +80,22 @@ smallest(["aaa", "b", "cc"]); // "b"
 
 largest("size", [new Set([1]), new Set([2, 3]), new Set()]); // new Set([2, 3])
 smallest("size", [new Set([1]), new Set([2, 3]), new Set()]); // new Set()
+
+// a Position is a location between items in a collection
+position.toPosition(-1, ["a", "b", "c"]); // 2, position between b and c
+position.toPosition(-1, "abc"); // 2, position between b and c
+
+// -0 is the end of the collection
+position.toPosition(-0, ["a", "b", "c"]); // 3
+position.toPosition(-0, "abc"); // 3
+
+position.next(0, "a"); // 1, after a
+position.next(1, "a"); // null, no next position exists
+position.previous(1); // 0 (no collection needed)
+position.previous(0); // null, no previous position exists
+
+position.isPosition(NaN, []); // false
+position.assert(0, []); // 0 is always valid
 ```
 
 ```ts
