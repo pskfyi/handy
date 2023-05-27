@@ -6,13 +6,13 @@ describe("invalid locations", () => {
     void assertThrows(() => location("a", 2)));
 
   it("throws if -index > string.length + 1", () =>
-    void assertThrows(() => location("a", -3)));
+    void assertThrows(() => location("a", -2)));
 });
 
 describe("location.column", () => {
   it('handles ""', () => {
     assertEquals(location("", 0).column, 1);
-    assertEquals(location("", -1).column, 1);
+    assertEquals(location("", -0).column, 1);
   });
 
   it("starts at column 1", () => assertEquals(location("a", 0).column, 1));
@@ -26,16 +26,16 @@ describe("location.column", () => {
   });
 
   it("finds the last column", () => {
-    assertEquals(location("a\nb", -1).column, 2);
-    assertEquals(location("a\rb", -1).column, 2);
-    assertEquals(location("a\r\nb", -1).column, 2);
+    assertEquals(location("a\nb", -0).column, 2);
+    assertEquals(location("a\rb", -0).column, 2);
+    assertEquals(location("a\r\nb", -0).column, 2);
   });
 });
 
 describe("location.line", () => {
   it('handles ""', () => {
     assertEquals(location("", 0).line, 1);
-    assertEquals(location("", -1).line, 1);
+    assertEquals(location("", -0).line, 1);
   });
 
   it("starts at line 1", () => assertEquals(location("a", 0).line, 1));
@@ -47,9 +47,9 @@ describe("location.line", () => {
   });
 
   it("finds the last line", () => {
-    assertEquals(location("a\nb", -1).line, 2);
-    assertEquals(location("a\rb", -1).line, 2);
-    assertEquals(location("a\r\nb", -1).line, 2);
+    assertEquals(location("a\nb", -0).line, 2);
+    assertEquals(location("a\rb", -0).line, 2);
+    assertEquals(location("a\r\nb", -0).line, 2);
   });
 });
 
@@ -60,7 +60,7 @@ describe("examples", () => {
 describe("location.offset", () => {
   it('handles ""', () => {
     assertEquals(location("", 0).offset, 0);
-    assertEquals(location("", -1).offset, 0);
+    assertEquals(location("", -0).offset, 0);
   });
 
   it("starts at offset 0", () => assertEquals(location("a", 0).offset, 0));
@@ -74,8 +74,8 @@ describe("location.offset", () => {
   });
 
   it("finds the last offset", () => {
-    assertEquals(location("a\nb", -1).offset, 3);
-    assertEquals(location("a\rb", -1).offset, 3);
-    assertEquals(location("a\r\nb", -1).offset, 4);
+    assertEquals(location("a\nb", -0).offset, 3);
+    assertEquals(location("a\rb", -0).offset, 3);
+    assertEquals(location("a\r\nb", -0).offset, 4);
   });
 });
