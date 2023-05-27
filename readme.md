@@ -81,6 +81,26 @@ largest("size", [new Set([1]), new Set([2, 3]), new Set()]); // new Set([2, 3])
 smallest("size", [new Set([1]), new Set([2, 3]), new Set()]); // new Set()
 ```
 
+```ts
+import {
+  Index,
+  IndexedCollection,
+  Indices,
+} from "https://deno.land/x/handy/collection/types.ts";
+
+const arr = ["a", "b", "c"] satisfies IndexedCollection;
+const str = "XY" satisfies IndexedCollection;
+const typedArr = new Uint8Array() satisfies IndexedCollection;
+
+type ArrIndices = Indices<typeof arr>; // [0, 1, 2]
+type StrIndices = Indices<typeof str>; // [0, 1]
+type TypedArrIndices = Indices<typeof typedArr>; // number[]
+
+type ArrIndex = Index<typeof arr>; // 0 | 1 | 2
+type StrIndex = Index<typeof str>; // 0 | 1
+type TypedArrIndex = Index<typeof typedArr>; // number
+```
+
 ## `fs`
 
 File system-related utilities.
