@@ -81,7 +81,25 @@ export type Zip<A extends readonly unknown[], B extends readonly unknown[]> =
     : []
     : [];
 
+/** Represents a tuple of length `N` comprised of `unknown` values.
+ *
+ * @example
+ * type A = TupleOfLength<3> // [unknown, unknown, unknown] */
+export type TupleOfLength<N extends number, Tuple extends unknown[] = []> =
+  Tuple["length"] extends N // When Tuple is finally of length N...
+    ? Tuple // ...return it.
+    : TupleOfLength<N, [...Tuple, unknown]>; // Otherwise, add another item.
+
 /** Array utility types which are designed to respect tuples. */
 export declare namespace Tuple {
-  export { Fill, Flat, FromIndices, Index, Indices, Reverse, Zip };
+  export {
+    Fill,
+    Flat,
+    FromIndices,
+    Index,
+    Indices,
+    Reverse,
+    TupleOfLength as OfLength,
+    Zip,
+  };
 }
