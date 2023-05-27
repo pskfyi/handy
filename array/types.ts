@@ -3,7 +3,7 @@
  * @example
  * type A = Fill<[1, 2, 3], "a"> // ["a", "a", "a"]
  * type B = Fill<Array<unknown>, "b"> // Array<"b"> */
-export type Fill<T extends unknown[], Value> = {
+export type Fill<T extends readonly unknown[], Value> = {
   [K in keyof T]: Value;
 };
 
@@ -12,7 +12,8 @@ export type Fill<T extends unknown[], Value> = {
  *
  * @example
  * const items: Flat<[1, 2, [3, [4], 5]]> = [1, 2, 3, [4], 5]; */
-export type Flat<T extends unknown[]> = T extends [infer Head, ...infer Tail]
+export type Flat<T extends readonly unknown[]> = T extends
+  readonly [infer Head, ...infer Tail]
   ? Head extends unknown[] ? [...Head, ...Flat<Tail>]
   : [Head, ...Flat<Tail>]
   : [];
@@ -21,28 +22,28 @@ export type Flat<T extends unknown[]> = T extends [infer Head, ...infer Tail]
  *
  * @example
  * const items: Reverse<[1, 2, 3]> = [3, 2, 1] */
-export type Reverse<T extends unknown[]> = T extends [infer Head, ...infer Tail]
-  ? [...Reverse<Tail>, Head]
+export type Reverse<T extends readonly unknown[]> = T extends
+  readonly [infer Head, ...infer Tail] ? [...Reverse<Tail>, Head]
   : [];
 
-type _Indices<T extends unknown[]> = T extends [unknown, ...infer Tail]
-  ? [Tail["length"], ..._Indices<Tail>]
+type _Indices<T extends readonly unknown[]> = T extends
+  readonly [unknown, ...infer Tail] ? [Tail["length"], ..._Indices<Tail>]
   : [];
 
 /** Represents a tuple of the indices of `T`.
  *
  * @example
  * type A = Indices<["a", "b", "c"]> // [0, 1, 2] */
-export type Indices<T extends unknown[]> = Reverse<_Indices<T>>;
+export type Indices<T extends readonly unknown[]> = Reverse<_Indices<T>>;
 
 /** Represents one of the indices of `T`.
  *
  * @example
  * type A = Index<["a", "b", "c"]> // 0 | 1 | 2 */
-export type Index<T extends unknown[]> = Indices<T>[number];
+export type Index<T extends readonly unknown[]> = Indices<T>[number];
 
-type _FromIndices<T extends unknown[], I> = I extends
-  [infer Head extends keyof T, ...infer Tail extends Array<keyof T>]
+type _FromIndices<T extends readonly unknown[], I> = I extends
+  readonly [infer Head extends keyof T, ...infer Tail extends Array<keyof T>]
   ? [T[Head], ..._FromIndices<T, Tail>]
   : [];
 
@@ -51,8 +52,10 @@ type _FromIndices<T extends unknown[], I> = I extends
  * @example
  * type A = FromIndices<["n", "s", "o"], [1, 2, 2, 0]>
  * // ["s", "o", "o", "n"] */
-export type FromIndices<T extends unknown[], I extends Index<T>[]> =
-  _FromIndices<T, I>;
+export type FromIndices<
+  T extends readonly unknown[],
+  I extends readonly Index<T>[],
+> = _FromIndices<T, I>;
 
 /** Represents an array of length-2 tuples comprised of two arrays zippered
  * together.
@@ -60,12 +63,12 @@ export type FromIndices<T extends unknown[], I extends Index<T>[]> =
  * @example
  * type A = Zip<[1, 2, 3], ["a", "b", "c"]>
  * // [[1, "a"], [2, "b"], [3, "c"]] */
-export type Zip<A extends unknown[], B extends unknown[]> = A extends
-  [infer HeadA, ...infer TailA]
-  ? B extends [infer HeadB, ...infer TailB]
-    ? [[HeadA, HeadB], ...Zip<TailA, TailB>]
-  : []
-  : [];
+export type Zip<A extends readonly unknown[], B extends readonly unknown[]> =
+  A extends readonly [infer HeadA, ...infer TailA]
+    ? B extends readonly [infer HeadB, ...infer TailB]
+      ? [[HeadA, HeadB], ...Zip<TailA, TailB>]
+    : []
+    : [];
 
 /** Array utility types which are designed to respect tuples. */
 export declare namespace Tuple {
