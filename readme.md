@@ -36,7 +36,12 @@ mapOnInterval([3, 2, 1, "go!"], 100, (item) => console.log(item));
 ```
 
 ```ts
-import type { Tuple } from "https://deno.land/x/handy/array/types.ts";
+import type {
+  Tuple,
+  TypedArray,
+} from "https://deno.land/x/handy/array/types.ts";
+
+const arr: TypedArray = new Uint8Array();
 
 type Filled = Tuple.Fill<["a", "b"], 7>; // [7, 7]
 type Flattened = Tuple.Flat<[[1, 2], [3, 4]]>; // [1, 2, 3, 4]
