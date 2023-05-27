@@ -49,6 +49,7 @@ type Indices = Tuple.Indices<["a", "b", "c"]>; // [0, 1, 2]
 type Index = Tuple.Index<["a", "b", "c"]>; // 0 | 1 | 2
 type Reversed = Tuple.Reverse<[1, 2, 3]>; // [3, 2, 1]
 type Deed = Tuple.FromIndices<["d", "e"], [0, 1, 1, 0]>; // ["d", "e", "e", "d"]
+type ThreeUnknowns = Tuple.OfLength<3>; // [unknown, unknown, unknown]
 ```
 
 ## `cli`
