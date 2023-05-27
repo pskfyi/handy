@@ -15,6 +15,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 - [`json`](#json)
 - [`md`](#md)
   - [`script/evalCodeBlocks`](#scriptevalcodeblocks)
+- [`number`](#number)
 - [`object`](#object)
 - [`os`](#os)
 - [`path`](#path)
@@ -236,6 +237,31 @@ deno run --allow-read --allow-run \
   https://deno.land/x/handy/scripts/evalCodeBlocks.ts \
   ./readme.md \
   "some string to find" "replacement string" # optional
+```
+
+## `number`
+
+Number-related utilities.
+
+```ts
+import { Num } from "https://deno.land/x/handy/number/types.ts";
+
+type T = Num.Type<1.1>; // "+float"
+type U = Num.Type<0>; // "zero"
+type V = Num.Type<-5>; // "-integer"
+
+// type filters return `never` if the type doesn't match
+type Finite = Num.Finite<0>; // 0
+type NotFinite = Num.Finite<number>; // never
+
+type Wide = Num.Wide<number>; // number
+type NotWide = Num.Wide<1>; // never
+
+type Int = Num.Integer<1>; // 1
+type NotInt = Num.Integer<1.1>; // never
+
+type Float = Num.Float<1.1>; // 1.1
+type NotFloat = Num.Float<1>; // never
 ```
 
 ## `object`
