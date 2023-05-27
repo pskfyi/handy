@@ -8,6 +8,7 @@ import {
 import { getSpan as getCommitSpan } from "../commit/get.ts";
 import { CommitDescription } from "../commit/types.ts";
 import { getLatest as getLatestTag } from "../tag.ts";
+import { consoleWidth } from "../../cli/consoleSize.ts";
 
 type CommitInfo = ConventionalCommit & Omit<CommitDescription, "message">;
 
@@ -40,9 +41,7 @@ async function commits(
   log(`  Commits since ${commit}: ${rawCommits.length}`);
 
   const commits: CommitInfo[] = [];
-  const terminalWidth = Deno.isatty(Deno.stdout.rid)
-    ? Deno.consoleSize().columns
-    : 80;
+  const terminalWidth = consoleWidth(80);
 
   for (const { message, author, date, hash: longHash } of rawCommits) {
     const hash = longHash.substring(0, 7);
