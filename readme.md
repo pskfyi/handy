@@ -60,7 +60,7 @@ CLI-related utilities.
 ```ts
 import { cmd, consoleWidth } from "https://deno.land/x/handy/cli/utils.ts";
 
-await cmd("echo Hello!"); // "Hello!"
+await cmd("deno -V"); // ex: "deno 1.34.0"
 consoleWidth(80); // real width of terminal, or fallback of 80
 ```
 
