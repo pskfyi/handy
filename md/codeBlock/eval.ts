@@ -3,6 +3,7 @@ import { findAll as findAllCodeBlocks } from "./findAll.ts";
 import { CmdResult } from "../../cli/cmd.ts";
 import { evaluate as evalTS } from "../../ts/evaluate.ts";
 import { CodeBlockDetails } from "./types.ts";
+import { TextLocation } from "../../string/location.ts";
 
 export class IndentedCodeBlockError extends Error {
   constructor() {
@@ -64,36 +65,48 @@ export async function evaluateAll(
   markdown: string,
   { replace = [] }: EvaluateOptions = {},
 ): Promise<
-  Map<
+  Record<
     CodeBlockDetails,
-    IndentedCodeBlockError | NoLanguageError | UnknownLanguageError | CmdResult
+    [
+      TextLocation,
+      | IndentedCodeBlockError
+      | NoLanguageError
+      | UnknownLanguageError
+      | CmdResult,
+    ]
   >
 > {
   const results: Map<
     CodeBlockDetails,
-    | CmdResult
-    | IndentedCodeBlockError
-    | NoLanguageError
-    | UnknownLanguageError
+    [
+      TextLocation,
+      | CmdResult
+      | IndentedCodeBlockError
+      | NoLanguageError
+      | UnknownLanguageError,
+    ]
   > = new Map();
 
-  for (const codeBlock of findAllCodeBlocks(markdown)) {
+  for (const [codeBlock, location] of findAllCodeBlocks(markdown)) {
+    //original searchResult.lineNumber from markdown passed to parse()
     const details = parseCodeBlock(codeBlock);
-
     try {
       const code = _getCode(details, replace);
       const result = await evalTS(code);
 
-      results.set(details, result);
+      results.set(details, [location, result]);
     } catch (error) {
       if (
         error instanceof IndentedCodeBlockError ||
         error instanceof NoLanguageError ||
         error instanceof UnknownLanguageError
       ) {
-        results.set(details, error);
+        results.set(details, [location, error]);
       } else {
-        results.set(details, new Error("Unknown error", { cause: error }));
+        results.set(details, [
+          location,
+          new Error("Unknown error", { cause: error }),
+        ]);
       }
     }
   }

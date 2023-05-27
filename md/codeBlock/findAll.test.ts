@@ -5,6 +5,9 @@ describe("findAll", () => {
   it("finds all code blocks in a string", () =>
     assertEquals(
       findAll("foo\n\n    bar\n\n```baz\nqux\n```"),
-      ["    bar", "```baz\nqux\n```"],
+      [{ code: "    bar", lineNumber: 3 }, {
+        code: "```baz\nqux\n```",
+        lineNumber: 5,
+      }],
     ));
 });

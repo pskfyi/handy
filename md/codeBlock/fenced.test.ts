@@ -105,17 +105,21 @@ describe("parse", () => {
         char: "`",
         fence: "```",
         code: "Hello!",
+        lineNumber: 1,
       },
     ));
 });
 
 describe("findAll", () => {
-  it("finds all code blocks in a string", () =>
+  it("finds all fenced code blocks in a string", () =>
     assertEquals(
       findAll(
         "foo\n\n    bar\n\n```baz\nqux\n```" +
           "   quux\n\n```corge\ngrault\n```",
       ),
-      ["```baz\nqux\n```", "```corge\ngrault\n```"],
+      [{ code: "```baz\nqux\n```", lineNumber: 5 }, {
+        code: "```corge\ngrault\n```",
+        lineNumber: 9,
+      }],
     ));
 });

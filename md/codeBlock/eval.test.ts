@@ -57,8 +57,8 @@ describe("evaluateAll", () => {
       );
 
       assertEquals(results.size, 2);
-      for (const [node, result] of results) {
-        assert(node.type === "indented");
+      for (const [details, result] of results) {
+        assert(details.type === "indented");
         assert(result instanceof IndentedCodeBlockError);
       }
     });
@@ -74,6 +74,7 @@ describe("evaluateAll", () => {
       assertEquals(results.size, 2);
       for (const [details, err] of results) {
         assert(details.type === "fenced");
+        assert(typeof details.lineNumber === "number");
         assert(err instanceof NoLanguageError);
       }
     });
@@ -87,6 +88,7 @@ describe("evaluateAll", () => {
       assertEquals(results.size, 2);
       for (const [details, err] of results) {
         assert(details.type === "fenced");
+        assert(typeof details.lineNumber === "number");
         assert(err instanceof UnknownLanguageError);
       }
     });
@@ -98,8 +100,9 @@ describe("evaluateAll", () => {
       );
 
       assertEquals(results.size, 2);
-      for (const [node, result] of results) {
-        assert(node.type === "fenced");
+      for (const [details, result] of results) {
+        assert(details.type === "fenced");
+        assert(typeof details.lineNumber === "number");
         assert(!(result instanceof Error));
         if (!result.success) {
           assertEquals(result.code, 1);

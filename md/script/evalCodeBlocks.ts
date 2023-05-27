@@ -7,7 +7,7 @@ import {
   NoLanguageError,
   UnknownLanguageError,
 } from "../codeBlock/eval.ts";
-import { CodeBlockDetails } from "../codeBlock/types.ts";
+import { CodeBlockDetails, TextLocation } from "../codeBlock/types.ts";
 
 export async function evalCodeBlocks(
   filePath: string,
@@ -15,10 +15,13 @@ export async function evalCodeBlocks(
 ): Promise<
   Map<
     CodeBlockDetails,
-    | IndentedCodeBlockError
-    | NoLanguageError
-    | UnknownLanguageError
-    | CmdResult
+    [
+      TextLocation,
+      | IndentedCodeBlockError
+      | NoLanguageError
+      | UnknownLanguageError
+      | CmdResult,
+    ]
   >
 > {
   const markdown = await Deno.readTextFile(filePath);
@@ -31,7 +34,7 @@ export async function evalCodeBlocks(
 
   const results = await evaluateAll(markdown, { replace });
 
-  for (const [details, result] of results) {
+  for (const [details, resultArr] of results) {
     if (details.type === "indented") continue;
     if (details.lang === "no-eval") continue;
 
@@ -39,6 +42,7 @@ export async function evalCodeBlocks(
     if (metaArgs.includes("no-eval")) continue;
 
     const { lang, code } = details;
+    const [location, result] = resultArr;
 
     const icon = (result instanceof NoLanguageError ||
         result instanceof UnknownLanguageError)
@@ -53,20 +57,23 @@ export async function evalCodeBlocks(
       ? green(icon)
       : gray(icon);
 
-    const iconLength = icon === "skip" ? 4 : 1;
-    const langLength = String(lang).length;
-
     const inlineCode = code.trim().replace(/\s+/g, " ");
-    const firstChars = inlineCode.slice(
-      0,
-      consoleWidth - langLength - iconLength - 5,
-    );
 
-    const message = firstChars.length < inlineCode.length
-      ? `${colorIcon} ${details.lang} ${firstChars}...`
-      : `${colorIcon} ${details.lang} ${firstChars}`;
+    const message = `${colorIcon} ${lang} ${inlineCode}`;
 
-    console.log(message);
+    const extraSpace = 10;
+
+    const firstChars = (message.length <= consoleWidth)
+      ? message
+      : message.slice(0, consoleWidth + extraSpace - 3) + "...";
+
+    console.log(firstChars);
+    if (result instanceof Error || !result.success) {
+      const source = `${
+        red("→")
+      } error evaluating at ${filePath}:${location.line} ${result.stderr}`;
+      console.log(source);
+    }
   }
 
   return results;
