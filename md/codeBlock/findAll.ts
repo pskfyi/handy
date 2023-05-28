@@ -1,7 +1,8 @@
 import { CODE_BLOCK_REGEX } from "./regex.ts";
-/** Find all code blocks in a markdown string. */
-export function findAll(markdown: string): string[] {
-  const matches = markdown.matchAll(CODE_BLOCK_REGEX);
+import { location } from "../../string/location.ts";
+import type { SearchResult } from "./types.ts";
 
-  return [...matches].map((match) => match[0]);
+export function findAll(markdown: string): SearchResult[] {
+  return [...markdown.matchAll(CODE_BLOCK_REGEX)]
+    .map((match) => [match[0], location(markdown, match.index ?? 0)]);
 }

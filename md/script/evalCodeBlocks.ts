@@ -1,28 +1,18 @@
 import { gray, green, red } from "../../_deps/fmt.ts";
-import { CmdResult } from "../../cli/cmd.ts";
 import { consoleWidth } from "../../cli/consoleSize.ts";
 import { elideEnd } from "../../string/elide.ts";
 import {
   evaluateAll,
+  EvaluateAllResult,
   EvaluateOptions,
-  IndentedCodeBlockError,
   NoLanguageError,
   UnknownLanguageError,
 } from "../codeBlock/eval.ts";
-import { CodeBlockDetails } from "../codeBlock/types.ts";
 
 export async function evalCodeBlocks(
   filePath: string,
   replace?: EvaluateOptions["replace"],
-): Promise<
-  Map<
-    CodeBlockDetails,
-    | IndentedCodeBlockError
-    | NoLanguageError
-    | UnknownLanguageError
-    | CmdResult
-  >
-> {
+): Promise<EvaluateAllResult[]> {
   const markdown = await Deno.readTextFile(filePath);
   console.log(`Executing code blocks in ${filePath}`);
 
@@ -31,7 +21,7 @@ export async function evalCodeBlocks(
 
   const results = await evaluateAll(markdown, { replace });
 
-  for (const [details, result] of results) {
+  for (const [details, , result] of results) {
     if (details.type === "indented") continue;
     if (details.lang === "no-eval") continue;
 
@@ -62,9 +52,7 @@ export async function evalCodeBlocks(
     const inlineCode = code.trim().replace(/\s+/g, " ");
     const maxLength = width - langLength - iconLength - spacesInPrefix;
 
-    const message = `${prefix}${elideEnd(inlineCode, { maxLength })}`;
-
-    console.log(message);
+    console.log(`${prefix}${elideEnd(inlineCode, { maxLength })}`);
   }
 
   return results;
@@ -84,7 +72,7 @@ if (import.meta.main) {
 
   const results = await evalCodeBlocks(filePath, replace);
 
-  results.forEach((result) => {
+  results.forEach(([, , result]) => {
     if (!(result instanceof Error) && !result.success) Deno.exit(1);
   });
 }

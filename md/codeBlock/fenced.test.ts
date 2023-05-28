@@ -110,12 +110,15 @@ describe("parse", () => {
 });
 
 describe("findAll", () => {
-  it("finds all code blocks in a string", () =>
+  it("returns blocks with locations", () =>
     assertEquals(
       findAll(
         "foo\n\n    bar\n\n```baz\nqux\n```" +
           "   quux\n\n```corge\ngrault\n```",
       ),
-      ["```baz\nqux\n```", "```corge\ngrault\n```"],
+      [
+        ["```baz\nqux\n```", { column: 1, line: 5, offset: 14 }],
+        ["```corge\ngrault\n```", { column: 1, line: 9, offset: 37 }],
+      ],
     ));
 });

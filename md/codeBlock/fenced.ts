@@ -1,7 +1,9 @@
+import { location } from "../../string/location.ts";
 import { mostConsecutive } from "../../string/sequence.ts";
 import type { Pretty } from "../../ts/types.ts";
 import * as infoString from "./infoString.ts";
 import { FENCED_CODE_BLOCK_REGEX } from "./regex.ts";
+import type { SearchResult } from "./types.ts";
 
 export type FencedCodeBlockDetails = Pretty<
   & {
@@ -68,9 +70,9 @@ export function parse(codeBlock: string): FencedCodeBlockDetails {
   return data;
 }
 
-export function findAll(markdown: string): string[] {
+export function findAll(markdown: string): SearchResult[] {
   const regex = new RegExp(FENCED_CODE_BLOCK_REGEX, "gm");
-  const matches = markdown.matchAll(regex);
 
-  return [...matches].map((match) => match[0]);
+  return [...markdown.matchAll(regex)]
+    .map((match) => [match[0], location(markdown, match.index ?? 0)]);
 }
