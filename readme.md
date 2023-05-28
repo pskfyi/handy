@@ -386,6 +386,7 @@ String-related utilities.
 import {
   dedent,
   elideStart, // and others
+  escapeTerse,
   indent,
   mostConsecutive,
   sequences,
@@ -397,6 +398,7 @@ import {
 dedent("  a\n   b\n    c"); // "a\n b\n  c"
 indent("a\nb\nc", 2); // "  a\n  b\n  c"
 elideStart("1234567890", { maxLength: 8 }); // "…4567890"
+escapeTerse("\t\t\n"); // "⇥⇥¶"
 splitOnFirst("/", "a/b/c"); // ["a", "b/c"]
 splitOn(3, "\n", "a\nb\nc\nd\ne"); // ["a", "b", "c", "d\ne"]
 sequences("A", "ABAACA"); // ["A", "AA", "A"]
