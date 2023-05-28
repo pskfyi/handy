@@ -21,7 +21,7 @@ export async function evalCodeBlocks(
 
   const results = await evaluateAll(markdown, { replace });
 
-  for (const [details, , result] of results) {
+  for (const [details, { line }, result] of results) {
     if (details.type === "indented") continue;
     if (details.lang === "no-eval") continue;
 
@@ -53,6 +53,11 @@ export async function evalCodeBlocks(
     const maxLength = width - langLength - iconLength - spacesInPrefix;
 
     console.log(`${prefix}${elideEnd(inlineCode, { maxLength })}`);
+
+    if ("success" in result && !result.success) {
+      const source = `${filePath}:${line}`;
+      console.log(`${red("→")} error at ${source}\n${result.stderr}`);
+    }
   }
 
   return results;
