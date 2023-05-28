@@ -393,6 +393,7 @@ import {
   splitOn,
   splitOnFirst,
   Text,
+  TextCursor,
 } from "https://deno.land/x/handy/string/utils.ts";
 
 dedent("  a\n   b\n    c"); // "a\n b\n  c"
@@ -408,6 +409,13 @@ const text = new Text("a\nb\nc");
 text.lines; // ["a\n", "b\n", "c"]
 text.locationAt(4); // location of "c", { line: 3, column: 1, offset: 4 }
 text.locationAt(5); // end of text, { line: 3, column: 2, offset: 5 }
+
+const cursor = new TextCursor("a\nb\nc", 2);
+cursor.remainder; // "b\nc"
+cursor.location; // { offset: 2, line: 2, column: 1 }
+cursor.inspect(); // string depicting...
+// [L2] b¶
+//       ^
 ```
 
 ```ts
