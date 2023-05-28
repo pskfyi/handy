@@ -35,16 +35,15 @@ export async function evalCodeBlocks(
       ? "skip"
       : (result instanceof Error || !result.success)
       ? "✗"
-      : "✔️";
+      : "✓";
 
     const colorIcon = icon === "✗"
       ? red(icon)
-      : icon === "✔️"
+      : icon === "✓"
       ? green(icon)
       : gray(icon);
 
-    // in some terminals, the ✔️ emoji is more than 1 character wide
-    const iconLength = icon === "skip" ? 4 : icon === "✔️" ? 2 : 1;
+    const iconLength = icon === "skip" ? 4 : 1;
     const langLength = String(lang).length;
 
     const prefix = `${colorIcon} ${details.lang} `;
