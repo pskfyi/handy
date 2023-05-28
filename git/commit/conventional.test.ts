@@ -5,8 +5,10 @@ import {
   it,
   test,
 } from "../../_deps/testing.ts";
+import { assertParseResult } from "../../parser/asserts.ts";
 import { dedent } from "../../string/dedent.ts";
 import {
+  conventionalCommit as cc,
   ConventionalDescriptionError,
   ConventionalFooterError,
   ConventionalFormatError,
@@ -19,6 +21,249 @@ import {
 function msg(str: string): string {
   return dedent(str).trim();
 }
+
+describe("language", () => {
+  test("type", () => {
+    assertParseResult(cc.type.parse("feat: example"), "feat", ": example");
+    assertParseResult(cc.type.parse("refactor"), "refactor");
+    assertThrows(() => cc.type.parse(" "));
+  });
+
+  describe("scope", () => {
+    test("scopes", () =>
+      assertParseResult(cc.scope.parse("(foo): example"), "foo", ": example"));
+
+    test("invalid input", () => void assertThrows(() => cc.scope.parse("foo")));
+  });
+
+  describe("delimiter", () => {
+    test('": "', () =>
+      assertParseResult(
+        cc.delimiter.parse(": example"),
+        [false, ": "],
+        "example",
+      ));
+
+    test('"!: "', () =>
+      assertParseResult(
+        cc.delimiter.parse("!: example"),
+        [true, ": "],
+        "example",
+      ));
+
+    test("invalid input", () =>
+      void assertThrows(() => cc.delimiter.parse(":")));
+  });
+
+  describe("description", () => {
+    test("inline strings", () =>
+      assertParseResult(
+        cc.description.parse("Hello, world!\n\n"),
+        "Hello, world!",
+        "\n\n",
+      ));
+
+    test("invalid input", () =>
+      void assertThrows(() => cc.description.parse("")));
+  });
+
+  describe("footer", () => {
+    test("BREAKING CHANGE", () =>
+      assertParseResult(
+        cc.footer.parse("BREAKING CHANGE: foo\n\nbar\nexclude: this"),
+        { key: "BREAKING CHANGE", value: "foo\n\nbar" },
+        "exclude: this",
+      ));
+
+    test('"#" footer', () =>
+      assertParseResult(
+        cc.footer.parse("Closes #4\ninclude\nexclude: this"),
+        { key: "Closes", value: "#4\ninclude" },
+        "exclude: this",
+      ));
+
+    test("standard footer", () => {
+      assertParseResult(cc.footer.parse("hyphen-ated: foo\n\n\n"), {
+        key: "hyphen-ated",
+        value: "foo",
+      });
+
+      assertParseResult(
+        cc.footer.parse("Reviewed-by: Z"),
+        { key: "Reviewed-by", value: "Z" },
+      );
+
+      assertParseResult(
+        cc.footer.parse("Refs: #123"),
+        { key: "Refs", value: "#123" },
+      );
+    });
+
+    test("invalid input", () => {
+      assertThrows(() => cc.footer.parse(""));
+      assertThrows(() => cc.footer.parse("two words: foo"));
+      assertThrows(() => cc.footer.parse(" starting: space"));
+    });
+  });
+
+  describe("footers", () => {
+    test('"#" footers', () =>
+      assertParseResult(
+        cc.footers.parse("Closes #4\nOpens #5"),
+        {
+          footers: [
+            { key: "Closes", value: "#4" },
+            { key: "Opens", value: "#5" },
+          ],
+        },
+      ));
+
+    test("standard footers", () =>
+      assertParseResult(
+        cc.footers.parse("Reviewed-by: Z\nRefs: #123"),
+        {
+          footers: [
+            { key: "Reviewed-by", value: "Z" },
+            { key: "Refs", value: "#123" },
+          ],
+        },
+      ));
+
+    test("mixed footers", () =>
+      assertParseResult(
+        cc.footers.parse("Closes #4\nReviewed-by: Z"),
+        {
+          footers: [
+            { key: "Closes", value: "#4" },
+            { key: "Reviewed-by", value: "Z" },
+          ],
+        },
+      ));
+  });
+
+  describe("body", () => {
+    test("single-chunk body", () =>
+      assertParseResult(
+        cc.body.parse("Hello, world!\n\n"),
+        { body: "Hello, world!" },
+      ));
+
+    test("multi-chunk body", () => {
+      assertParseResult(
+        cc.body.parse(
+          dedent(
+            `Introduce a request id and a reference to latest request. Dismiss
+            incoming responses other than from latest request.
+            
+            Remove timeouts which were used to mitigate the racing issue but are
+            obsolete now.`,
+          ),
+        ),
+        {
+          body: dedent(
+            `Introduce a request id and a reference to latest request. Dismiss
+            incoming responses other than from latest request.
+            
+            Remove timeouts which were used to mitigate the racing issue but are
+            obsolete now.`,
+          ),
+        },
+      );
+    });
+
+    test("body w/ footers", () =>
+      assertParseResult(
+        cc.body.parse("Hello, world!\n\nCloses #4\n\n"),
+        { body: "Hello, world!" },
+        "Closes #4\n\n",
+      ));
+  });
+
+  describe("message", () => {
+    test("one-line messages", () => {
+      assertParseResult(cc.message.parse("feat: description"), {
+        type: "feat",
+        description: "description",
+      });
+
+      assertParseResult(cc.message.parse("fix(md)!: foo"), {
+        type: "fix",
+        scope: "md",
+        description: "foo",
+        breakingChange: true,
+      });
+    });
+
+    test("bodies", () => {
+      assertParseResult(cc.message.parse("feat: X\n\nbody"), {
+        type: "feat",
+        description: "X",
+        body: "body",
+      });
+
+      assertParseResult(cc.message.parse("feat: X\n\nbody1\n\nbody2"), {
+        type: "feat",
+        description: "X",
+        body: "body1\n\nbody2",
+      });
+
+      assertParseResult(cc.message.parse("feat: X\n\nbody1\nbody2\n\nbody3"), {
+        type: "feat",
+        description: "X",
+        body: "body1\nbody2\n\nbody3",
+      });
+
+      assertParseResult(cc.message.parse("feat: X\n\nbody1\n\nbody2\n\n"), {
+        type: "feat",
+        description: "X",
+        body: "body1\n\nbody2",
+      });
+    });
+
+    test("footers", () => {
+      assertParseResult(cc.message.parse("feat: X\n\nA: B"), {
+        type: "feat",
+        description: "X",
+        footers: [
+          { key: "A", value: "B" },
+        ],
+      });
+
+      assertParseResult(cc.message.parse("feat: X\n\nA: B\nC #1"), {
+        type: "feat",
+        description: "X",
+        footers: [
+          { key: "A", value: "B" },
+          { key: "C", value: "#1" },
+        ],
+      });
+    });
+
+    test("breaking changes", () => {
+      assertParseResult(cc.message.parse("feat: X\n\nBREAKING CHANGE: Y"), {
+        type: "feat",
+        description: "X",
+        breakingChange: true,
+        footers: [{ key: "BREAKING CHANGE", value: "Y" }],
+      });
+
+      assertParseResult(cc.message.parse("feat!: X"), {
+        type: "feat",
+        description: "X",
+        breakingChange: true,
+      });
+    });
+
+    test("invalid messages", () => {
+      assertThrows(() => cc.message.parse(""));
+      assertThrows(() => cc.message.parse("foo"));
+      assertThrows(() => cc.message.parse("feat: "));
+      assertThrows(() => cc.message.parse("feat:! description"));
+      assertThrows(() => cc.message.parse("feat : description"));
+      assertThrows(() => cc.message.parse("feat: description\n\n"));
+    });
+  });
+});
 
 describe("parse", () => {
   describe("official examples", () => {
@@ -132,106 +377,87 @@ describe("parse", () => {
       ));
   });
 
-  describe("special footers", () => {
-    test("magic comments", () =>
-      assertEquals(
-        parse(msg(`
-          fix: prevent racing of requests
+  test("special footers", () => {
+    assertEquals(
+      parse(msg(`
+        fix: prevent racing of requests
 
-          Fixes #123`)),
-        {
-          type: "fix",
-          description: "prevent racing of requests",
-          footers: [{ key: "Fixes", value: "#123" }],
-        },
-      ));
+        Fixes #123`)),
+      {
+        type: "fix",
+        description: "prevent racing of requests",
+        footers: [{ key: "Fixes", value: "#123" }],
+      },
+    );
 
-    test("BREAKING-CHANGE", () =>
-      assertEquals(
-        parse(msg(`
+    assertEquals(
+      parse(msg(`
         fix: do something
 
         BREAKING-CHANGE: Example`)),
-        {
-          type: "fix",
-          description: "do something",
-          footers: [{ key: "BREAKING-CHANGE", value: "Example" }],
-          breakingChange: true,
-        },
-      ));
+      {
+        type: "fix",
+        description: "do something",
+        footers: [{ key: "BREAKING-CHANGE", value: "Example" }],
+        breakingChange: true,
+      },
+    );
   });
 
-  describe("multi-line footers", () => {
-    it("handles them", () =>
-      assertEquals(
-        parse(msg(`
-          refactor: whatever
+  test("multi-line footers", () => {
+    assertEquals(
+      parse(msg(`
+        refactor: whatever
 
-          this-is-a: mutli-line
+        this-is-a: mutli-line
+        footer`)),
+      {
+        type: "refactor",
+        description: "whatever",
+        footers: [{ key: "this-is-a", value: "mutli-line\nfooter" }],
+      },
+    );
+
+    assertEquals(
+      parse(msg(`
+        refactor: whatever
+
+        this-is-a: mutli
+            line
           footer`)),
-        {
-          type: "refactor",
-          description: "whatever",
-          footers: [{ key: "this-is-a", value: "mutli-line\nfooter" }],
-        },
-      ));
-
-    test("trims lines", () =>
-      assertEquals(
-        parse(msg(`
-            refactor: whatever
-  
-            this-is-a: mutli
-                line
-              footer`)),
-        {
-          type: "refactor",
-          description: "whatever",
-          footers: [{ key: "this-is-a", value: "mutli\nline\nfooter" }],
-        },
-      ));
+      {
+        type: "refactor",
+        description: "whatever",
+        footers: [{ key: "this-is-a", value: "mutli\n    line\n  footer" }],
+      },
+    );
   });
 
-  describe("complex bodies", () => {
-    it("preserves them", () =>
-      assertEquals(
-        parse(msg(`
-            test: this
-  
-            \`\`\`ts
-            import { foo } from "bar";
+  test("complex bodies", () => {
+    assertEquals(
+      parse(msg(`
+        test: this
 
-            foo()
-              .then((x) => x + 1)
-            \`\`\`
-            `)),
-        {
-          type: "test",
-          description: "this",
-          body: '```ts\nimport { foo } from "bar";\n\n' +
-            "foo()\n  .then((x) => x + 1)\n```",
-        },
-      ));
+        \`\`\`ts
+        import { foo } from "bar";
+
+        foo()
+          .then((x) => x + 1)
+        \`\`\`
+        `)),
+      {
+        type: "test",
+        description: "this",
+        body: '```ts\nimport { foo } from "bar";\n\n' +
+          "foo()\n  .then((x) => x + 1)\n```",
+      },
+    );
   });
 
-  describe("validation", () => {
-    it("throws w/o type", () =>
-      void assertThrows(
-        () => parse(": whatever"),
-        ConventionalFormatError,
-      ));
-
-    it("throws w/o desc", () =>
-      void assertThrows(
-        () => parse("feat: "),
-        ConventionalFormatError,
-      ));
-
-    it("throws w/o :", () =>
-      void assertThrows(
-        () => parse("feat whatever"),
-        ConventionalFormatError,
-      ));
+  test("validation", () => {
+    assertThrows(() => parse(": whatever"), ConventionalFormatError);
+    assertThrows(() => parse("feat: "), ConventionalFormatError);
+    assertThrows(() => parse("feat whatever"), ConventionalFormatError);
   });
 });
 
@@ -324,63 +550,55 @@ describe("stringify", () => {
       `),
     ));
 
-  describe("validation: throwing", () => {
-    test('"" type', () =>
-      void assertThrows(
-        () => stringify({ type: "", description: "bar" }),
-        ConventionalTypeError,
-      ));
+  test("validation: throwing", () => {
+    assertThrows(
+      () => stringify({ type: "", description: "bar" }),
+      ConventionalTypeError,
+    );
 
-    test("\\n in type", () =>
-      void assertThrows(
-        () => stringify({ type: "a\nb", description: "bar" }),
-        ConventionalTypeError,
-      ));
+    assertThrows(
+      () => stringify({ type: "a\nb", description: "bar" }),
+      ConventionalTypeError,
+    );
 
-    test('"" scope', () =>
-      void assertThrows(
-        () => stringify({ type: "feat", scope: "", description: "bar" }),
-        ConventionalScopeError,
-      ));
+    assertThrows(
+      () => stringify({ type: "feat", scope: "", description: "bar" }),
+      ConventionalScopeError,
+    );
 
-    test("\\n in scope", () =>
-      void assertThrows(
-        () => stringify({ type: "feat", scope: "a\nb", description: "bar" }),
-        ConventionalScopeError,
-      ));
+    assertThrows(
+      () => stringify({ type: "feat", scope: "a\nb", description: "bar" }),
+      ConventionalScopeError,
+    );
 
-    test('"" desc', () =>
-      void assertThrows(
-        () => stringify({ type: "feat", description: "a\nb" }),
-        ConventionalDescriptionError,
-      ));
+    assertThrows(
+      () => stringify({ type: "feat", description: "a\nb" }),
+      ConventionalDescriptionError,
+    );
 
-    test("\\n in desc", () =>
-      void assertThrows(
-        () => stringify({ type: "feat", description: "a\nb" }),
-        ConventionalDescriptionError,
-      ));
+    assertThrows(
+      () => stringify({ type: "feat", description: "a\nb" }),
+      ConventionalDescriptionError,
+    );
 
-    test('"" footer key', () =>
-      void assertThrows(
-        () =>
-          stringify({
-            type: "feat",
-            description: "bar",
-            footers: [{ key: "", value: "foo" }],
-          }),
-        ConventionalFooterError,
-      ));
+    assertThrows(
+      () =>
+        stringify({
+          type: "feat",
+          description: "bar",
+          footers: [{ key: "", value: "foo" }],
+        }),
+      ConventionalFooterError,
+    );
 
-    test("\\n footer key", () =>
-      void assertThrows(
-        () =>
-          stringify({
-            type: "feat",
-            description: "bar",
-            footers: [{ key: "a\nb", value: "foo" }],
-          }),
-        ConventionalFooterError,
-      ));
+    assertThrows(
+      () =>
+        stringify({
+          type: "feat",
+          description: "bar",
+          footers: [{ key: "a\nb", value: "foo" }],
+        }),
+      ConventionalFooterError,
+    );
   });
 });
