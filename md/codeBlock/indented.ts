@@ -1,5 +1,7 @@
 import { indent } from "../../string/indent.ts";
+import { location } from "../../string/location.ts";
 import { INDENTED_CODE_BLOCK_REGEX } from "./regex.ts";
+import { SearchResult } from "./types.ts";
 
 export type IndentedCodeBlockDetails = {
   type: "indented";
@@ -30,8 +32,7 @@ export function parse(codeBlock: string): IndentedCodeBlockDetails {
   return { type, code, indentation };
 }
 
-/** Find all code blocks in a markdown string. */
-export function findAll(markdown: string): string[] {
+export function findAll(markdown: string): SearchResult[] {
   return [...markdown.matchAll(INDENTED_CODE_BLOCK_REGEX)]
-    .map((match) => match[0]);
+    .map((match) => [match[0], location(markdown, match.index ?? 0)]);
 }

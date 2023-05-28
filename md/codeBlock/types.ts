@@ -1,6 +1,12 @@
-import { FencedCodeBlockDetails } from "./fenced.ts";
-import { IndentedCodeBlockDetails } from "./indented.ts";
+import type { TextLocation } from "../../string/location.ts";
+import type { FencedCodeBlockDetails } from "./fenced.ts";
+import type { IndentedCodeBlockDetails } from "./indented.ts";
 
 export type CodeBlockDetails =
   | IndentedCodeBlockDetails
   | FencedCodeBlockDetails;
+
+export type SearchResult = [
+  code: string,
+  location: TextLocation,
+];

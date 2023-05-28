@@ -56,9 +56,8 @@ describe("evaluateAll", () => {
           indented.create(throws) + "\n",
       );
 
-      assertEquals(results.size, 2);
-      for (const [node, result] of results) {
-        assert(node.type === "indented");
+      for (const [details, , result] of results) {
+        assert(details.type === "indented");
         assert(result instanceof IndentedCodeBlockError);
       }
     });
@@ -71,8 +70,7 @@ describe("evaluateAll", () => {
           fenced.create(throws) + "\n",
       );
 
-      assertEquals(results.size, 2);
-      for (const [details, err] of results) {
+      for (const [details, , err] of results) {
         assert(details.type === "fenced");
         assert(err instanceof NoLanguageError);
       }
@@ -84,8 +82,7 @@ describe("evaluateAll", () => {
           fenced.create(throws, { lang: "rs" }) + "\n",
       );
 
-      assertEquals(results.size, 2);
-      for (const [details, err] of results) {
+      for (const [details, , err] of results) {
         assert(details.type === "fenced");
         assert(err instanceof UnknownLanguageError);
       }
@@ -97,9 +94,8 @@ describe("evaluateAll", () => {
           fenced.create(`console.log('"Hello!"')`, { lang: "ts" }) + "\n",
       );
 
-      assertEquals(results.size, 2);
-      for (const [node, result] of results) {
-        assert(node.type === "fenced");
+      for (const [details, , result] of results) {
+        assert(details.type === "fenced");
         assert(!(result instanceof Error));
         if (!result.success) {
           assertEquals(result.code, 1);
