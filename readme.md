@@ -19,6 +19,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 - [`number`](#number)
 - [`object`](#object)
 - [`os`](#os)
+- [`parser`](#parser)
 - [`path`](#path)
 - [`string`](#string)
 - [`ts`](#ts)
@@ -364,6 +365,20 @@ OS-related utilities.
 import { posixNewlines } from "https://deno.land/x/handy/os/utils.ts";
 
 posixNewlines("A\r\nB\rC"); // "A\nB\nC"
+```
+
+## `parser`
+
+A parser combinator library.
+
+```ts
+import { sequence, string } from "https://deno.land/x/handy/parser/utils.ts";
+
+const dash = string("-").ignore;
+const phoneNumber = sequence(/\d{3}/, dash, /\d{3}/, dash, /\d{4}/);
+
+const [result] = phoneNumber.parse("123-456-7890");
+//       ^? ["123", "456", "7890"]
 ```
 
 ## `path`
