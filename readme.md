@@ -15,6 +15,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 - [`json`](#json)
 - [`md`](#md)
   - [`script/evalCodeBlocks`](#scriptevalcodeblocks)
+- [`mermaid`](#mermaid)
 - [`number`](#number)
 - [`object`](#object)
 - [`os`](#os)
@@ -274,6 +275,35 @@ deno run --allow-read --allow-run \
   https://deno.land/x/handy/scripts/evalCodeBlocks.ts \
   ./readme.md \
   "some string to find" "replacement string" # optional
+```
+
+## `mermaid`
+
+```ts
+import { flowchart } from "https://deno.land/x/handy/mermaid/utils.ts";
+import { DirectedGraph } from "https://deno.land/x/handy/graph/utils.ts";
+import { codeBlock } from "https://deno.land/x/handy/md/utils.ts";
+
+const graph = new DirectedGraph<string>();
+
+graph.add(["a", "b", "c", "d"], ["h", "i", "j", "k"], ["c", "h"], ["d", "i"]);
+
+flowchart(graph.edges, { title: "Example Flowchart" }); //outputs mermaid flowchart markdown below
+```
+
+```mermaid
+---
+title: Example Flowchart
+---
+flowchart LR
+    a --> b
+    b --> c
+    c --> d
+    c --> h
+    d --> i
+    h --> i
+    i --> j
+    j --> k
 ```
 
 ## `number`
