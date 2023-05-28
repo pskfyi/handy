@@ -5,3 +5,4 @@ export * from "./indent.ts";
 export * from "./elide.ts";
 export * from "./escape.ts";
 export * from "./Text.ts";
+export * from "./TextCursor.ts";
