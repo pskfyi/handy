@@ -387,21 +387,25 @@ import {
   dedent,
   elideStart, // and others
   indent,
-  location,
   mostConsecutive,
   sequences,
   splitOn,
   splitOnFirst,
+  Text,
 } from "https://deno.land/x/handy/string/utils.ts";
 
 dedent("  a\n   b\n    c"); // "a\n b\n  c"
 indent("a\nb\nc", 2); // "  a\n  b\n  c"
-location("a\nb\nc", 5); // { line: 2, column: 2, offset: 5 }
 elideStart("1234567890", { maxLength: 8 }); // "…4567890"
 splitOnFirst("/", "a/b/c"); // ["a", "b/c"]
 splitOn(3, "\n", "a\nb\nc\nd\ne"); // ["a", "b", "c", "d\ne"]
 sequences("A", "ABAACA"); // ["A", "AA", "A"]
 mostConsecutive("A", "ABAACA"); // 2
+
+const text = new Text("a\nb\nc");
+text.lines; // ["a\n", "b\n", "c"]
+text.locationAt(4); // location of "c", { line: 3, column: 1, offset: 4 }
+text.locationAt(5); // end of text, { line: 3, column: 2, offset: 5 }
 ```
 
 ```ts

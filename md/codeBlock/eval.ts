@@ -1,9 +1,9 @@
 import { parse as parseCodeBlock } from "./parse.ts";
 import { findAll as findAllCodeBlocks } from "./findAll.ts";
-import { CmdResult } from "../../cli/cmd.ts";
+import type { CmdResult } from "../../cli/cmd.ts";
 import { evaluate as evalTS } from "../../ts/evaluate.ts";
-import { CodeBlockDetails } from "./types.ts";
-import { TextLocation } from "../../string/location.ts";
+import type { CodeBlockDetails } from "./types.ts";
+import type { TextLocation } from "../../string/Text.ts";
 
 export class IndentedCodeBlockError extends Error {
   constructor() {

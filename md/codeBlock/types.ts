@@ -1,4 +1,4 @@
-import type { TextLocation } from "../../string/location.ts";
+import type { TextLocation } from "../../string/Text.ts";
 import type { FencedCodeBlockDetails } from "./fenced.ts";
 import type { IndentedCodeBlockDetails } from "./indented.ts";
 
