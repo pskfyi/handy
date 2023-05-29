@@ -3,12 +3,14 @@ import { splitOnFirst } from "../../string/splitOn.ts";
 export class InfoStringError extends TypeError {
   constructor(infoString: string) {
     super(`Info string cannot include newlines: ${infoString}`);
+    this.name = "InfoStringError";
   }
 }
 
 export class LanguageError extends TypeError {
   constructor(lang: string) {
     super(`Language cannot include whitespace: ${lang}`);
+    this.name = "LanguageError";
   }
 }
 
