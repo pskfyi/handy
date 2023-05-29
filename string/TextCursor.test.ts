@@ -94,7 +94,7 @@ describe("inspect()", () => {
     assertEquals(
       stripColor(new TextCursor(str, 3).inspect()),
       dedent(`
-        feat: example
+        feat:·example
            ^
       `).trim(),
     ));
@@ -103,7 +103,7 @@ describe("inspect()", () => {
     assertEquals(
       stripColor(new TextCursor(longStr, 37).inspect({ maxLength })),
       dedent(`
-        … jumps over the lazy dog then does it…
+        …·jumps·over·the·lazy·dog·then·does·it…
                            ^
       `).trim(),
     ));
@@ -152,7 +152,7 @@ describe("inspect()", () => {
     assertEquals(
       stripColor(cursor.inspect({ maxLength: 10 })),
       dedent(`
-        …e lazy d…
+        …e·lazy·d…
              ^
       `).trim(),
     );
@@ -160,7 +160,7 @@ describe("inspect()", () => {
     assertEquals(
       stripColor(cursor.inspect({ maxLength: 20 })),
       dedent(`
-        …er the lazy dog th…
+        …er·the·lazy·dog·th…
                   ^
       `).trim(),
     );
