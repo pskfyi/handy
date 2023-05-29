@@ -1,4 +1,4 @@
-import { blue } from "../_deps/fmt.ts";
+import { blue, gray } from "../_deps/fmt.ts";
 import { consoleWidth } from "../cli/consoleSize.ts";
 import { Text } from "./Text.ts";
 import { elideAround } from "./elide.ts";
@@ -93,12 +93,14 @@ export class TextCursor extends Text {
 
     maxLength = maxLength - lineMarker.length;
     const [elided, offset] = elideAround(this.line, column - 1, { maxLength });
-    const escaped = escapeTerse(elided);
     const pointerSpacing = " ".repeat(offset + lineMarker.length);
 
+    const escaped = escapeTerse(elided);
+    const str = escaped.replaceAll(" ", colors ? gray("·") : "·");
+
     return colors
-      ? `${blue(lineMarker)}${escaped}\n${pointerSpacing}${blue("^")}`
-      : `${lineMarker}${escaped}\n${pointerSpacing}^`;
+      ? `${blue(lineMarker)}${str}\n${pointerSpacing}${blue("^")}`
+      : `${lineMarker}${str}\n${pointerSpacing}^`;
   }
 
   toString(): string {
@@ -108,7 +110,10 @@ export class TextCursor extends Text {
   }
 
   /** The function called by `console.log()` in Deno. */
-  [Symbol.for("Deno.customInspect")](opts: Deno.InspectOptions): string {
+  [Symbol.for("Deno.customInspect")](
+    _: unknown,
+    opts: Deno.InspectOptions,
+  ): string {
     return this.inspect(opts);
   }
 }
