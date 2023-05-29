@@ -83,15 +83,22 @@ describe("parse", () => {
     ));
 });
 
-test("findAll", () => {
+const type = "fenced";
+
+test("findAll", () =>
   assertEquals(
     findAll(
-      "foo\n\n    bar\n\n```baz\nqux\n```" +
-        "   quux\n\n```corge\ngrault\n```",
+      "foo\n\n    bar\n\n```ba z\nqux\n```" +
+        "   quux\n\n~~~~corge\ngrault\n~~~~",
     ),
     [
-      ["```baz\nqux\n```", { column: 1, line: 5, offset: 14 }],
-      ["```corge\ngrault\n```", { column: 1, line: 9, offset: 37 }],
+      [
+        { type, fence: "```", code: "qux", lang: "ba", meta: "z" },
+        { column: 1, line: 5, offset: 14 },
+      ],
+      [
+        { type, fence: "~~~~", code: "grault", lang: "corge" },
+        { column: 1, line: 9, offset: 38 },
+      ],
     ],
-  );
-});
+  ));

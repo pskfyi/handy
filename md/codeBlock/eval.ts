@@ -78,9 +78,7 @@ export async function evaluateAll(
 ): Promise<EvaluateAllResult[]> {
   const results: EvaluateAllResult[] = [];
 
-  for (const [codeBlock, location] of findAllCodeBlocks(markdown)) {
-    const details = parseCodeBlock(codeBlock);
-
+  for (const [details, location] of findAllCodeBlocks(markdown)) {
     try {
       const code = _getCode(details, replace);
 
