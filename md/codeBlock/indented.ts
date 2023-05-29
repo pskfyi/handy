@@ -1,7 +1,6 @@
 import { Text } from "../../string/Text.ts";
 import { indent } from "../../string/indent.ts";
 import { INDENTED_CODE_BLOCK_REGEX } from "./regex.ts";
-import { SearchResult } from "./types.ts";
 
 export type IndentedCodeBlockDetails = {
   type: "indented";
@@ -30,9 +29,14 @@ export function parse(codeBlock: string): IndentedCodeBlockDetails {
   return { type, code };
 }
 
-export function findAll(markdown: string): SearchResult[] {
+export type IndentedCodeBlockSearchResult = [
+  details: IndentedCodeBlockDetails,
+  location: Text.Location,
+];
+
+export function findAll(markdown: string): IndentedCodeBlockSearchResult[] {
   const text = new Text(markdown);
 
   return [...markdown.matchAll(INDENTED_CODE_BLOCK_REGEX)]
-    .map((match) => [match[0], text.locationAt(match.index ?? 0)]);
+    .map((match) => [parse(match[0]), text.locationAt(match.index ?? 0)]);
 }

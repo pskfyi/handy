@@ -28,6 +28,8 @@ describe("parse", () => {
   });
 });
 
+const type = "indented";
+
 test("findAll", () =>
   assertEquals(
     findAll(
@@ -35,7 +37,13 @@ test("findAll", () =>
         "      quux\n\n```corge\ngrault\n```",
     ),
     [
-      ["    foo\n\n    bar", { column: 1, line: 2, offset: 3 }],
-      ["      quux", { column: 1, line: 9, offset: 36 }],
+      [
+        { code: "foo\n\nbar", type },
+        { column: 1, line: 2, offset: 3 },
+      ],
+      [
+        { code: "  quux", type },
+        { column: 1, line: 9, offset: 36 },
+      ],
     ],
   ));

@@ -11,8 +11,3 @@ export const INDENTED_CODE_BLOCK_REGEX = new RegExp(
     "^ {4,}[^\r\n]+)?", // ... and final line, closing w/ )?
   "gm",
 );
-
-export const CODE_BLOCK_REGEX = new RegExp(
-  `^((${INDENTED_CODE_BLOCK_REGEX.source})|(${FENCED_CODE_BLOCK_REGEX.source}))`,
-  "gm",
-);
