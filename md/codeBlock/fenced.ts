@@ -1,8 +1,9 @@
+import { regexp } from "../../parser/regexp.ts";
+import { line } from "../../parser/named.ts";
 import { Text } from "../../string/Text.ts";
 import { mostConsecutive } from "../../string/sequence.ts";
 import type { Pretty } from "../../ts/types.ts";
 import * as infoString from "./infoString.ts";
-import { FENCED_CODE_BLOCK_REGEX } from "./regex.ts";
 
 export type FencedCodeBlockDetails = Pretty<
   & {
@@ -58,24 +59,32 @@ export function create(
   return fence + _infoString + "\n" + code + "\n" + fence;
 }
 
+const fence = regexp(/^(?<fence>`{3,}|~{3,})([\s\S]*?)(\r?\n|\r)^\k<fence>/m)
+  .groups(1, 2)
+  .toObject("fence", "data");
+
+export const parser = fence
+  .into(({ fence, data }) => {
+    const [{ lang, meta }, cursor] = infoString.parser.parse(data);
+    const code = cursor.remainder;
+    const type = "fenced" as const;
+
+    const details: FencedCodeBlockDetails = { type, fence, code };
+
+    if (lang) details.lang = lang;
+    if (meta) details.meta = meta;
+
+    return details;
+  })
+  .named("md.codeBlock.fenced");
+
 export function parse(codeBlock: string): FencedCodeBlockDetails {
-  const match = codeBlock.match(FENCED_CODE_BLOCK_REGEX);
-  const { fence, infoString: _infoString, code = "" } = match?.groups ?? {};
-  const { lang, meta } = infoString.parse(_infoString);
-  const type = "fenced" as const;
-
-  const data: FencedCodeBlockDetails = { type, fence, code };
-
-  if (lang) data.lang = lang;
-  if (meta) data.meta = meta;
-
-  return data;
+  return parser.parse(codeBlock)[0];
 }
 
 export function findAll(markdown: string): FencedCodeBlockSearchResult[] {
-  const text = new Text(markdown);
-  const regex = new RegExp(FENCED_CODE_BLOCK_REGEX, "gm");
+  const [results] = parser.node.or(line.ignore).zeroOrMore
+    .parse(markdown);
 
-  return [...markdown.matchAll(regex)]
-    .map((match) => [parse(match[0]), text.locationAt(match.index ?? 0)]);
+  return results.map(({ value: details, start }) => [details, start]);
 }

@@ -1,6 +1,8 @@
-import { Text } from "../../string/Text.ts";
+import { regexp } from "../../parser/regexp.ts";
+import { string } from "../../parser/string.ts";
+import { line, newline, whitespace } from "../../parser/named.ts";
+import type { Text } from "../../string/Text.ts";
 import { indent } from "../../string/indent.ts";
-import { INDENTED_CODE_BLOCK_REGEX } from "./regex.ts";
 
 export type IndentedCodeBlockDetails = {
   type: "indented";
@@ -11,22 +13,24 @@ export function create(code: string): string {
   return indent(code, 4);
 }
 
+const indented = string("    ").ignore;
+const indentedNonBlankLine = indented.and(line.nonBlank);
+
+const upToFourSpaces = regexp(/^ {0,4}/).match.ignore;
+const blankLines = indented.and(whitespace.inline)
+  .or(upToFourSpaces.and(newline))
+  .zeroOrMore.join();
+
+const firstLine = indentedNonBlankLine;
+const subsequentLines = blankLines.and(indentedNonBlankLine).join()
+  .zeroOrMore.join();
+
+export const parser = firstLine.and(subsequentLines).join()
+  .into((code) => ({ type: "indented" as const, code }))
+  .named("md.codeBlock.indented");
+
 export function parse(codeBlock: string): IndentedCodeBlockDetails {
-  const lines = codeBlock.split("\n");
-  const regex = /^ {4,}/;
-  const indent = Math.min(...lines
-    .map((line) => line.match(regex)?.[0].length || Infinity));
-
-  if (indent === Infinity) throw new TypeError("Invalid indented code block");
-
-  const code = lines
-    .map((line) => line.slice(indent).trimEnd())
-    .join("\n")
-    .replace(/(^\n+|\n+$)/g, "");
-
-  const type = "indented" as const;
-
-  return { type, code };
+  return parser.parse(codeBlock)[0];
 }
 
 export type IndentedCodeBlockSearchResult = [
@@ -35,8 +39,8 @@ export type IndentedCodeBlockSearchResult = [
 ];
 
 export function findAll(markdown: string): IndentedCodeBlockSearchResult[] {
-  const text = new Text(markdown);
+  const [results] = parser.node.or(line.ignore).zeroOrMore
+    .parse(markdown);
 
-  return [...markdown.matchAll(INDENTED_CODE_BLOCK_REGEX)]
-    .map((match) => [parse(match[0]), text.locationAt(match.index ?? 0)]);
+  return results.map(({ value: details, start }) => [details, start]);
 }
