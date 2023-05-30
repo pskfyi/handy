@@ -22,11 +22,22 @@ export type Fill<T extends readonly unknown[], Value> = {
  * `Array.prototype.flat()`.
  *
  * @example
- * const items: Flat<[1, 2, [3, [4], 5]]> = [1, 2, 3, [4], 5]; */
+ * type Tup = Flat<[1, 2, [3, [4], 5]]> // [1, 2, 3, [4], 5];
+ * type Arr = Flat<number[][]> // number[]
+ * type Arr2D = Flat<number[][]> // number[]
+ * type Mix = Flat<["A", ["B", "C"][]]> // ["A", ...["B", "C"][]] */
 export type Flat<T extends readonly unknown[]> = T extends
-  readonly [infer Head, ...infer Tail]
-  ? Head extends unknown[] ? [...Head, ...Flat<Tail>]
-  : [Head, ...Flat<Tail>]
+  readonly [infer Head, ...infer Tail] // If the first and rest are inferable...
+  ? Head extends unknown[] // ...and the first is an array...
+    ? [...Head, ...Flat<Tail>] // ...spread it then recurse on the rest.
+  : [Head, ...Flat<Tail>] // Otherwise, keep the first and recurse.
+  //
+  : T extends readonly [] ? [] // It T is empty, return an empty array.
+  //
+  : T extends Array<infer Item extends unknown> // If T is a non-tuple array...
+    ? Item extends unknown[] // ...and it contains an array...
+      ? [...Item] // ...spread it.
+    : Item[] // Otherwise, keep it.
   : [];
 
 /** Represents an array reversed, analogous to `Array.prototype.reverse()`.
