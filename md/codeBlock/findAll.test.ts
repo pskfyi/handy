@@ -6,7 +6,7 @@ it("gets blocks & locations", () =>
     findAll("foo\n\n    bar\n\n```baz\nqux\n```"),
     [
       [
-        { type: "indented", code: "bar" },
+        { type: "indented", code: "bar\n" },
         { column: 1, line: 3, offset: 5 },
       ],
       [

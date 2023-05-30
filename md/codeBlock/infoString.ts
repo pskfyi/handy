@@ -1,4 +1,5 @@
-import { splitOnFirst } from "../../string/splitOn.ts";
+import { regexp } from "../../parser/regexp.ts";
+import { line } from "../../parser/named.ts";
 
 export class InfoStringError extends TypeError {
   constructor(infoString: string) {
@@ -54,11 +55,22 @@ export function stringify({ lang, meta }: Info = {}): string {
     : lang || "";
 }
 
+const lang = regexp(/^\S+/).match; // one or more non-whitespace characters
+const meta = line; // the rest of the line
+
+export const parser = lang.optional.and(meta.optional)
+  .into(([lang, meta]) => {
+    const info: Info = {};
+    meta = meta?.trim();
+
+    if (lang) info.lang = lang;
+    if (meta) info.meta = meta;
+
+    return info;
+  })
+  .named("md.codeBlock.infoString");
+
 /* See https://spec.commonmark.org/0.30/#info-string */
 export function parse(infoString: string): Info {
-  if (!infoString) return {};
-
-  const [lang, meta] = splitOnFirst(" ", infoString);
-
-  return { lang, meta };
+  return parser.parse(infoString)[0];
 }

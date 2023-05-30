@@ -21,10 +21,21 @@ describe("parse", () => {
 
   describe("result.code", () => {
     test("single lines", () => assertParse("    foo", "foo"));
-    test("extra indents", () => assertParse("      foo", "foo"));
-    test("multiple lines", () => assertParse("    foo\n    bar", "foo\nbar"));
+    test("extra indents", () => assertParse("      foo", "  foo"));
+    test("multiple lines", () => {
+      assertParse("    foo\n    bar", "foo\nbar");
+      assertParse("    foo\n    bar\n    baz", "foo\nbar\nbaz");
+    });
     test("mixed indents", () => assertParse("     foo\n    bar", " foo\nbar"));
-    test("blank lines", () => assertParse("    X\n\n\n    Y", "X\n\n\nY"));
+    test("blank lines", () => {
+      assertParse("    X\n\n\n    Y", "X\n\n\nY");
+      assertParse("    X\n      \n    Y", "X\n  \nY");
+    });
+  });
+
+  test("invalid cases", () => {
+    assertThrows(() => parse("    \n    X"));
+    assertThrows(() => parse("     \n    X"));
   });
 });
 
@@ -38,11 +49,11 @@ test("findAll", () =>
     ),
     [
       [
-        { code: "foo\n\nbar", type },
+        { code: "foo\n\nbar\n", type },
         { column: 1, line: 2, offset: 3 },
       ],
       [
-        { code: "  quux", type },
+        { code: "  quux\n", type },
         { column: 1, line: 9, offset: 36 },
       ],
     ],
