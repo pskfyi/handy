@@ -1,10 +1,4 @@
-import {
-  afterAll,
-  assertEquals,
-  beforeAll,
-  describe,
-  it,
-} from "../../_deps/testing.ts";
+import { afterAll, assertEquals, beforeAll, it } from "../../_deps/testing.ts";
 import { _internals } from "../../_test/_internals.ts";
 import { CmdStub, stubCmd } from "../../cli/cmd.stub.ts";
 import { dedent } from "../../string/dedent.ts";
@@ -49,17 +43,16 @@ const commits: Record<string, string> = {
 const commitsConcat =
   `${commits.aaa}\n\n${commits.bbb}\n\n${commits.ccc}\n\n${commits.ddd}`;
 
-describe("makeReleaseNotes", () => {
-  let cmdStub: CmdStub;
+let cmdStub: CmdStub;
 
-  beforeAll(() => {
-    cmdStub = stubCmd(_internals, () => commitsConcat);
-  });
+beforeAll(() => {
+  cmdStub = stubCmd(_internals, () => commitsConcat);
+});
 
-  it("puts breaking changes first", async () =>
-    assertEquals(
-      await makeReleaseNotes(),
-      dedent(`
+it("has breaking changes 1st", async () =>
+  assertEquals(
+    await makeReleaseNotes(),
+    dedent(`
         * **Breaking Change** fix(cli): unbreak all the things (bbb)
         
         * **Breaking Change** move: \`scripts/evalCodeBlocks\` -> \`md/scripts/evalCodeBlocks\` (ccc)
@@ -76,12 +69,12 @@ describe("makeReleaseNotes", () => {
 
         * fix: unbreak a new thing (ddd)
       `).trim(),
-    ));
+  ));
 
-  it("can group by type", async () =>
-    assertEquals(
-      await makeReleaseNotes({ groupByType: true }),
-      dedent(`
+it("can group by type", async () =>
+  assertEquals(
+    await makeReleaseNotes({ groupByType: true }),
+    dedent(`
         ## Features
         
         * (io/clipboard): init; add \`copy()\` & \`paste()\` (aaa)
@@ -104,59 +97,58 @@ describe("makeReleaseNotes", () => {
         
         * **Breaking Change**: \`scripts/evalCodeBlocks\` -> \`md/scripts/evalCodeBlocks\` (ccc)
       `).trim(),
-    ));
+  ));
 
-  it("can filter types", async () =>
-    assertEquals(
-      await makeReleaseNotes({ types: ["fix", "move"] }),
-      dedent(`
+it("can filter types", async () =>
+  assertEquals(
+    await makeReleaseNotes({ types: ["fix", "move"] }),
+    dedent(`
         * **Breaking Change** fix(cli): unbreak all the things (bbb)
 
         * **Breaking Change** move: \`scripts/evalCodeBlocks\` -> \`md/scripts/evalCodeBlocks\` (ccc)
 
         * fix: unbreak a new thing (ddd)
       `).trim(),
-    ));
+  ));
 
-  it("can order types", async () =>
-    assertEquals(
-      await makeReleaseNotes({ types: ["move", "fix"] }),
-      dedent(`
+it("can order types", async () =>
+  assertEquals(
+    await makeReleaseNotes({ types: ["move", "fix"] }),
+    dedent(`
         * **Breaking Change** move: \`scripts/evalCodeBlocks\` -> \`md/scripts/evalCodeBlocks\` (ccc)
 
         * **Breaking Change** fix(cli): unbreak all the things (bbb)
 
         * fix: unbreak a new thing (ddd)
       `).trim(),
-    ));
+  ));
 
-  it("can name type groups", async () =>
-    assertEquals(
-      await makeReleaseNotes({
-        types: ["move"],
-        groupByType: true,
-        typeNames: { move: "Moved Files" },
-      }),
-      dedent(`
+it("can name type groups", async () =>
+  assertEquals(
+    await makeReleaseNotes({
+      types: ["move"],
+      groupByType: true,
+      typeNames: { move: "Moved Files" },
+    }),
+    dedent(`
         ## Moved Files
       
         * **Breaking Change**: \`scripts/evalCodeBlocks\` -> \`md/scripts/evalCodeBlocks\` (ccc)
       `).trim(),
-    ));
+  ));
 
-  it("skips empty type groups", async () =>
-    assertEquals(
-      await makeReleaseNotes({
-        types: ["move", "foo"],
-        groupByType: true,
-        typeNames: { move: "Moved Files" },
-      }),
-      dedent(`
+it("skips empty type groups", async () =>
+  assertEquals(
+    await makeReleaseNotes({
+      types: ["move", "foo"],
+      groupByType: true,
+      typeNames: { move: "Moved Files" },
+    }),
+    dedent(`
         ## Moved Files
       
         * **Breaking Change**: \`scripts/evalCodeBlocks\` -> \`md/scripts/evalCodeBlocks\` (ccc)
       `).trim(),
-    ));
+  ));
 
-  afterAll(() => cmdStub.restore());
-});
+afterAll(() => cmdStub.restore());

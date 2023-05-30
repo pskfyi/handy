@@ -42,7 +42,7 @@ describe("getLatest", () => {
     );
   });
 
-  it("finds the alphabetically last tag", async () =>
+  it("gets alphabetic last tag", async () =>
     assertEquals(await getLatest(), "0.2.0"));
 
   it("accepts a directory", async () =>
