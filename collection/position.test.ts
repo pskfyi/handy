@@ -4,6 +4,7 @@ import {
   assertThrows,
   describe,
   it,
+  test,
 } from "../_deps/testing.ts";
 
 import * as position from "./position.ts";
@@ -83,22 +84,12 @@ describe("valid value handling", () => {
   });
 });
 
-describe("position.next", () => {
-  it("increments", () => {
-    assertEquals(position.next(0, [""]), 1);
-  });
-
-  it("returns null at the end", () => {
-    assertEquals(position.next(0, []), null);
-  });
+test("position.next", () => {
+  assertEquals(position.next(0, [""]), 1);
+  assertEquals(position.next(0, []), null);
 });
 
-describe("previous", () => {
-  it("decrements", () => {
-    assertEquals(position.previous(1), 0);
-  });
-
-  it("returns null at the end", () => {
-    assertEquals(position.previous(0), null);
-  });
+test(".previous", () => {
+  assertEquals(position.previous(1), 0);
+  assertEquals(position.previous(0), null);
 });

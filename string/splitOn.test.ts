@@ -9,10 +9,10 @@ describe("splitOnFirst", () => {
     assertEquals(splitOnFirst("/", "a/b/c/d"), ["a", "b/c/d"]));
 
   describe("result", () => {
-    it('is [str, ""] when no sep', () =>
+    it('is [str, ""] w/o sep', () =>
       assertEquals(splitOnFirst("", "foo"), ["foo", ""]));
 
-    it('is ["", ""] when no str', () =>
+    it('is ["", ""] w/o str', () =>
       assertEquals(splitOnFirst("X", ""), ["", ""]));
 
     it('is [str, ""] w/o match', () =>

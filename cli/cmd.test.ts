@@ -1,54 +1,31 @@
-import {
-  assert,
-  assertEquals,
-  assertRejects,
-  describe,
-  it,
-} from "../_deps/testing.ts";
+import { assert, assertEquals, assertRejects, test } from "../_deps/testing.ts";
 import { cmd, CmdError } from "./cmd.ts";
 
-describe("cmd", () => {
-  it("returns stdout", async () =>
-    assertEquals(
-      await cmd(
-        Deno.build.os === "windows"
-          ? "powershell.exe echo Hello!"
-          : "echo Hello!",
-      ),
-      "Hello!",
-    ));
+const command = Deno.build.os === "windows"
+  ? "powershell.exe echo Hello!"
+  : "echo Hello!";
 
-  it("throws custom error on fail", async () =>
-    void await assertRejects(() => cmd("deno LMAO"), CmdError));
+test("returns stdout", async () => assertEquals(await cmd(command), "Hello!"));
 
-  describe("CmdError", () => {
-    it("provides the command", async () =>
-      void await cmd("deno LMAO")
-        .catch((error) => assertEquals(error.command, "deno LMAO")));
+test("throws on fail", async () =>
+  void await assertRejects(() => cmd("deno LMAO"), CmdError));
 
-    it("provides fullResult", async () =>
-      void await cmd("deno LMAO").catch((error) => {
-        assert(error instanceof CmdError);
-        assertEquals(error.stdout, "");
-        assertEquals(error.success, false);
-        assertEquals(error.code, 1);
-        assert(error.stderr.includes("unrecognized subcommand"));
-      }));
+test("CmdError", async () => {
+  await cmd("deno LMAO")
+    .catch((error) => assertEquals(error.command, "deno LMAO"));
+
+  await cmd("deno LMAO").catch((error) => {
+    assert(error instanceof CmdError);
+    assertEquals(error.stdout, "");
+    assertEquals(error.success, false);
+    assertEquals(error.code, 1);
+    assert(error.stderr.includes("unrecognized subcommand"));
   });
+});
 
-  describe("options.fullResult", () => {
-    const fullResult = true as const;
-
-    it("indicates success", async () =>
-      assertEquals((await cmd("deno -V", { fullResult })).success, true));
-
-    it("provides the exit code", async () =>
-      assertEquals((await cmd("deno -V", { fullResult })).code, 0));
-
-    it("provides stderr", async () =>
-      assertEquals((await cmd("deno -V", { fullResult })).stderr, ""));
-
-    it("doesn't throw", async () =>
-      assertEquals((await cmd("deno LMAO", { fullResult })).success, false));
-  });
+test("options.fullResult", async () => {
+  assertEquals((await cmd("deno -V", { fullResult: true })).success, true);
+  assertEquals((await cmd("deno -V", { fullResult: true })).code, 0);
+  assertEquals((await cmd("deno -V", { fullResult: true })).stderr, "");
+  assertEquals((await cmd("deno LMAO", { fullResult: true })).success, false);
 });
