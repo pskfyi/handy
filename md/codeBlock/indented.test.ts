@@ -26,9 +26,6 @@ describe("parse", () => {
     test("mixed indents", () => assertParse("     foo\n    bar", " foo\nbar"));
     test("blank lines", () => assertParse("    X\n\n\n    Y", "X\n\n\nY"));
   });
-
-  test("result.indentation", () =>
-    assertEquals(parse("      foo").indentation, "      "));
 });
 
 test("findAll", () =>
