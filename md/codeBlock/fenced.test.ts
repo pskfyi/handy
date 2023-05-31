@@ -51,11 +51,6 @@ describe("create", () => {
 describe("parse", () => {
   test("result.type", () => assertEquals(parse("```\n```").type, "fenced"));
 
-  test("result.char", () => {
-    assertEquals(parse("```\n```").char, "`");
-    assertEquals(parse("~~~\n~~~").char, "~");
-  });
-
   test("result.fence", () => {
     assertEquals(parse("```\n```").fence, "```");
     assertEquals(parse("~~~\n~~~").fence, "~~~");
@@ -82,7 +77,6 @@ describe("parse", () => {
       parse("```\r\nHello!\r\n```"),
       {
         type: "fenced",
-        char: "`",
         fence: "```",
         code: "Hello!",
       },

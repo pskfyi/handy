@@ -15,7 +15,6 @@ test("parses fenced blocks", () =>
     parse("```lang meta data\nfoo\nbar\n```"),
     {
       type: "fenced",
-      char: "`",
       fence: "```",
       lang: "lang",
       meta: "meta data",
