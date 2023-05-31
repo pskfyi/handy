@@ -83,14 +83,14 @@ describe("elideAround", () => {
     );
   });
 
-  it("handles indices near the start", () => {
+  it("handles early indices", () => {
     assertEquals(elideAround(digits, 2, { maxLength: 8 }), ["1234567…", 2]);
     assertEquals(elideAround(digits, 2, { maxLength: 7 }), ["123456…", 2]);
     assertEquals(elideAround(digits, 2, { maxLength: 6 }), ["12345…", 2]);
     assertEquals(elideAround(digits, 2, { maxLength: 5 }), ["1234…", 2]);
   });
 
-  it("handles indices near the end", () => {
+  it("handles late indices", () => {
     assertEquals(elideAround(digits, 7, { maxLength: 8 }), ["…4567890", 5]);
     assertEquals(elideAround(digits, 7, { maxLength: 7 }), ["…567890", 4]);
     assertEquals(elideAround(digits, 7, { maxLength: 6 }), ["…67890", 3]);

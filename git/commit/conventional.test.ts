@@ -3,6 +3,7 @@ import {
   assertThrows,
   describe,
   it,
+  test,
 } from "../../_deps/testing.ts";
 import { dedent } from "../../string/dedent.ts";
 import {
@@ -23,7 +24,7 @@ describe("parse", () => {
   describe("official examples", () => {
     // https://www.conventionalcommits.org/en/v1.0.0/#examples
 
-    it("handles #1", () =>
+    test("example #1", () =>
       assertEquals(
         parse(msg(`
         feat: allow provided config object to extend other configs
@@ -41,7 +42,7 @@ describe("parse", () => {
         },
       ));
 
-    it("handles #2", () =>
+    test("example #2", () =>
       assertEquals(
         parse("feat!: send an email to the customer when a product is shipped"),
         {
@@ -52,7 +53,7 @@ describe("parse", () => {
         },
       ));
 
-    it("handles #3", () =>
+    test("example #3", () =>
       assertEquals(
         parse(
           "feat(api)!: send an email to the customer when a product is shipped",
@@ -66,7 +67,7 @@ describe("parse", () => {
         },
       ));
 
-    it("handles #4", () =>
+    test("example #4", () =>
       assertEquals(
         parse(msg(`
           chore!: drop support for Node 6
@@ -84,7 +85,7 @@ describe("parse", () => {
         },
       ));
 
-    it("handles #5", () =>
+    test("example #5", () =>
       assertEquals(
         parse("docs: correct spelling of CHANGELOG"),
         {
@@ -93,7 +94,7 @@ describe("parse", () => {
         },
       ));
 
-    it("handles #6", () =>
+    test("example #6", () =>
       assertEquals(
         parse("feat(lang): add Polish language"),
         {
@@ -103,7 +104,7 @@ describe("parse", () => {
         },
       ));
 
-    it("handles #7", () =>
+    test("example #7", () =>
       assertEquals(
         parse(msg(`
         fix: prevent racing of requests
@@ -131,8 +132,8 @@ describe("parse", () => {
       ));
   });
 
-  describe("common usage", () => {
-    it("handles magic comments", () =>
+  describe("special footers", () => {
+    test("magic comments", () =>
       assertEquals(
         parse(msg(`
           fix: prevent racing of requests
@@ -145,7 +146,7 @@ describe("parse", () => {
         },
       ));
 
-    it("handles BREAKING-CHANGE", () =>
+    test("BREAKING-CHANGE", () =>
       assertEquals(
         parse(msg(`
         fix: do something
@@ -175,7 +176,7 @@ describe("parse", () => {
         },
       ));
 
-    it("trims lines", () =>
+    test("trims lines", () =>
       assertEquals(
         parse(msg(`
             refactor: whatever
@@ -192,7 +193,7 @@ describe("parse", () => {
   });
 
   describe("complex bodies", () => {
-    it("doesn't ruin them", () =>
+    it("preserves them", () =>
       assertEquals(
         parse(msg(`
             test: this
@@ -235,25 +236,25 @@ describe("parse", () => {
 });
 
 describe("stringify", () => {
-  it("handles scope", () =>
+  test("scope", () =>
     assertEquals(
       stringify({ type: "feat", scope: "lang", description: "add Polish" }),
       "feat(lang): add Polish",
     ));
 
-  it("handles breakingChange", () =>
+  test("breakingChange", () =>
     assertEquals(
       stringify({ type: "feat", description: "oops", breakingChange: true }),
       "feat!: oops",
     ));
 
-  it("handles body", () =>
+  test("body", () =>
     assertEquals(
       stringify({ type: "feat", body: "XXX", description: "whatever" }),
       "feat: whatever\n\nXXX",
     ));
 
-  it("preserves body format", () =>
+  test("body", () =>
     assertEquals(
       stringify({ type: "feat", body: "XXX\n  \nYY", description: "whatever" }),
       "feat: whatever\n\nXXX\n  \nYY",
@@ -323,44 +324,44 @@ describe("stringify", () => {
       `),
     ));
 
-  describe("validation", () => {
-    it('throws on "" type', () =>
+  describe("validation: throwing", () => {
+    test('"" type', () =>
       void assertThrows(
         () => stringify({ type: "", description: "bar" }),
         ConventionalTypeError,
       ));
 
-    it("throws on \\n in type", () =>
+    test("\\n in type", () =>
       void assertThrows(
         () => stringify({ type: "a\nb", description: "bar" }),
         ConventionalTypeError,
       ));
 
-    it('throws on "" scope', () =>
+    test('"" scope', () =>
       void assertThrows(
         () => stringify({ type: "feat", scope: "", description: "bar" }),
         ConventionalScopeError,
       ));
 
-    it("throws on \\n in scope", () =>
+    test("\\n in scope", () =>
       void assertThrows(
         () => stringify({ type: "feat", scope: "a\nb", description: "bar" }),
         ConventionalScopeError,
       ));
 
-    it('throws on "" desc', () =>
+    test('"" desc', () =>
       void assertThrows(
         () => stringify({ type: "feat", description: "a\nb" }),
         ConventionalDescriptionError,
       ));
 
-    it("throws on \\n in desc", () =>
+    test("\\n in desc", () =>
       void assertThrows(
         () => stringify({ type: "feat", description: "a\nb" }),
         ConventionalDescriptionError,
       ));
 
-    it('throws on "" footer key', () =>
+    test('"" footer key', () =>
       void assertThrows(
         () =>
           stringify({
@@ -371,7 +372,7 @@ describe("stringify", () => {
         ConventionalFooterError,
       ));
 
-    it("throws on \\n footer key", () =>
+    test("\\n footer key", () =>
       void assertThrows(
         () =>
           stringify({

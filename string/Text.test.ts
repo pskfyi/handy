@@ -1,33 +1,28 @@
-import { assertEquals, assertThrows, describe, it } from "../_deps/testing.ts";
+import {
+  assertEquals,
+  assertThrows,
+  describe,
+  test,
+} from "../_deps/testing.ts";
 import { Text } from "./Text.ts";
 
-describe("input", () => {
-  it("is the input string", () => {
-    assertEquals(new Text("a").input, "a");
-  });
+describe(".input is the input", () => assertEquals(new Text("a").input, "a"));
+
+describe(".value is .input", () => {
+  const text = new Text("a");
+  assertEquals(text.value, text.input);
 });
 
-describe("value", () => {
-  it("equals .input", () => {
-    const text = new Text("a");
-    assertEquals(text.value, text.input);
-  });
-});
-
-describe("length", () => {
-  it("measures .input", () => {
-    assertEquals(new Text("a").length, 1);
-    assertEquals(new Text("ab").length, 2);
-    assertEquals(new Text("").length, 0);
-  });
+describe(".length measures .input", () => {
+  assertEquals(new Text("a").length, 1);
+  assertEquals(new Text("ab").length, 2);
+  assertEquals(new Text("").length, 0);
 });
 
 describe("lines", () => {
-  it('handles ""', () => {
-    assertEquals(new Text("").lines, [""]);
-  });
+  test('""', () => assertEquals(new Text("").lines, [""]));
 
-  it("handles newlines", () => {
+  test("newlines", () => {
     assertEquals(new Text("ab\nc").lines, ["ab\n", "c"]);
     assertEquals(new Text("ab\rc").lines, ["ab\r", "c"]);
     assertEquals(new Text("ab\r\nc").lines, ["ab\r\n", "c"]);
@@ -36,65 +31,52 @@ describe("lines", () => {
     assertEquals(new Text("ab\r\n\r\nc").lines, ["ab\r\n", "\r\n", "c"]);
   });
 
-  it("handles the examples", () => {
-    assertEquals(new Text("a\n\nb").lines, ["a\n", "\n", "b"]);
-  });
+  test("the examples", () =>
+    assertEquals(new Text("a\n\nb").lines, ["a\n", "\n", "b"]));
 });
 
 describe("positionAt()", () => {
-  describe("invalid values", () => {
+  describe("invalid values throw", () => {
     const text = new Text("a");
 
-    it("throws if too large", () =>
-      void assertThrows(() => text.positionAt(2)));
-
-    it("throws if too small", () =>
-      void assertThrows(() => text.positionAt(-2)));
-
-    it("throws if NaN", () => void assertThrows(() => text.positionAt(NaN)));
-
-    it("throws if float", () => void assertThrows(() => text.positionAt(0.1)));
+    assertThrows(() => text.positionAt(2));
+    assertThrows(() => text.positionAt(-2));
+    assertThrows(() => text.positionAt(NaN));
+    assertThrows(() => text.positionAt(0.1));
   });
 
   describe("valid values", () => {
-    it('handles ""', () => {
+    test('""', () => {
       assertEquals(new Text("").positionAt(0), 0);
       assertEquals(new Text("").positionAt(-0), 0);
     });
 
-    it("can locate end of text", () => {
-      assertEquals(new Text("a\nb").positionAt(-0), 3);
-    });
+    test("-0 is text end", () =>
+      assertEquals(new Text("a\nb").positionAt(-0), 3));
 
-    it("handles newlines", () => {
+    test("newlines", () => {
       assertEquals(new Text("a\nb").positionAt(2), 2);
       assertEquals(new Text("a\rb").positionAt(2), 2);
       assertEquals(new Text("a\r\nb").positionAt(3), 3);
     });
 
-    it("handles the examples", () => {
-      assertEquals(new Text("a\n\nb").positionAt(3), 3);
-    });
+    test("the examples", () =>
+      assertEquals(new Text("a\n\nb").positionAt(3), 3));
   });
 });
 
 describe("locationAt()", () => {
-  describe("invalid values", () => {
+  describe("invalid values throw", () => {
     const text = new Text("a");
 
-    it("throws if too large", () =>
-      void assertThrows(() => text.locationAt(2)));
-
-    it("throws if too small", () =>
-      void assertThrows(() => text.locationAt(-2)));
-
-    it("throws if NaN", () => void assertThrows(() => text.locationAt(NaN)));
-
-    it("throws if float", () => void assertThrows(() => text.locationAt(0.1)));
+    test("value too large", () => void assertThrows(() => text.locationAt(2)));
+    test("value too small", () => void assertThrows(() => text.locationAt(-2)));
+    test("value is NaN", () => void assertThrows(() => text.locationAt(NaN)));
+    test("value is float", () => void assertThrows(() => text.locationAt(0.1)));
   });
 
   describe("valid values", () => {
-    it('handles ""', () => {
+    test('""', () => {
       assertEquals(
         new Text("").locationAt(0),
         { offset: 0, line: 1, column: 1 },
@@ -105,14 +87,14 @@ describe("locationAt()", () => {
       );
     });
 
-    it("can locate end of text", () => {
+    test("-0 is text end", () => {
       assertEquals(
         new Text("a\nb").locationAt(-0),
         { offset: 3, line: 2, column: 2 },
       );
     });
 
-    it("handles newlines", () => {
+    test("newlines", () => {
       assertEquals(
         new Text("a\nb").locationAt(2),
         { offset: 2, line: 2, column: 1 },
@@ -127,7 +109,7 @@ describe("locationAt()", () => {
       );
     });
 
-    it("handles the examples", () => {
+    test("the examples", () => {
       assertEquals(
         new Text("a\n\nb").locationAt(3),
         { offset: 3, line: 3, column: 1 },

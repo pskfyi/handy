@@ -1,60 +1,62 @@
-import { assertEquals, assertThrows, describe, it } from "../_deps/testing.ts";
+import {
+  assertEquals,
+  assertThrows,
+  describe,
+  it,
+  test,
+} from "../_deps/testing.ts";
 import { dedent } from "./dedent.ts";
 
-describe("dedent", () => {
-  it('defaults to ""', () => assertEquals(dedent(""), ""));
+function assertDedent(input: string, expected: string): void {
+  assertEquals(dedent(input), expected);
+}
 
-  it("dedents single lines", () => assertEquals(dedent("  foo"), "foo"));
+test('defaults is ""', () => assertDedent("", ""));
+test("single lines", () => assertDedent("  foo", "foo"));
+test("multiple lines", () => assertDedent("  foo\n  bar", "foo\nbar"));
+test("empty lines", () => assertDedent("\n  foo\n\n  bar\n", "\nfoo\n\nbar\n"));
+test("whitespace lines", () => assertDedent("\n    X\n  \n    Y", "\nX\n\nY"));
+test("mixed indents", () => assertDedent("  a\n   b\n    c", "a\n b\n  c"));
 
-  it("dedents multiple lines", () =>
-    assertEquals(dedent("  foo\n  bar"), "foo\nbar"));
+describe("options.indentation", () => {
+  it("returns the indent", () =>
+    assertEquals(
+      dedent("  a\n   b\n    c", { returnIndentation: true }),
+      ["a\n b\n  c", "  "],
+    ));
 
-  it("handles empty lines", () =>
-    assertEquals(dedent("\n  foo\n\n  bar\n"), "\nfoo\n\nbar\n"));
+  it("reflects options.char", () =>
+    assertEquals(
+      dedent(
+        "..a\n...b\n....c",
+        { char: ".", returnIndentation: true },
+      ),
+      ["a\n.b\n..c", ".."],
+    ));
+});
 
-  it("handles whitespace lines", () =>
-    assertEquals(dedent("\n    foo\n  \n    bar\n"), "\nfoo\n\nbar\n"));
+describe("options.char", () => {
+  it("can be configured", () =>
+    assertEquals(
+      dedent("XXa\nXXXb\nXXXXc", { char: "X" }),
+      "a\nXb\nXXc",
+    ));
 
-  it("handles mixed indentation", () =>
-    assertEquals(dedent("  a\n   b\n    c"), "a\n b\n  c"));
+  it("throws if char.len > 1", () =>
+    void assertThrows(() => dedent("a", { char: "ab" })));
 
-  describe("options.indentation", () => {
-    it("returns the indentation", () =>
-      assertEquals(
-        dedent("  a\n   b\n    c", { returnIndentation: true }),
-        ["a\n b\n  c", "  "],
-      ));
+  it("throws if char.len = 0", () =>
+    void assertThrows(() => dedent("a", { char: "" })));
 
-    it("reflects options.char", () =>
-      assertEquals(
-        dedent(
-          "..a\n...b\n....c",
-          { char: ".", returnIndentation: true },
-        ),
-        ["a\n.b\n..c", ".."],
-      ));
-  });
+  it("escapes regex", () =>
+    assertEquals(
+      dedent("..a\n...b\n....c", { char: "." }),
+      "a\n.b\n..c",
+    ));
 
-  describe("options.char", () => {
-    it("can be configured", () =>
-      assertEquals(
-        dedent("XXa\nXXXb\nXXXXc", { char: "X" }),
-        "a\nXb\nXXc",
-      ));
-
-    it("throws if char.len !== 1", () =>
-      void assertThrows(() => dedent("a", { char: "ab" })));
-
-    it("escapes regex", () =>
-      assertEquals(
-        dedent("..a\n...b\n....c", { char: "." }),
-        "a\n.b\n..c",
-      ));
-
-    it("handles lines of char only", () =>
-      assertEquals(
-        dedent("....a\n..\n....c", { char: "." }),
-        "a\n\nc",
-      ));
-  });
+  it("handles char-only line", () =>
+    assertEquals(
+      dedent("....a\n..\n....c", { char: "." }),
+      "a\n\nc",
+    ));
 });

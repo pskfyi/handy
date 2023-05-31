@@ -9,11 +9,8 @@ describe("escapeFull", () => {
   });
 
   it("escapes tabs", () => assertEquals(escapeFull("\t\t"), "\\t\\t"));
-
   it("escapes vertical tabs", () => assertEquals(escapeFull("\v\v"), "\\v\\v"));
-
   it("escapes form feeds", () => assertEquals(escapeFull("\f\f"), "\\f\\f"));
-
   it("escapes backspaces", () => assertEquals(escapeFull("\b\b"), "\\b\\b"));
 });
 
@@ -25,10 +22,7 @@ describe("escapeTerse", () => {
   });
 
   it("escapes tabs", () => assertEquals(escapeTerse("\t\t"), "⇥⇥"));
-
   it("escapes vertical tabs", () => assertEquals(escapeTerse("\v\v"), "␋␋"));
-
   it("escapes form feeds", () => assertEquals(escapeTerse("\f\f"), "␌␌"));
-
   it("escapes backspaces", () => assertEquals(escapeTerse("\b\b"), "␈␈"));
 });
