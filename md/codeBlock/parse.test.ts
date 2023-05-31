@@ -6,7 +6,6 @@ test("parses indented blocks", () =>
     parse("    foo\n    bar"),
     {
       type: "indented",
-      indentation: "    ",
       code: "foo\nbar",
     },
   ));

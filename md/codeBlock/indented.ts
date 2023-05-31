@@ -6,7 +6,6 @@ import { SearchResult } from "./types.ts";
 export type IndentedCodeBlockDetails = {
   type: "indented";
   code: string;
-  indentation: string;
 };
 
 export function create(code: string): string {
@@ -27,9 +26,8 @@ export function parse(codeBlock: string): IndentedCodeBlockDetails {
     .replace(/(^\n+|\n+$)/g, "");
 
   const type = "indented" as const;
-  const indentation = " ".repeat(indent);
 
-  return { type, code, indentation };
+  return { type, code };
 }
 
 export function findAll(markdown: string): SearchResult[] {
