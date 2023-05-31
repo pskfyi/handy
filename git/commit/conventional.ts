@@ -1,4 +1,12 @@
-import { splitOnFirst } from "../../string/splitOn.ts";
+import {
+  any,
+  Language,
+  regexp,
+  sequence,
+  string,
+} from "../../parser/combinator.ts";
+
+/* COMMON */
 
 export type ConventionalCommitFooter = {
   key: string;
@@ -14,12 +22,105 @@ export type ConventionalCommit = {
   breakingChange?: true;
 };
 
+/* PARSE */
+
+const type = regexp(/^[a-zA-Z]+/).match;
+const scope = sequence("(", regexp(/^[^\r\n\(\)]+/).match, ")").item(1);
+const description = string.inline;
+const delimiter = sequence(string("!").boolean, ": ");
+
+const footerKey = regexp(/^(BREAKING( |-)CHANGE|[^\s:]+)(: | (?=#))/).group(1);
+const nonFooterLine = any(string.whitespace, string.inline.not(footerKey));
+const nonFooterText = nonFooterLine.oneOrMore.join("").trimEnd;
+
+const body = nonFooterText.toObject("body");
+const footer = sequence(footerKey, nonFooterText).toObject("key", "value");
+const footers = footer.oneOrMore.into((footers) => ({ footers }));
+
+type BodyAndFooters = Pick<ConventionalCommit, "body" | "footers">;
+
+const bodyAndFooters = sequence(
+  string.blankLine.ignore,
+  any(
+    sequence(body, string.end),
+    sequence(footers, string.end),
+    sequence(body, footers, string.end),
+  ),
+).flat.into(([obj1, obj2]): BodyAndFooters => ({ ...obj1, ...obj2 }));
+
+const message = sequence(
+  type,
+  scope.optional,
+  delimiter.item(0), // breaking change indicator
+  description,
+  bodyAndFooters.fallback({}),
+  string.end,
+).into(([type, scope, breaking, description, { body, footers }]) => {
+  const message: ConventionalCommit = { type, description };
+
+  breaking ||= (footers || [])
+    .some(({ key }) => key === "BREAKING CHANGE" || key === "BREAKING-CHANGE");
+
+  if (scope) message.scope = scope;
+  if (breaking) message.breakingChange = true;
+  if (body) message.body = body;
+  if (footers) message.footers = footers;
+
+  return message;
+});
+
+/** A language for parsing Conventional Commits messages.
+ *
+ * @example
+ * conventionalCommit.message.parse("fix(app)!: use correct type for `foo`"); */
+export const conventionalCommit = {
+  type,
+  scope,
+  delimiter,
+  description,
+  body,
+  footer,
+  footers,
+  message,
+} satisfies Language;
+
 export class ConventionalFormatError extends TypeError {
-  constructor() {
-    super("Commit message does not conform to Conventional Commits format");
+  constructor(cause: unknown) {
+    super(
+      "Commit message does not conform to Conventional Commits format",
+      { cause },
+    );
     this.name = "ConventionalFormatError";
   }
 }
+
+/** Parse a Conventional Commit message into its constituent parts.
+ *
+ * See the https://www.conventionalcommits.org/en/v1.0.0/ for more information.
+ *
+ * @throws {ConventionalFormatError} if the message does not conform to the Conventional Commits format
+ *
+ * @example
+ * import { parse } from "https://deno.land/x/git/commit/conventional.ts";
+ *
+ * const commit = parse("fix(app)!: use correct type for `foo`");
+ *
+ * console.log(commit);
+ * // {
+ * //   type: "fix",
+ * //   scope: "app",
+ * //   breakingChange: true,
+ * //   description: "correct minor typos in code",
+ * // } */
+export function parse(input: string): ConventionalCommit {
+  try {
+    return message.parse(input)[0];
+  } catch (error) {
+    throw new ConventionalFormatError(error);
+  }
+}
+
+/* STRINGIFY */
 
 export class ConventionalTypeError extends TypeError {
   constructor() {
@@ -49,110 +150,6 @@ export class ConventionalFooterError extends TypeError {
     );
     this.name = "ConventionalFooterError";
   }
-}
-
-const SUBJECT_REGEX =
-  /^(?<type>\w+)(\((?<scope>.+)\))?(?<breaking>!)?: (?<description>.+)/;
-
-const FOOTER_SEGMENT_REGEX = /^((\S+|BREAKING CHANGE): .|\S+ #.)/;
-
-const FOOTER_REGEX =
-  /^((?<colonKey>[\S]+|BREAKING CHANGE): (?<colonValue>[\s\S]*)|(?<hashKey>[\S]+) (?<hashValue>#[\s\S]*))/;
-
-function parseSubject(
-  line: string,
-): readonly [
-  type: string,
-  scope: string,
-  breakingChange: true | undefined,
-  description: string,
-] {
-  const { type, breaking, scope, description } =
-    line.match(SUBJECT_REGEX)?.groups ?? {};
-
-  const breakingChange = (Boolean(breaking)) || undefined;
-
-  return [type, scope, breakingChange, description] as const;
-}
-
-function parseRemainder(
-  remainder: string,
-): readonly [bodySegments: string[], footers: ConventionalCommitFooter[]] {
-  const bodySegments = [] as string[];
-  const footers = [] as ConventionalCommitFooter[];
-
-  for (const segment of remainder.split(/\n *\n/).reverse()) {
-    if (!bodySegments.length && FOOTER_SEGMENT_REGEX.test(segment)) {
-      footers.unshift(...parseFooters(segment));
-      continue;
-    }
-
-    bodySegments.unshift(segment);
-  }
-
-  return [bodySegments, footers] as const;
-}
-
-function parseFooters(segment: string): ConventionalCommitFooter[] {
-  const footers = [] as ConventionalCommitFooter[];
-
-  for (const line of segment.split("\n")) {
-    const match = line.match(FOOTER_REGEX);
-
-    if (match) {
-      const { colonKey, colonValue, hashKey, hashValue } = match.groups!;
-      const key = colonKey ?? hashKey;
-      const value = (colonValue ?? hashValue).trim();
-      footers.push({ key, value });
-    } else {
-      footers.at(-1)!.value += `\n${line.trim()}`;
-    }
-  }
-
-  return footers;
-}
-
-/** Parse a Conventional Commit message into its constituent parts.
- *
- * See the https://www.conventionalcommits.org/en/v1.0.0/ for more information.
- *
- * @throws {ConventionalFormatError} if the message does not conform to the Conventional Commits format
- *
- * @example
- * import { parse } from "https://deno.land/x/git/commit/conventional.ts";
- *
- * const commit = parse("fix(app)!: use correct type for `foo`");
- *
- * console.log(commit);
- * // {
- * //   type: "fix",
- * //   scope: "app",
- * //   breakingChange: true,
- * //   description: "correct minor typos in code",
- * // } */
-export function parse(message: string): ConventionalCommit {
-  const [subject, remainder] = splitOnFirst("\n\n", message);
-  const [type, scope, breakingType, description] = parseSubject(subject);
-
-  if (!type || !description) throw new ConventionalFormatError();
-
-  const [bodySegments, footers] = remainder
-    ? parseRemainder(remainder)
-    : [[], []];
-
-  const breakingChange = (
-    breakingType ||
-    footers?.some(({ key }) => key.match(/BREAKING[ -]CHANGE/))
-  ) || undefined;
-
-  const result: ConventionalCommit = { type, description };
-
-  if (scope) result.scope = scope;
-  if (bodySegments.length) result.body = bodySegments.join("\n\n");
-  if (footers.length) result.footers = footers;
-  if (breakingChange) result.breakingChange = breakingChange;
-
-  return result;
 }
 
 const WHITESPACE = /\s/;
