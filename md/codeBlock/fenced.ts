@@ -8,7 +8,6 @@ import type { SearchResult } from "./types.ts";
 export type FencedCodeBlockDetails = Pretty<
   & {
     type: "fenced";
-    char: FenceChar;
     fence: string;
     code: string;
   }
@@ -59,10 +58,9 @@ export function parse(codeBlock: string): FencedCodeBlockDetails {
   const match = codeBlock.match(FENCED_CODE_BLOCK_REGEX);
   const { fence, infoString: _infoString, code = "" } = match?.groups ?? {};
   const { lang, meta } = infoString.parse(_infoString);
-  const char = fence[0] as FenceChar;
   const type = "fenced" as const;
 
-  const data: FencedCodeBlockDetails = { type, char, fence, code };
+  const data: FencedCodeBlockDetails = { type, fence, code };
 
   if (lang) data.lang = lang;
   if (meta) data.meta = meta;
