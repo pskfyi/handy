@@ -4,8 +4,7 @@ import {
   assertArrayIncludes,
   assertEquals,
   assertRejects,
-  describe,
-  it,
+  test,
 } from "../_deps/testing.ts";
 import { FileHandlerError, globImport } from "./globImport.ts";
 import { FIXTURE_DIR } from "../_test/constants.ts";
@@ -24,55 +23,53 @@ const C_TS = toFileUrl(resolve(C_DIR, "findme.ts")).href;
 
 const fileHandler = (filePath: string) => () => import(filePath);
 
-describe("fs.globImport", () => {
-  it("finds files matching the pattern", async () =>
-    assertArrayIncludes(
-      Object.keys(await globImport(globPattern)),
-      [A_TS, C_TS],
-    ));
+test("locating files", async () =>
+  assertArrayIncludes(
+    Object.keys(await globImport(globPattern)),
+    [A_TS, C_TS],
+  ));
 
-  it("returns import functions by default", async () =>
-    assert(
-      Object.values(await globImport(globPattern))
-        .every((val) => typeof val === "function"),
-    ));
+test("defaults", async () =>
+  assert(
+    Object.values(await globImport(globPattern))
+      .every((val) => typeof val === "function"),
+  ));
 
-  it("can return resolved imports", async () =>
-    assertEquals(
-      await globImport(globPattern, { eager: true, fileHandler }),
+test("can resolve imports", async () =>
+  assertEquals(
+    await globImport(globPattern, { eager: true, fileHandler }),
+    {
+      [A_TS]: { name: "A" },
+      [C_TS]: { name: "C" },
+    },
+  ));
+
+test("file extension handling", async () =>
+  assertEquals(
+    await globImport(
+      resolve(A_DIR, "**", "*.*"),
       {
-        [A_TS]: { name: "A" },
-        [C_TS]: { name: "C" },
-      },
-    ));
-
-  it("can handle files by extension", async () =>
-    assertEquals(
-      await globImport(
-        resolve(A_DIR, "**", "*.*"),
-        {
-          eager: true,
-          fileHandler: {
-            ".md": (filePath: string) => async () =>
-              posixNewlines(await Deno.readTextFile(fromFileUrl(filePath))),
-            ".ts": fileHandler,
-          },
+        eager: true,
+        fileHandler: {
+          ".md": (filePath: string) => async () =>
+            posixNewlines(await Deno.readTextFile(fromFileUrl(filePath))),
+          ".ts": fileHandler,
         },
-      ),
-      {
-        [A_MD]: "A\n",
-        [A_TS]: { name: "A" },
-        [C_MD]: "C\n",
-        [C_TS]: { name: "C" },
       },
-    ));
+    ),
+    {
+      [A_MD]: "A\n",
+      [A_TS]: { name: "A" },
+      [C_MD]: "C\n",
+      [C_TS]: { name: "C" },
+    },
+  ));
 
-  it("throws custom error on unhandled files", async () => {
-    const pattern = resolve(FIXTURE_DIR, "**", "*.*");
+test("unregistered extensions", async () => {
+  const pattern = resolve(FIXTURE_DIR, "**", "*.*");
 
-    await assertRejects(
-      () => globImport(pattern, { eager: true, fileHandler: {} }),
-      FileHandlerError,
-    );
-  });
+  await assertRejects(
+    () => globImport(pattern, { eager: true, fileHandler: {} }),
+    FileHandlerError,
+  );
 });

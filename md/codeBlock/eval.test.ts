@@ -3,7 +3,7 @@ import {
   assertEquals,
   assertRejects,
   describe,
-  it,
+  test,
 } from "../../_deps/testing.ts";
 import {
   evaluate,
@@ -18,27 +18,25 @@ import * as indented from "./indented.ts";
 const throws = "throw new Error()";
 
 describe("evaluate", () => {
-  describe("indented code blocks", () => {
-    it("throws custom error", () =>
-      void assertRejects(
-        async () => void await evaluate(indented.create(throws)),
-        IndentedCodeBlockError,
-      ));
-  });
+  test("no lang", () => {
+    void assertRejects(
+      async () => void await evaluate(indented.create(throws)),
+      IndentedCodeBlockError,
+    );
 
-  it("throws custom error on fenced blocks w/o lang", () =>
     void assertRejects(
       async () => void await evaluate(fenced.create(throws)),
       NoLanguageError,
-    ));
+    );
+  });
 
-  it("throws custom error on fenced blocks w/ unknown lang", () =>
+  test("unknown lang", () =>
     void assertRejects(
       async () => void await evaluate(fenced.create(throws, { lang: "js" })),
       UnknownLanguageError,
     ));
 
-  it("evaluates typescript", async () => {
+  test("typescript", async () => {
     const result = await evaluate(fenced.create(throws, { lang: "ts" }));
 
     assertEquals(result.success, false);
@@ -49,64 +47,58 @@ describe("evaluate", () => {
 });
 
 describe("evaluateAll", () => {
-  describe("indented code blocks", () => {
-    it("gathers custom error", async () => {
-      const results = await evaluateAll(
-        indented.create(throws) + "\n---\n" +
-          indented.create(throws) + "\n",
-      );
+  test("indented code blocks", async () => {
+    const results = await evaluateAll(
+      indented.create(throws) + "\n---\n" +
+        indented.create(throws) + "\n",
+    );
 
-      for (const [details, , result] of results) {
-        assert(details.type === "indented");
-        assert(result instanceof IndentedCodeBlockError);
-      }
-    });
+    for (const [details, , result] of results) {
+      assert(details.type === "indented");
+      assert(result instanceof IndentedCodeBlockError);
+    }
   });
 
-  describe("fenced code blocks", () => {
-    it("gathers custom error w/o lang", async () => {
-      const results = await evaluateAll(
-        fenced.create(throws) + "\n" +
-          fenced.create(throws) + "\n",
-      );
+  test("error gathering", async () => {
+    const results = await evaluateAll(
+      fenced.create(throws) + "\n" +
+        fenced.create(throws) + "\n",
+    );
 
-      for (const [details, , err] of results) {
-        assert(details.type === "fenced");
-        assert(err instanceof NoLanguageError);
+    for (const [details, , err] of results) {
+      assert(details.type === "fenced");
+      assert(err instanceof NoLanguageError);
+    }
+
+    const results2 = await evaluateAll(
+      fenced.create(throws, { lang: "py" }) + "\n" +
+        fenced.create(throws, { lang: "rs" }) + "\n",
+    );
+
+    for (const [details, , err] of results2) {
+      assert(details.type === "fenced");
+      assert(err instanceof UnknownLanguageError);
+    }
+  });
+
+  test("typescript", async () => {
+    const results = await evaluateAll(
+      fenced.create(throws, { lang: "ts" }) + "\n" +
+        fenced.create(`console.log('"Hello!"')`, { lang: "ts" }) + "\n",
+    );
+
+    for (const [details, , result] of results) {
+      assert(details.type === "fenced");
+      assert(!(result instanceof Error));
+      if (!result.success) {
+        assertEquals(result.code, 1);
+        assertEquals(result.stdout, "");
+        assert(result.stderr.includes("throw new Error()"));
+      } else {
+        assertEquals(result.code, 0);
+        assertEquals(result.stderr, "");
+        assertEquals(result.stdout, '"Hello!"');
       }
-    });
-
-    it("gathers custom error w/ unknown lang", async () => {
-      const results = await evaluateAll(
-        fenced.create(throws, { lang: "py" }) + "\n" +
-          fenced.create(throws, { lang: "rs" }) + "\n",
-      );
-
-      for (const [details, , err] of results) {
-        assert(details.type === "fenced");
-        assert(err instanceof UnknownLanguageError);
-      }
-    });
-
-    it("evaluates typescript", async () => {
-      const results = await evaluateAll(
-        fenced.create(throws, { lang: "ts" }) + "\n" +
-          fenced.create(`console.log('"Hello!"')`, { lang: "ts" }) + "\n",
-      );
-
-      for (const [details, , result] of results) {
-        assert(details.type === "fenced");
-        assert(!(result instanceof Error));
-        if (!result.success) {
-          assertEquals(result.code, 1);
-          assertEquals(result.stdout, "");
-          assert(result.stderr.includes("throw new Error()"));
-        } else {
-          assertEquals(result.code, 0);
-          assertEquals(result.stderr, "");
-          assertEquals(result.stdout, '"Hello!"');
-        }
-      }
-    });
+    }
   });
 });

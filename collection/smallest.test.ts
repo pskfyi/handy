@@ -1,26 +1,24 @@
-import { assertEquals, describe, it } from "../_deps/testing.ts";
+import { assertEquals, test } from "../_deps/testing.ts";
 import { smallest } from "./smallest.ts";
 
-describe("smallest", () => {
-  it("finds shortest strings in an Array", () => {
-    assertEquals(smallest("length", ["a", "bb", "c", "ddd"]), ["a", "c"]);
-  });
+test("Array of strings", () => {
+  assertEquals(smallest("length", ["a", "bb", "c", "ddd"]), ["a", "c"]);
+});
 
-  it("finds shortest strings in a Set", () => {
-    assertEquals(
-      smallest("length", new Set(["a", "bb", "c", "ddd"])),
-      ["a", "c"],
-    );
-  });
+test("Set of strings", () => {
+  assertEquals(
+    smallest("length", new Set(["a", "bb", "c", "ddd"])),
+    ["a", "c"],
+  );
+});
 
-  it("finds smallest Set from among Sets", () => {
-    assertEquals(
-      smallest("size", [new Set([1, 2]), new Set([1, 2, 3])]),
-      [new Set([1, 2])],
-    );
-  });
+test("Array of Sets", () => {
+  assertEquals(
+    smallest("size", [new Set([1, 2]), new Set([1, 2, 3])]),
+    [new Set([1, 2])],
+  );
+});
 
-  it("handles length property specially", () => {
-    assertEquals(smallest(["a", "bb", "c", "ddd"]), ["a", "c"]);
-  });
+test(".length handling", () => {
+  assertEquals(smallest(["a", "bb", "c", "ddd"]), ["a", "c"]);
 });

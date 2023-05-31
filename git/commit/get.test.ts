@@ -6,6 +6,7 @@ import {
   beforeAll,
   describe,
   it,
+  test,
 } from "../../_deps/testing.ts";
 import { _internals } from "../../_test/_internals.ts";
 import { CmdStub, stubCmd } from "../../cli/cmd.stub.ts";
@@ -61,8 +62,7 @@ describe("describe", () => {
       message: "feat(io/clipboard): init; add `copy()` & `paste()`",
     }));
 
-  it("throws if the input is invalid", () =>
-    void assertThrows(() => _describe("")));
+  it("throws on invalid input", () => void assertThrows(() => _describe("")));
 });
 
 describe("get", () => {
@@ -84,13 +84,13 @@ describe("get", () => {
   it("describes a commit", async () =>
     assertEquals(await get("aaa"), commitDescriptions.aaa));
 
-  it("throws if commit not found", async () =>
+  it("throws w/o commit found", async () =>
     void await assertRejects(() => get("XXX")));
 
-  it("throws if a span is passed", async () =>
+  it("throws if given a span", async () =>
     void await assertRejects(() => get("aaa..bbb")));
 
-  it("throws if a space is passed", async () =>
+  it("throws if given a space", async () =>
     void await assertRejects(() => get("aaa bbb")));
 
   afterAll(() => cmdStub.restore());
@@ -132,23 +132,23 @@ describe("getSpan", () => {
     });
   });
 
-  it("throws if start not found", async () =>
+  it("throws w/o start", async () =>
     void await assertRejects(() => getSpan(["XXX", "bbb"])));
 
-  it("throws if end not found", async () =>
+  it("throws w/o end", async () =>
     void await assertRejects(() => getSpan(["aaa", "XXX"])));
 
   describe("without opts.inclusive", () => {
-    it("describes a span of commits", async () =>
+    it("describes commit span", async () =>
       assertEquals(await getSpan(["aaa", "ccc"]), [
         _describe(commits.bbb),
         _describe(commits.ccc),
       ]));
 
-    it("returns [] when equal", async () =>
+    test("[] when equal", async () =>
       assertEquals(await getSpan(["bbb", "bbb"]), []));
 
-    it("returns [] when end > start", async () =>
+    test("[] when end > start", async () =>
       assertEquals(await getSpan(["bbb", "aaa"]), []));
 
     it("understands HEAD", async () =>
@@ -158,18 +158,18 @@ describe("getSpan", () => {
   });
 
   describe("with opts.inclusive", () => {
-    it("describes a span of commits", async () =>
+    it("describes commit span", async () =>
       assertEquals(await getSpan(["aaa", "bbb"], { inclusive: true }), [
         _describe(commits.aaa),
         _describe(commits.bbb),
       ]));
 
-    it("returns [start] when equal", async () =>
+    test("[start] when equal", async () =>
       assertEquals(await getSpan(["bbb", "bbb"], { inclusive: true }), [
         _describe(commits.bbb),
       ]));
 
-    it("returns [] when start > end", async () =>
+    test("[] when start > end", async () =>
       assertEquals(await getSpan(["bbb", "aaa"], { inclusive: true }), []));
 
     it("understands HEAD", async () =>

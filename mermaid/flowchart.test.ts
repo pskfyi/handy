@@ -1,39 +1,37 @@
 import { assertEquals, describe, it } from "../_deps/testing.ts";
 import { flowchart } from "./flowchart.ts";
 
-describe("flowchart", () => {
-  it("accepts an array of edges", () =>
+it("accepts edges", () => {
+  assertEquals(
+    flowchart([["a", "b"]]),
+    "```mermaid\nflowchart LR\n    a --> b\n```",
+  );
+
+  assertEquals(
+    flowchart(new Set([["c", "d"]])),
+    "```mermaid\nflowchart LR\n    c --> d\n```",
+  );
+});
+
+describe("direction option", () => {
+  it("defaults to LR", () =>
     assertEquals(
-      flowchart([["a", "b"]]),
-      "```mermaid\nflowchart LR\n    a --> b\n```",
+      flowchart([]),
+      "```mermaid\nflowchart LR\n\n```",
     ));
 
-  it("accepts a set of edges", () =>
+  it("is configurable", () =>
     assertEquals(
-      flowchart(new Set([["c", "d"]])),
-      "```mermaid\nflowchart LR\n    c --> d\n```",
+      flowchart([], { direction: "TD" }),
+      "```mermaid\nflowchart TD\n\n```",
     ));
+});
 
-  describe("direction option", () => {
-    it("defaults to LR", () =>
-      assertEquals(
-        flowchart([]),
-        "```mermaid\nflowchart LR\n\n```",
-      ));
-
-    it("is configurable", () =>
-      assertEquals(
-        flowchart([], { direction: "TD" }),
-        "```mermaid\nflowchart TD\n\n```",
-      ));
-  });
-
-  describe("other options", () => {
-    it("can render a title", () => {
-      assertEquals(
-        flowchart([], { title: "Hello World" }),
-        "```mermaid\n---\ntitle: Hello World\n---\nflowchart LR\n\n```",
-      );
-    });
+describe("other options", () => {
+  it("can render a title", () => {
+    assertEquals(
+      flowchart([], { title: "Hello World" }),
+      "```mermaid\n---\ntitle: Hello World\n---\nflowchart LR\n\n```",
+    );
   });
 });

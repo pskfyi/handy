@@ -3,6 +3,7 @@ import {
   assertThrows,
   describe,
   it,
+  test,
 } from "../../_deps/testing.ts";
 import {
   InfoStringError,
@@ -14,22 +15,20 @@ import {
 describe("stringify", () => {
   it('defaults to ""', () => assertEquals(stringify(), ""));
 
-  it("starts with lang; ends with meta", () =>
+  it("has lang then meta", () =>
     assertEquals(stringify({ lang: "ts", meta: "foo" }), "ts foo"));
 
-  describe("lang", () => {
-    it("throws custom error on whitespace", () =>
-      void assertThrows(() => stringify({ lang: "t s\n" }), LanguageError));
-  });
+  test("lang w/ whitespace", () =>
+    void assertThrows(() => stringify({ lang: "t s\n" }), LanguageError));
 
   describe("meta", () => {
-    it("throws custom error on newlines", () =>
+    it("throws on newlines", () =>
       void assertThrows(() => stringify({ meta: "\n" }), InfoStringError));
 
     it("has fallback lang", () =>
       assertEquals(stringify({ meta: "foo" }), "nocode foo"));
 
-    it("can ignore fallback lang", () =>
+    it("can ignore lang", () =>
       assertEquals(stringify({ meta: "foo", lang: "" }), "foo"));
 
     it("trims the value", () =>
@@ -40,9 +39,9 @@ describe("stringify", () => {
 describe("parse", () => {
   it("defaults to {}", () => assertEquals(parse(""), {}));
 
-  it("treats first word as lang", () =>
+  it("reads first word as lang", () =>
     assertEquals(parse("foo bar baz qux").lang, "foo"));
 
-  it("treats the rest as meta", () =>
+  it("reads the rest as meta", () =>
     assertEquals(parse("foo bar baz qux").meta, "bar baz qux"));
 });
