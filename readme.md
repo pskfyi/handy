@@ -265,7 +265,7 @@ codeBlock.evaluate(
 
 ### `script/evalCodeBlocks`
 
-For a markdown file, execute each TS code block in the file. Useful for checking imports and examples in a readme.
+For a markdown file, execute each TS or JS code block in the file. Useful for checking imports and examples in a readme.
 
 ```ts
 import { evalCodeBlocks } from "https://deno.land/x/handy/md/script/evalCodeBlocks.ts";

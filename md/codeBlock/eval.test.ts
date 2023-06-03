@@ -16,6 +16,7 @@ import * as fenced from "./fenced.ts";
 import * as indented from "./indented.ts";
 
 const throws = "throw new Error()";
+const logs = 'console.log("logged")';
 
 describe("evaluate", () => {
   test("no lang", () => {
@@ -32,7 +33,7 @@ describe("evaluate", () => {
 
   test("unknown lang", () =>
     void assertRejects(
-      async () => void await evaluate(fenced.create(throws, { lang: "js" })),
+      async () => void await evaluate(fenced.create(throws, { lang: "ZZZ" })),
       UnknownLanguageError,
     ));
 
@@ -43,6 +44,15 @@ describe("evaluate", () => {
     assertEquals(result.code, 1);
     assertEquals(result.stdout, "");
     assert(result.stderr.includes("throw new Error()"));
+  });
+
+  test("javascript", async () => {
+    assertEquals(await evaluate(fenced.create(logs, { lang: "js" })), {
+      success: true,
+      code: 0,
+      stderr: "",
+      stdout: "logged",
+    });
   });
 });
 

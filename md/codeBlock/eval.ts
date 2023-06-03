@@ -2,8 +2,18 @@ import { parse as parseCodeBlock } from "./parse.ts";
 import { findAll as findAllCodeBlocks } from "./findAll.ts";
 import type { CmdResult } from "../../cli/cmd.ts";
 import { evaluate as evalTS } from "../../ts/evaluate.ts";
+import { evaluate as evalJS } from "../../js/evaluate.ts";
 import type { CodeBlockDetails } from "./types.ts";
 import type { TextLocation } from "../../string/Text.ts";
+
+const LANGS = {
+  ts: evalTS,
+  js: evalJS,
+};
+
+function _isRegistered(lang: string): lang is keyof typeof LANGS {
+  return lang in LANGS;
+}
 
 export class IndentedCodeBlockError extends Error {
   constructor() {
@@ -30,33 +40,25 @@ export type EvaluateOptions = {
   replace?: [string | RegExp, string][];
 };
 
-function _getCode(
-  details: CodeBlockDetails,
-  replace: Exclude<EvaluateOptions["replace"], undefined>,
-): string {
-  if (details.type === "indented") throw new IndentedCodeBlockError();
-
-  const { lang, code } = details;
-
-  if (!lang) throw new NoLanguageError();
-
-  if (lang !== "ts") throw new UnknownLanguageError(lang);
-
-  return replace.reduce(
-    (code, [search, replace]) => code.replaceAll(search, replace),
-    code,
-  );
-}
-
-/** Passes a code block to `deno eval`. */
+/** Evaluate a TS or JS code block. Uses `ts/evaluate` and `js/evaluate`. */
 export async function evaluate(
-  codeBlock: string,
+  codeBlock: string | CodeBlockDetails,
   { replace = [] }: EvaluateOptions = {},
 ): Promise<CmdResult> {
-  const details = parseCodeBlock(codeBlock);
-  const code = _getCode(details, replace);
+  const details = typeof codeBlock === "string"
+    ? parseCodeBlock(codeBlock)
+    : codeBlock;
 
-  return await evalTS(code);
+  if (details.type === "indented") throw new IndentedCodeBlockError();
+
+  const lang = details.lang;
+  let code = details.code;
+
+  if (!lang) throw new NoLanguageError();
+  if (!_isRegistered(lang)) throw new UnknownLanguageError(lang);
+  for (const [before, after] of replace) code = code.replaceAll(before, after);
+
+  return await LANGS[lang](code);
 }
 
 export type EvaluateAllResult = [
@@ -80,9 +82,7 @@ export async function evaluateAll(
 
   for (const [details, location] of findAllCodeBlocks(markdown)) {
     try {
-      const code = _getCode(details, replace);
-
-      results.push([details, location, await evalTS(code)]);
+      results.push([details, location, await evaluate(details, { replace })]);
     } catch (error) {
       if (
         error instanceof IndentedCodeBlockError ||
