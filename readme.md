@@ -12,6 +12,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
   - [`script/makeReleaseNotes`](#scriptmakereleasenotes)
 - [`graph`](#graph)
 - [`io`](#io)
+- [`js`](#js)
 - [`json`](#json)
 - [`md`](#md)
   - [`script/evalCodeBlocks`](#scriptevalcodeblocks)
@@ -215,6 +216,17 @@ import { clipboard } from "https://deno.land/x/handy/io/utils.ts";
 
 clipboard.copy("foo").catch(console.log);
 clipboard.paste().catch(console.log); // "foo"
+```
+
+## `js`
+
+JavaScript utilities.
+
+```ts
+import { evaluate } from "https://deno.land/x/handy/js/utils.ts";
+
+const { stdout } = await evaluate("console.log('Hello!')");
+//         ^? "Hello!"
 ```
 
 ## `json`
