@@ -17,11 +17,51 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: ${{ github.event.pull_request.commits }}
+          # Without the following setting, a merge commit is created, which 
+          # causes the SHAs within GitHub Actions to be misaligned with their 
+          # values in local development and the GitHub UI. This would cause
+          # the release notes to contain the wrong commit SHAs.
+          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Install Deno
         uses: denoland/setup-deno@v1
         with:
           deno-version: v1.x
+
+      - name: Generate Release Notes
+        id: generate_release_notes
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          # Get the first commit sha of the PR. This works because the
+          # fetch-depth in the first step is set correctly.
+          FIRST_COMMIT_SHA=$(git rev-list HEAD | tail -n 1)
+
+          # See: https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#multiline-strings
+
+          # create a delimiter
+          EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
+          # push name ("RELEASE_NOTES") + delimiter
+          echo "RELEASE_NOTES<<$EOF" >> "$GITHUB_OUTPUT"
+          # then push value
+          deno run -A git/script/makeReleaseNotes.ts -gi --commit=$FIRST_COMMIT_SHA >> "$GITHUB_OUTPUT"
+          # then another delimiter
+          echo "$EOF" >> "$GITHUB_OUTPUT"
+
+      - name: Update PR with Release Notes
+        if: matrix.os == 'ubuntu-latest'
+        uses: edumserrano/find-create-or-update-comment@v1.0.3
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body-includes: <!-- release-notes-preview -->
+          comment-author: github-actions[bot]
+          body: |
+            <!-- release-notes-preview -->
+            # Release Notes Preview
+
+            These notes are auto-generated from the [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) messages of this PR, and will be re-generated if the commits are updated.
+
+            ${{ steps.generate_release_notes.outputs.release_notes }}
+          edit-mode: replace
 
       - name: Lint
         # Intentionally only on Linux because output will be the same on all 
