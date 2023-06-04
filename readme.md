@@ -149,6 +149,8 @@ Git-related utilities.
 import { commit, tag } from "./git/utils.ts";
 
 await tag.getLatest().catch(console.log); // ex. "v1.0.0"
+
+await commit.sha("HEAD").catch(console.log); // ex. "a1b2c3d4e5f6..."
 await commit.get("HEAD").catch(console.log); // { message: "...", ... }
 commit.conventional.parse("feat(scope)!: description"); // { type: "feat", ... }
 ```
