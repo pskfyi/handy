@@ -102,9 +102,7 @@ describe("getSpan", () => {
   beforeAll(() => {
     cmdStub = stubCmd(_internals, (command) => {
       const span = (command as string).split(" ").at(-1)!;
-      const [startish, end] = span.split("..");
-      const [start, inclusiveMarker] = startish.split(/(\^)$/);
-      const inclusive = inclusiveMarker === "^";
+      const [start, end] = span.split("..");
 
       const _commits = Object.values(commits);
 
@@ -120,11 +118,13 @@ describe("getSpan", () => {
       const startIndex = getIndex(start);
       const endIndex = getIndex(end);
 
-      if (startIndex === undefined || endIndex === undefined) {
+      if (startIndex !== undefined && !end) {
+        return _commits[startIndex];
+      } else if (startIndex === undefined || endIndex === undefined) {
         throw new CmdError(command, "", "failed", 1);
       } else if (startIndex <= endIndex) {
         return _commits
-          .slice(startIndex + (inclusive ? 0 : 1), endIndex + 1)
+          .slice(startIndex + 1, endIndex + 1)
           .join("\n\n");
       } else {
         return "";
@@ -169,8 +169,10 @@ describe("getSpan", () => {
         _describe(commits.bbb),
       ]));
 
-    test("[] when start > end", async () =>
-      assertEquals(await getSpan(["bbb", "aaa"], { inclusive: true }), []));
+    test("[start] when start > end", async () =>
+      assertEquals(await getSpan(["bbb", "aaa"], { inclusive: true }), [
+        _describe(commits.bbb),
+      ]));
 
     it("understands HEAD", async () =>
       assertEquals(await getSpan(["bbb", "HEAD"], { inclusive: true }), [

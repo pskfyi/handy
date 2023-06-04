@@ -48,11 +48,14 @@ export async function get(
 
 /** Get commits between two hashes or refs, excluding first commit by default.
  *
+ * When `opts.inclusive` is `true`, the first commit will always be included
+ * if it exists, even if it is not an ancestor of the second commit.
+ *
  * @example
  * await getSpan(["abc1234", "def5678"]);
- * // git log abc1234..def5678
+ * // similar to: git log abc1234..def5678 w/ parsing
  * await getSpan(["abc1234", "def5678"], { inclusive: true });
- * // git log abc1234^..def5678
+ * // similar to: git log abc1234^..def5678 w/ parsing
  *
  * @example
  * await getSpan(["1.0.0", "HEAD"]); */
@@ -61,10 +64,19 @@ export async function getSpan(
   { cwd, inclusive }: { cwd?: string; inclusive?: boolean } = {},
 ): Promise<CommitDescription[]> {
   try {
-    const span = inclusive ? `${start}^..${end}` : `${start}..${end}`;
-    const stdout = await _internals.cmd(`git log ${span}`, { cwd });
+    const results: CommitDescription[] = [];
 
-    return stdout === "" ? [] : splitLog(stdout).map(describe);
+    if (inclusive) results.push(await get(start, { cwd }));
+
+    const stdout = await _internals.cmd(`git log ${start}..${end}`, { cwd });
+
+    if (stdout === "") return results;
+
+    for (const commit of splitLog(stdout)) {
+      results.push(describe(commit));
+    }
+
+    return results;
   } catch (error) {
     throw new Error(
       `Failed to get commits between ${start} and ${end}`,
