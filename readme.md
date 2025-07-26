@@ -61,9 +61,10 @@ type ThreeUnknowns = Tuple.OfLength<3>; // [unknown, unknown, unknown]
 CLI-related utilities.
 
 ```ts
-import { cmd, consoleWidth } from "https://deno.land/x/handy/cli/mod.ts";
+import { cmd, cmds, consoleWidth } from "https://deno.land/x/handy/cli/mod.ts";
 
 await cmd("deno -V"); // ex: "deno 1.34.0"
+await cmds(['echo "Hello"', 'echo "World"']); // executes all and provides a summary of successes and failures
 consoleWidth(80); // real width of terminal, or fallback of 80
 ```
 
