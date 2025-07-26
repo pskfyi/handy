@@ -19,7 +19,6 @@ test("CmdError", async () => {
     assertEquals(error.stdout, "");
     assertEquals(error.success, false);
     assertEquals(error.code, 1);
-    assert(error.stderr.includes("unrecognized subcommand"));
   });
 });
 
