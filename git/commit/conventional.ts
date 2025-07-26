@@ -112,7 +112,7 @@ export class ConventionalFormatError extends TypeError {
  * @throws {ConventionalFormatError} if the message does not conform to the Conventional Commits format
  *
  * @example
- * import { parse } from "https://deno.land/x/git/commit/conventional.ts";
+ * import { parse } from "https://deno.land/x/handy/git/commit/conventional.ts";
  *
  * const commit = parse("fix(app)!: use correct type for `foo`");
  *
@@ -175,7 +175,7 @@ const WHITESPACE = /\s/;
  * @throws {ConventionalFooterError} if a footer key is empty or includes whitespace unless it is `"BREAKING CHANGE"`
  *
  * @example
- * import { stringify } from "https://deno.land/x/git/commit/conventional.ts";
+ * import { stringify } from "https://deno.land/x/handy/git/commit/conventional.ts";
  *
  * const commit = {
  *   type: "fix",
