@@ -1,4 +1,5 @@
-import { assertEquals, test } from "../_deps/testing.ts";
+import { assertEquals } from "@std/assert";
+import { test } from "@std/testing/bdd";
 import { largest } from "./largest.ts";
 
 test("w/ Array", () =>

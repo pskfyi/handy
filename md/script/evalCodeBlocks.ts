@@ -1,4 +1,4 @@
-import { gray, green, red } from "../../_deps/fmt.ts";
+import { gray, green, red } from "@std/fmt/colors";
 import { consoleWidth } from "../../cli/consoleSize.ts";
 import { elideEnd } from "../../string/elide.ts";
 import {

@@ -1,4 +1,5 @@
-import { assertEquals, describe, it } from "../_deps/testing.ts";
+import { assertEquals } from "@std/assert";
+import { describe, it } from "@std/testing/bdd";
 import { escapeFull, escapeTerse } from "./escape.ts";
 
 describe("escapeFull", () => {

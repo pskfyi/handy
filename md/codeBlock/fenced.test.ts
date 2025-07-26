@@ -1,4 +1,5 @@
-import { assert, assertEquals, describe, test } from "../../_deps/testing.ts";
+import { assert, assertEquals } from "@std/assert";
+import { describe, test } from "@std/testing/bdd";
 import { create, findAll, parse } from "./fenced.ts";
 
 describe("create", () => {

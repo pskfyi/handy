@@ -1,4 +1,4 @@
-import { isGlob } from "../_deps/path.ts";
+import { isGlob } from "@std/path";
 
 /** Given a glob pattern, return its non-glob beginning.
  *

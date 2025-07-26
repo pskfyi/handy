@@ -1,4 +1,4 @@
-import { assertEquals } from "../_deps/testing.ts";
+import { assertEquals } from "@std/assert";
 import { Result } from "./core.ts";
 import { Ignored, IgnoredParser } from "./ignored.ts";
 

@@ -1,9 +1,7 @@
-import {
-  dirname,
-  fromFileUrl,
-  posixDirname,
-  windowsDirname,
-} from "../_deps/path.ts";
+import { dirname, fromFileUrl } from "@std/path";
+
+import { dirname as posixDirname } from "@std/path/posix/dirname";
+import { dirname as windowsDirname } from "@std/path/windows/dirname";
 
 /** Returns the directory name of a path. Handles `ImportMeta` properly on
  * Windows, and handles strings in a cross-platform manner.

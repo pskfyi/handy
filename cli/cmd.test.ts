@@ -1,4 +1,5 @@
-import { assert, assertEquals, assertRejects, test } from "../_deps/testing.ts";
+import { assert, assertEquals, assertRejects } from "@std/assert";
+import { test } from "@std/testing/bdd";
 import { cmd, CmdError } from "./cmd.ts";
 
 const command = Deno.build.os === "windows"

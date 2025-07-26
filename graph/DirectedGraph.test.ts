@@ -1,13 +1,6 @@
 import { smallest } from "../collection/smallest.ts";
-import {
-  assert,
-  assertEquals,
-  assertThrows,
-  beforeEach,
-  describe,
-  it,
-  test,
-} from "../_deps/testing.ts";
+import { assert, assertEquals, assertThrows } from "@std/assert";
+import { beforeEach, describe, it, test } from "@std/testing/bdd";
 import { DirectedGraph } from "./DirectedGraph.ts";
 import { VertexError } from "./errors.ts";
 

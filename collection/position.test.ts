@@ -1,11 +1,5 @@
-import {
-  assert,
-  assertEquals,
-  assertThrows,
-  describe,
-  it,
-  test,
-} from "../_deps/testing.ts";
+import { assert, assertEquals, assertThrows } from "@std/assert";
+import { describe, it, test } from "@std/testing/bdd";
 
 import * as position from "./position.ts";
 

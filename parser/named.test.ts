@@ -1,4 +1,5 @@
-import { assert, assertThrows, describe, test } from "../_deps/testing.ts";
+import { assert, assertThrows } from "@std/assert";
+import { describe, test } from "@std/testing/bdd";
 import { assertIgnored, assertParseResult } from "./asserts.ts";
 import {
   blankLine,

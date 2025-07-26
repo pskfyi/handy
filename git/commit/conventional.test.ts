@@ -1,10 +1,5 @@
-import {
-  assertEquals,
-  assertThrows,
-  describe,
-  it,
-  test,
-} from "../../_deps/testing.ts";
+import { assertEquals, assertThrows } from "@std/assert";
+import { describe, it, test } from "@std/testing/bdd";
 import { assertParseResult } from "../../parser/asserts.ts";
 import { dedent } from "../../string/dedent.ts";
 import {

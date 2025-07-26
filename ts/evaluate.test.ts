@@ -1,4 +1,5 @@
-import { assert, assertEquals, describe, test } from "../_deps/testing.ts";
+import { assert, assertEquals } from "@std/assert";
+import { describe, test } from "@std/testing/bdd";
 import { evaluate } from "./evaluate.ts";
 
 describe("evaluate TypeScript", () => {

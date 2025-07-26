@@ -1,4 +1,5 @@
-import { assertEquals, assertRejects, test } from "../../_deps/testing.ts";
+import { assertEquals, assertRejects } from "@std/assert";
+import { test } from "@std/testing/bdd";
 import { _internals } from "../../_test/_internals.ts";
 import { sha } from "./sha.ts";
 

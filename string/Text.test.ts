@@ -1,9 +1,5 @@
-import {
-  assertEquals,
-  assertThrows,
-  describe,
-  test,
-} from "../_deps/testing.ts";
+import { assertEquals, assertThrows } from "@std/assert";
+import { describe, test } from "@std/testing/bdd";
 import { Text } from "./Text.ts";
 
 describe(".input is the input", () => assertEquals(new Text("a").input, "a"));
