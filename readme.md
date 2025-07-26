@@ -421,6 +421,7 @@ import {
   escapeTerse,
   indent,
   mostConsecutive,
+  replaceMany,
   sequences,
   splitOn,
   splitOnFirst,
@@ -432,6 +433,7 @@ dedent("  a\n   b\n    c"); // "a\n b\n  c"
 indent("a\nb\nc", 2); // "  a\n  b\n  c"
 elideStart("1234567890", { maxLength: 8 }); // "…4567890"
 escapeTerse("\t\t\n"); // "⇥⇥¶"
+replaceMany("aabbcc", { a: "X", b: "Y" }); // "XXYYcc"
 splitOnFirst("/", "a/b/c"); // ["a", "b/c"]
 splitOn(3, "\n", "a\nb\nc\nd\ne"); // ["a", "b", "c", "d\ne"]
 sequences("A", "ABAACA"); // ["A", "AA", "A"]
