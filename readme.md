@@ -7,6 +7,8 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 - [`array`](#array)
 - [`cli`](#cli)
 - [`collection`](#collection)
+- [`deno`](#deno)
+  - [`exports/script/update`](#exportsscriptupdate)
 - [`fs`](#fs)
 - [`git`](#git)
   - [`script/makeReleaseNotes`](#scriptmakereleasenotes)
@@ -120,6 +122,41 @@ type TypedArrIndices = Indices<typeof typedArr>; // number[]
 type ArrIndex = Index<typeof arr>; // 0 | 1 | 2
 type StrIndex = Index<typeof str>; // 0 | 1
 type TypedArrIndex = Index<typeof typedArr>; // number
+```
+
+## `deno`
+
+Deno exports utilities.
+
+```ts
+import { determine } from "https://deno.land/x/handy/deno/exports/determine.ts";
+
+await determine("./_test/fixture/deno", {/* Options */});
+// { ".": "./mod.ts", "some/path": "some/path.ts" }
+```
+
+### `exports/script/update`
+
+```no-eval
+Updates the exports field in a deno.json file to include .ts files in the current directory and its subdirectories, sorted by key. Excludes files and directories that start with a dot or underscore, and test files.
+
+Usage:
+  deno run -A https://deno.land/x/handy/deno/exports/script/update.ts [path]
+
+Arguments:
+  path    A deno.json file or directory containing one. Searches the current directory by default.
+
+Options:
+  -h, --help         Show this help message
+  -d, --dry-run      Show what would be done without making any changes
+  -r, --root=<path>  Make export paths relative to the provided path. Defaults to the deno.json file's directory.
+
+Examples:
+  deno run -A https://deno.land/x/handy/deno/exports/script/update.ts
+
+  deno run -A https://deno.land/x/handy/deno/exports/script/update.ts ./path/to/deno.json
+
+  deno run -A https://deno.land/x/handy/deno/exports/script/update.ts -root=src
 ```
 
 ## `fs`
