@@ -47,6 +47,7 @@ describe("evaluate", () => {
       code: 0,
       stderr: "",
       stdout: "logged",
+      command: ["deno", "eval", "-q", "--ext=js", 'console.log("logged")'],
     });
   });
 });
