@@ -9,6 +9,6 @@ export {
   toFileUrl,
 } from "@std/path";
 
-export { dirname as posixDirname } from "@std/path/posix";
+export { dirname as posixDirname } from "@std/path/posix/dirname";
 
-export { dirname as windowsDirname } from "@std/path/win32";
+export { dirname as windowsDirname } from "@std/path/windows/dirname";
