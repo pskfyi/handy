@@ -1,11 +1,11 @@
-import { fromFileUrl, resolve, toFileUrl } from "../_deps/path.ts";
+import { fromFileUrl, resolve, toFileUrl } from "@std/path";
 import {
   assert,
   assertArrayIncludes,
   assertEquals,
   assertRejects,
-  test,
-} from "../_deps/testing.ts";
+} from "@std/assert";
+import { test } from "@std/testing/bdd";
 import { FileHandlerError, globImport } from "./globImport.ts";
 import { FIXTURE_DIR } from "../_test/constants.ts";
 import { posixNewlines } from "../os/newlines.ts";

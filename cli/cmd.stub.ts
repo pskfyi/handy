@@ -1,4 +1,4 @@
-import { Stub, stub } from "../_deps/testing.ts";
+import { Stub, stub } from "@std/testing/mock";
 import { cmd, CmdOptions, CmdResult } from "./cmd.ts";
 
 export type CmdStub = Stub<{ cmd: typeof cmd }>;

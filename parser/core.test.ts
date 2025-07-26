@@ -1,4 +1,5 @@
-import { assert, assertEquals, assertThrows, test } from "../_deps/testing.ts";
+import { assert, assertEquals, assertThrows } from "@std/assert";
+import { test } from "@std/testing/bdd";
 import { TextCursor } from "../string/TextCursor.ts";
 import { assertParseResult } from "./asserts.ts";
 import {

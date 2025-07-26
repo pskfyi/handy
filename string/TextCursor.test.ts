@@ -1,5 +1,6 @@
-import { stripAnsiCode } from "../_deps/fmt.ts";
-import { assert, assertEquals, describe, it, test } from "../_deps/testing.ts";
+import { stripAnsiCode } from "@std/fmt/colors";
+import { assert, assertEquals } from "@std/assert";
+import { describe, it, test } from "@std/testing/bdd";
 import { TextCursor } from "./TextCursor.ts";
 import { dedent } from "./dedent.ts";
 

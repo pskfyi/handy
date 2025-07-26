@@ -1,5 +1,6 @@
-import { resolve } from "../_deps/path.ts";
-import { assertArrayIncludes, it } from "../_deps/testing.ts";
+import { resolve } from "@std/path";
+import { assertArrayIncludes } from "@std/assert";
+import { it } from "@std/testing/bdd";
 import { glob } from "./glob.ts";
 import { FIXTURE_DIR } from "../_test/constants.ts";
 

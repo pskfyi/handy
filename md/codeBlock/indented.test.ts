@@ -1,9 +1,5 @@
-import {
-  assertEquals,
-  assertThrows,
-  describe,
-  test,
-} from "../../_deps/testing.ts";
+import { assertEquals, assertThrows } from "@std/assert";
+import { describe, test } from "@std/testing/bdd";
 import { create, findAll, parse } from "./indented.ts";
 
 function assertParse(code: string, expected: string): void {

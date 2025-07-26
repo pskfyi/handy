@@ -1,4 +1,4 @@
-import { compare, format, parse } from "../_deps/semver.ts";
+import { compare, format, parse } from "@std/semver";
 import { _internals } from "../_test/_internals.ts";
 
 /** Get all tags in the git repository at the current working directory. */

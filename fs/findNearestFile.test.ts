@@ -1,5 +1,6 @@
-import { resolve } from "../_deps/path.ts";
-import { assertEquals, assertRejects, test } from "../_deps/testing.ts";
+import { resolve } from "@std/path";
+import { assertEquals, assertRejects } from "@std/assert";
+import { test } from "@std/testing/bdd";
 import { FIXTURE_DIR } from "../_test/constants.ts";
 import { findNearestFile } from "./findNearestFile.ts";
 

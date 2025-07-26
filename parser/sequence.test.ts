@@ -1,4 +1,5 @@
-import { assert, test } from "../_deps/testing.ts";
+import { assert } from "@std/assert";
+import { test } from "@std/testing/bdd";
 import { ArrayParser } from "./Parser.ts";
 import { assertParseResult } from "./asserts.ts";
 import { sequence } from "./sequence.ts";

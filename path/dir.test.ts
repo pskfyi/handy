@@ -1,4 +1,5 @@
-import { assertEquals, describe, test } from "../_deps/testing.ts";
+import { assertEquals } from "@std/assert";
+import { describe, test } from "@std/testing/bdd";
 import { dir } from "./dir.ts";
 
 function assertDir(input: string | URL | ImportMeta, expected: string): void {

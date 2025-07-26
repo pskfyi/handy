@@ -1,4 +1,5 @@
-import { assertEquals, it } from "../../_deps/testing.ts";
+import { assertEquals } from "@std/assert";
+import { it } from "@std/testing/bdd";
 import { findAll } from "./findAll.ts";
 
 it("gets blocks & locations", () =>

@@ -1,13 +1,5 @@
-import {
-  afterAll,
-  assertEquals,
-  assertRejects,
-  assertThrows,
-  beforeAll,
-  describe,
-  it,
-  test,
-} from "../../_deps/testing.ts";
+import { assertEquals, assertRejects, assertThrows } from "@std/assert";
+import { afterAll, beforeAll, describe, it, test } from "@std/testing/bdd";
 import { _internals } from "../../_test/_internals.ts";
 import { CmdStub, stubCmd } from "../../cli/cmd.stub.ts";
 import { CmdError } from "../../cli/cmd.ts";

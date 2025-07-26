@@ -1,5 +1,5 @@
 import { glob } from "./glob.ts";
-import { toFileUrl } from "../_deps/path.ts";
+import { toFileUrl } from "@std/path";
 
 /** A callback that will open a file and return its contents.
  *

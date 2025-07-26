@@ -1,4 +1,5 @@
-import { assert, assertEquals, test } from "../../_deps/testing.ts";
+import { assert, assertEquals } from "@std/assert";
+import { test } from "@std/testing/bdd";
 import { create } from "./create.ts";
 
 test("defaults", () =>

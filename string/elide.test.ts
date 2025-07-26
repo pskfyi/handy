@@ -1,4 +1,5 @@
-import { assertEquals, describe, it } from "../_deps/testing.ts";
+import { assertEquals } from "@std/assert";
+import { describe, it } from "@std/testing/bdd";
 import { elideAround, elideEnd, elideMiddle, elideStart } from "./elide.ts";
 
 const digits = "1234567890";
