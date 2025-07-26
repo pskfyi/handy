@@ -1,4 +1,4 @@
-import { gray, green, red } from "@std/fmt/colors";
+import { red } from "@std/fmt/colors";
 import { consoleWidth } from "../../cli/consoleSize.ts";
 import { elideEnd } from "../../string/elide.ts";
 import {
@@ -8,6 +8,7 @@ import {
   NoLanguageError,
   UnknownLanguageError,
 } from "../codeBlock/eval.ts";
+import { FAILURE, SKIP, SUCCESS } from "../../cli/icons.ts";
 
 export async function evalCodeBlocks(
   filePath: string,
@@ -32,21 +33,15 @@ export async function evalCodeBlocks(
 
     const icon = (result instanceof NoLanguageError ||
         result instanceof UnknownLanguageError)
-      ? "skip"
+      ? SKIP
       : (result instanceof Error || !result.success)
-      ? "✗"
-      : "✓";
+      ? FAILURE
+      : SUCCESS;
 
-    const colorIcon = icon === "✗"
-      ? red(icon)
-      : icon === "✓"
-      ? green(icon)
-      : gray(icon);
-
-    const iconLength = icon === "skip" ? 4 : 1;
+    const iconLength = icon.length;
     const langLength = String(lang).length;
 
-    const prefix = `${colorIcon} ${details.lang} `;
+    const prefix = `${icon} ${details.lang} `;
     const spacesInPrefix = 2;
 
     const inlineCode = code.trim().replace(/\s+/g, " ");
