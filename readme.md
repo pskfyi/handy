@@ -1,6 +1,6 @@
 # 👋 Handy
 
-[![deno module](https://shield.deno.dev/x/handy)](https://deno.land/x/handy)
+[![JSR](https://jsr.io/badges/@psk/handy)](https://jsr.io/@psk/handy) [![deno module](https://shield.deno.dev/x/handy)](https://deno.land/x/handy)
 
 Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 
