@@ -1,2 +1,2 @@
-export * from "./utils.ts";
+export * from "./mapOnInterval.ts";
 export * from "./types.ts";

@@ -30,7 +30,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 Array-related utilities.
 
 ```ts
-import { mapOnInterval } from "https://deno.land/x/handy/array/utils.ts";
+import { mapOnInterval } from "https://deno.land/x/handy/array/mod.ts";
 
 mapOnInterval([3, 2, 1, "go!"], 100, (item) => console.log(item));
 // logs: 3
@@ -61,7 +61,7 @@ type ThreeUnknowns = Tuple.OfLength<3>; // [unknown, unknown, unknown]
 CLI-related utilities.
 
 ```ts
-import { cmd, consoleWidth } from "https://deno.land/x/handy/cli/utils.ts";
+import { cmd, consoleWidth } from "https://deno.land/x/handy/cli/mod.ts";
 
 await cmd("deno -V"); // ex: "deno 1.34.0"
 consoleWidth(80); // real width of terminal, or fallback of 80
@@ -76,7 +76,7 @@ import {
   largest,
   position,
   smallest,
-} from "https://deno.land/x/handy/collection/utils.ts";
+} from "https://deno.land/x/handy/collection/mod.ts";
 
 largest(["aaa", "b", "cc"]); // "aaa"
 smallest(["aaa", "b", "cc"]); // "b"
@@ -130,7 +130,7 @@ import {
   findNearestFile,
   glob,
   globImport,
-} from "https://deno.land/x/handy/fs/utils.ts";
+} from "https://deno.land/x/handy/fs/mod.ts";
 
 await findNearestFile(".", "some.file"); // "../../some.file"
 await glob("./**/*.ts"); // all TS files in cwd and subdirs
@@ -148,7 +148,7 @@ for (const [path, module] of Object.entries(modules)) {
 Git-related utilities.
 
 ```ts
-import { assertUnmodified, commit, tag } from "./git/utils.ts";
+import { assertUnmodified, commit, tag } from "./git/mod.ts";
 
 await tag.getLatest().catch(console.log); // ex. "v1.0.0"
 
@@ -198,7 +198,7 @@ Examples:
 Graph-related utilities.
 
 ```ts
-import { DirectedGraph } from "https://deno.land/x/handy/graph/utils.ts";
+import { DirectedGraph } from "https://deno.land/x/handy/graph/mod.ts";
 
 const graph = new DirectedGraph<string>()
   .add("a")
@@ -215,7 +215,7 @@ Assorted I/O utilities which don't fit in other categories.
 > NOTE: Only supports MacOS and Windows
 
 ```ts
-import { clipboard } from "https://deno.land/x/handy/io/utils.ts";
+import { clipboard } from "https://deno.land/x/handy/io/mod.ts";
 
 clipboard.copy("foo").catch(console.log);
 clipboard.paste().catch(console.log); // "foo"
@@ -226,7 +226,7 @@ clipboard.paste().catch(console.log); // "foo"
 JavaScript utilities.
 
 ```ts
-import { evaluate } from "https://deno.land/x/handy/js/utils.ts";
+import { evaluate } from "https://deno.land/x/handy/js/mod.ts";
 
 const { stdout } = await evaluate("console.log('Hello!')");
 //         ^? "Hello!"
@@ -255,7 +255,7 @@ const c: JsonObject = { a: 1, b: ["2", true], d: { e: null } };
 Markdown-related utilities.
 
 ````ts
-import { codeBlock } from "https://deno.land/x/handy/md/utils.ts";
+import { codeBlock } from "https://deno.land/x/handy/md/mod.ts";
 
 codeBlock.create("grep"); // "    grep"
 codeBlock.create("const a: number = 1", { lang: "ts" });
@@ -298,9 +298,9 @@ deno run --allow-read --allow-run \
 ## `mermaid`
 
 ```ts
-import { flowchart } from "https://deno.land/x/handy/mermaid/utils.ts";
-import { DirectedGraph } from "https://deno.land/x/handy/graph/utils.ts";
-import { codeBlock } from "https://deno.land/x/handy/md/utils.ts";
+import { flowchart } from "https://deno.land/x/handy/mermaid/mod.ts";
+import { DirectedGraph } from "https://deno.land/x/handy/graph/mod.ts";
+import { codeBlock } from "https://deno.land/x/handy/md/mod.ts";
 
 const graph = new DirectedGraph<string>();
 
@@ -354,7 +354,7 @@ type NotFloat = Num.Float<1>; // never
 Object-related utilities.
 
 ```ts
-import { setNestedEntry } from "https://deno.land/x/handy/object/utils.ts";
+import { setNestedEntry } from "https://deno.land/x/handy/object/mod.ts";
 
 const S = Symbol("symbol");
 setNestedEntry({}, ["a", 10, S], "👋"); // { a: { 10: { [S]: "👋" } } }
@@ -377,7 +377,7 @@ type Entries = Obj.ToEntries<MyObj>; // Array<["a", 1], ["b", null]>
 OS-related utilities.
 
 ```ts
-import { posixNewlines } from "https://deno.land/x/handy/os/utils.ts";
+import { posixNewlines } from "https://deno.land/x/handy/os/mod.ts";
 
 posixNewlines("A\r\nB\rC"); // "A\nB\nC"
 ```
@@ -387,7 +387,7 @@ posixNewlines("A\r\nB\rC"); // "A\nB\nC"
 A parser combinator library.
 
 ```ts
-import { sequence, string } from "https://deno.land/x/handy/parser/utils.ts";
+import { sequence, string } from "https://deno.land/x/handy/parser/mod.ts";
 
 const dash = string("-").ignore;
 const phoneNumber = sequence(/\d{3}/, dash, /\d{3}/, dash, /\d{4}/);
@@ -401,7 +401,7 @@ const [result] = phoneNumber.parse("123-456-7890");
 Path-related utilities.
 
 ```ts
-import { dir, globRoot } from "https://deno.land/x/handy/path/utils.ts";
+import { dir, globRoot } from "https://deno.land/x/handy/path/mod.ts";
 
 dir(import.meta); // Node.js __dirname
 dir("/path/to/file"); // "/path/to"
@@ -426,7 +426,7 @@ import {
   splitOnFirst,
   Text,
   TextCursor,
-} from "https://deno.land/x/handy/string/utils.ts";
+} from "https://deno.land/x/handy/string/mod.ts";
 
 dedent("  a\n   b\n    c"); // "a\n b\n  c"
 indent("a\nb\nc", 2); // "  a\n  b\n  c"
@@ -464,7 +464,7 @@ type Tuple = Str.ToTuple<"ABC">; // ["A", "B", "C"]
 TypeScript-related utilities.
 
 ```ts
-import { evaluate } from "https://deno.land/x/handy/ts/utils.ts";
+import { evaluate } from "https://deno.land/x/handy/ts/mod.ts";
 
 await evaluate("console.log('Hello!')")
   .then((res) => res.stdout); // "Hello!"
