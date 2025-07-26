@@ -253,11 +253,11 @@ Options:
   --<type>=<name>     Name to use for a type's H2 when grouping by type
 
 Examples:
-  deno run -A https://deno.land/x/make_release_notes/mod.ts -cgv
+  deno run -A https://deno.land/x/handy/git/script/makeReleaseNotes.ts -cgv
 
-  deno run -A https://deno.land/x/make_release_notes/mod.ts --commit v1.0.0
+  deno run -A https://deno.land/x/handy/git/script/makeReleaseNotes.ts --commit v1.0.0
 
-  deno run -A https://deno.land/x/make_release_notes/mod.ts \\
+  deno run -A https://deno.land/x/handy/git/script/makeReleaseNotes.ts \\
     --types=feat,custom --custom="Custom's Section Heading"
 `.trim();
 

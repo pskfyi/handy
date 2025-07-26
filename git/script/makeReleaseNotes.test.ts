@@ -15,7 +15,7 @@ const commits: Record<string, string> = {
         This is a multi-line commit message. It is a good idea to use multi-line commit messages because they are easier to read in the git log. They also make it easier to write a good commit message.
 
         \`\`\`ts
-        import { copy } from "https://deno.land/x/io/clipboard/mod.ts";
+        import { copy } from "https://deno.land/x/handy/io/clipboard/mod.ts";
 
         copy("Hello, world!");
         \`\`\``).trim(),
@@ -62,7 +62,7 @@ it("has breaking changes 1st", async () =>
           This is a multi-line commit message. It is a good idea to use multi-line commit messages because they are easier to read in the git log. They also make it easier to write a good commit message.
 
           \`\`\`ts
-          import { copy } from "https://deno.land/x/io/clipboard/mod.ts";
+          import { copy } from "https://deno.land/x/handy/io/clipboard/mod.ts";
 
           copy("Hello, world!");
           \`\`\`
@@ -82,7 +82,7 @@ it("can group by type", async () =>
           This is a multi-line commit message. It is a good idea to use multi-line commit messages because they are easier to read in the git log. They also make it easier to write a good commit message.
 
           \`\`\`ts
-          import { copy } from "https://deno.land/x/io/clipboard/mod.ts";
+          import { copy } from "https://deno.land/x/handy/io/clipboard/mod.ts";
 
           copy("Hello, world!");
           \`\`\`
