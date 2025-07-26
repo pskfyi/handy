@@ -148,13 +148,16 @@ for (const [path, module] of Object.entries(modules)) {
 Git-related utilities.
 
 ```ts
-import { commit, tag } from "./git/utils.ts";
+import { assertUnmodified, commit, tag } from "./git/utils.ts";
 
 await tag.getLatest().catch(console.log); // ex. "v1.0.0"
 
 await commit.sha("HEAD").catch(console.log); // ex. "a1b2c3d4e5f6..."
 await commit.get("HEAD").catch(console.log); // { message: "...", ... }
 commit.conventional.parse("feat(scope)!: description"); // { type: "feat", ... }
+
+await assertUnmodified(); // throws if there are unstaged changes
+await assertUnmodified("deno.json"); // can check a specific file
 ```
 
 ### `script/makeReleaseNotes`
