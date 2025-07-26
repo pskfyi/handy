@@ -1,5 +1,5 @@
 import { parseArgs } from "@std/cli/parse-args";
-import { clipboard } from "../../io/utils.ts";
+import { clipboard } from "../../io/mod.ts";
 import { indent } from "../../string/indent.ts";
 import {
   ConventionalCommit,

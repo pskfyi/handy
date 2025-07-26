@@ -1,1 +1,1 @@
-export * from "./utils.ts";
+export * as clipboard from "./clipboard.ts";
