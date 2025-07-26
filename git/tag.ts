@@ -1,4 +1,4 @@
-import { sort as semverSort } from "../_deps/semver.ts";
+import { compare, format, parse } from "../_deps/semver.ts";
 import { _internals } from "../_test/_internals.ts";
 
 /** Get all tags in the git repository at the current working directory. */
@@ -25,7 +25,7 @@ export async function getLatest(cwd?: string): Promise<string> {
   let tagsSorted: string[];
 
   try {
-    tagsSorted = semverSort(tags);
+    tagsSorted = tags.map(parse).sort(compare).map(format);
   } catch {
     tagsSorted = tags.sort();
   }

@@ -1,4 +1,4 @@
-import { parse } from "@std/flags";
+import { parseArgs } from "@std/cli/parse-args";
 import { clipboard } from "../../io/utils.ts";
 import { indent } from "../../string/indent.ts";
 import {
@@ -262,7 +262,7 @@ Examples:
 `.trim();
 
 if (import.meta.main) {
-  const flags = parse(Deno.args, {
+  const flags = parseArgs(Deno.args, {
     alias: {
       c: "to-clipboard",
       v: "verbose",

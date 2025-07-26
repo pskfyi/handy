@@ -1,4 +1,4 @@
-import { stripColor } from "../_deps/fmt.ts";
+import { stripAnsiCode } from "../_deps/fmt.ts";
 import { assert, assertEquals, describe, it, test } from "../_deps/testing.ts";
 import { TextCursor } from "./TextCursor.ts";
 import { dedent } from "./dedent.ts";
@@ -92,7 +92,7 @@ test(".startsWith()", () => {
 describe("inspect()", () => {
   it("depicts the location", () =>
     assertEquals(
-      stripColor(new TextCursor(str, 3).inspect()),
+      stripAnsiCode(new TextCursor(str, 3).inspect()),
       dedent(`
         feat:·example
            ^
@@ -101,7 +101,7 @@ describe("inspect()", () => {
 
   test("elision", () =>
     assertEquals(
-      stripColor(new TextCursor(longStr, 37).inspect({ maxLength })),
+      stripAnsiCode(new TextCursor(longStr, 37).inspect({ maxLength })),
       dedent(`
         …·jumps·over·the·lazy·dog·then·does·it…
                            ^
@@ -112,7 +112,7 @@ describe("inspect()", () => {
     const cursor = new TextCursor("a\nb", 1);
 
     assertEquals(
-      stripColor(cursor.inspect()),
+      stripAnsiCode(cursor.inspect()),
       dedent(`
           [L1] a¶
                 ^
@@ -120,7 +120,7 @@ describe("inspect()", () => {
     );
 
     assertEquals(
-      stripColor(new TextCursor("a\nb", 2).inspect()),
+      stripAnsiCode(new TextCursor("a\nb", 2).inspect()),
       dedent(`
           [L2] b
                ^
@@ -128,7 +128,7 @@ describe("inspect()", () => {
     );
 
     assertEquals(
-      stripColor(cursor.inspect({ lineNumber: false })),
+      stripAnsiCode(cursor.inspect({ lineNumber: false })),
       dedent(`
           a¶
            ^
@@ -136,7 +136,7 @@ describe("inspect()", () => {
     );
 
     assertEquals(
-      stripColor(cursor.move(1).inspect({ lineNumber: false })),
+      stripAnsiCode(cursor.move(1).inspect({ lineNumber: false })),
       dedent(`
           b
           ^
@@ -150,7 +150,7 @@ describe("inspect()", () => {
     const cursor = new TextCursor(longStr, 37);
 
     assertEquals(
-      stripColor(cursor.inspect({ maxLength: 10 })),
+      stripAnsiCode(cursor.inspect({ maxLength: 10 })),
       dedent(`
         …e·lazy·d…
              ^
@@ -158,7 +158,7 @@ describe("inspect()", () => {
     );
 
     assertEquals(
-      stripColor(cursor.inspect({ maxLength: 20 })),
+      stripAnsiCode(cursor.inspect({ maxLength: 20 })),
       dedent(`
         …er·the·lazy·dog·th…
                   ^
@@ -171,7 +171,7 @@ describe("inspect()", () => {
     const msg = cursor.inspect();
     const msg2 = cursor.inspect({ colors: false });
 
-    assert(msg !== stripColor(msg));
-    assertEquals(msg2, stripColor(msg2));
+    assert(msg !== stripAnsiCode(msg));
+    assertEquals(msg2, stripAnsiCode(msg2));
   });
 });

@@ -1,4 +1,4 @@
-export * from "@std/testing/asserts";
+export * from "@std/assert";
 export * from "@std/testing/bdd";
 export * from "@std/testing/mock";
 
