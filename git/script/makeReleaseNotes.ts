@@ -1,4 +1,4 @@
-import { parse } from "https://deno.land/std@0.182.0/flags/mod.ts";
+import { parse } from "@std/flags";
 import { clipboard } from "../../io/utils.ts";
 import { indent } from "../../string/indent.ts";
 import {

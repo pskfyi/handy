@@ -9,5 +9,17 @@
   "tasks": {
     "test-readme": "deno run -A md/script/evalCodeBlocks.ts ./readme.md https://deno.land/x/handy .",
     "release-notes": "deno run -A ./git/script/makeReleaseNotes.ts -cg --types=feat,fix"
+  },
+  "imports": {
+    "@std/flags": "https://deno.land/std@0.182.0/flags/mod.ts",
+    "@std/fmt/colors": "https://deno.land/std@0.182.0/fmt/colors.ts",
+    "@std/fs/walk": "https://deno.land/std@0.182.0/fs/walk.ts",
+    "@std/path": "https://deno.land/std@0.182.0/path/mod.ts",
+    "@std/path/posix": "https://deno.land/std@0.182.0/path/posix.ts",
+    "@std/path/win32": "https://deno.land/std@0.182.0/path/win32.ts",
+    "@std/semver": "https://deno.land/std@0.182.0/semver/mod.ts",
+    "@std/testing/asserts": "https://deno.land/std@0.182.0/testing/asserts.ts",
+    "@std/testing/bdd": "https://deno.land/std@0.182.0/testing/bdd.ts",
+    "@std/testing/mock": "https://deno.land/std@0.182.0/testing/mock.ts"
   }
 }
