@@ -1,14 +1,28 @@
 import type { Pretty } from "../ts/types.ts";
 
+/**
+ * @example
+ * "git status"
+ * // or
+ * ["git", "status"]
+ */
+export type Command = string | string[];
+
 export type CmdOptions = {
   cwd?: string;
   env?: Record<string, string>;
+  /** If true, the full result object is returned and do not throw on
+   * failure. */
   fullResult?: boolean;
 };
 
 export type CmdResult = Pretty<
   & Pick<Deno.CommandOutput, "code" | "success">
-  & { stdout: string; stderr: string }
+  & {
+    command: Command;
+    stdout: string;
+    stderr: string;
+  }
 >;
 
 export class CmdError extends Error implements CmdResult {
@@ -64,7 +78,7 @@ export async function cmd(
   const stdout = textDecoder.decode(res.stdout).trim();
   const stderr = textDecoder.decode(res.stderr).trim();
 
-  if (fullResult) return { stdout, stderr, success, code };
+  if (fullResult) return { command, stdout, stderr, success, code };
   else if (!success) throw new CmdError(command, "", stderr, code);
   else return stdout;
 }
