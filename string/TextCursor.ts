@@ -103,7 +103,7 @@ export class TextCursor extends Text {
       : `${lineMarker}${str}\n${pointerSpacing}^`;
   }
 
-  toString(): string {
+  override toString(): string {
     const [str] = elideAround(this.value, this.index, { maxLength: 20 });
 
     return `TextCursor("${str}", ${this.index})`;

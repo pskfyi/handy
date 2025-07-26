@@ -165,7 +165,7 @@ export class DirectedGraph<T> {
     if (roots.size !== 1) return false;
     if (this.isCyclic) return false;
 
-    return this.#isTree(roots.values().next().value);
+    return this.#isTree(roots.values().next().value!); // TODO: handle !
   }
 
   get isForest(): boolean {

@@ -7,7 +7,7 @@ import { CoreParser, Parse } from "./core.ts";
 export class RegExpParser extends Parser<RegExpMatchArray> {
   constructor(
     parse: Parse<RegExpParser>,
-    readonly toString: () => string,
+    override readonly toString: () => string,
     readonly patterns: RegExp[],
   ) {
     super(parse as Parse<CoreParser>, toString);

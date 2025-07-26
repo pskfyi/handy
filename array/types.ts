@@ -14,9 +14,10 @@ export type TypedArray =
  * @example
  * type A = Fill<[1, 2, 3], "a"> // ["a", "a", "a"]
  * type B = Fill<Array<unknown>, "b"> // Array<"b"> */
-export type Fill<T extends readonly unknown[], Value> = {
-  [K in keyof T]: Value;
-};
+export type Fill<T extends readonly unknown[], Value> = T extends
+  readonly [infer _Head, ...infer Tail] // If T is a tuple...
+  ? [Value, ...Fill<Tail, Value>] // ...replace the first item with Value and recurse.
+  : never; // Otherwise, return never (should not happen).
 
 /** Represents an array flattened one level deep, analogous to
  * `Array.prototype.flat()`.

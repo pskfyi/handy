@@ -292,7 +292,10 @@ export class Parser<Val extends any = any> extends CoreParser<Val> {
 
 /** A parser whose return value is an array, with special array methods. */
 export class ArrayParser<V extends readonly unknown[]> extends Parser<V> {
-  constructor(parse: Parse<ArrayParser<V>>, readonly toString: () => string) {
+  constructor(
+    parse: Parse<ArrayParser<V>>,
+    override readonly toString: () => string,
+  ) {
     super(parse as Parse<CoreParser<V>>, toString);
   }
 
@@ -355,9 +358,11 @@ export class ArrayParser<V extends readonly unknown[]> extends Parser<V> {
    * the given keys.
    *
    * @example
-   * const parser = string("A", "B").toObject("first", "second");
+   * const parser = sequence("A", "B").toObject("first", "second");
    *   .parse("AB") // { first: "A", second: "B" } */
-  toObject<K extends Tuple.Fill<V, Obj.Key>>(
+  toObject<
+    K extends string[] = Tuple.Fill<V, string>,
+  >(
     ...keys: K
   ): Parser<Obj.FromEntries<Tuple.Zip<K, V>>> {
     return this.into(
