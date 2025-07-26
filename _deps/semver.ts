@@ -1,1 +1,1 @@
-export * from "https://deno.land/std@0.182.0/semver/mod.ts";
+export * from "@std/semver";
