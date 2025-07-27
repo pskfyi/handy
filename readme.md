@@ -17,7 +17,6 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 - [`js`](#js)
 - [`json`](#json)
 - [`md`](#md)
-  - [`script/evalCodeBlocks`](#scriptevalcodeblocks)
 - [`mermaid`](#mermaid)
 - [`number`](#number)
 - [`object`](#object)
@@ -290,23 +289,6 @@ codeBlock.evaluate(
   codeBlock.create('console.log("Hello!")', { lang: "ts" }),
 );
 ````
-
-### `script/evalCodeBlocks`
-
-For a markdown file, execute each TS or JS code block in the file. Useful for checking imports and examples in a readme.
-
-```ts
-import { evalCodeBlocks } from "jsr:@psk/handy/md/script/evalCodeBlocks";
-```
-
-When run as a script, it will execute the code blocks in the file specified by the first argument. The second and third arguments are optional, and are used to find and replace a string in the file before executing the code blocks.
-
-```sh no-eval
-deno run --allow-read --allow-run \
-  jsr:@psk/handy/scripts/evalCodeBlocks \
-  ./readme.md \
-  "some string to find" "replacement string" # optional
-```
 
 ## `mermaid`
 

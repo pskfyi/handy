@@ -5,4 +5,5 @@ await cmds([
   "deno lint",
   "deno test -A",
   "deno task test-readme",
+  "deno task update-exports",
 ]);
