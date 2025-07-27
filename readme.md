@@ -15,6 +15,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 - [`io`](#io)
 - [`js`](#js)
 - [`json`](#json)
+  - [`Json` namespace](#json-namespace)
 - [`md`](#md)
 - [`mermaid`](#mermaid)
 - [`number`](#number)
@@ -227,20 +228,45 @@ const { stdout } = await evaluate("console.log('Hello!')");
 
 ## `json`
 
-Utility types.
+JSON-related utilities.
 
 ```ts
-import {
-  JsonArray,
-  JsonObject,
-  JsonPrimitive,
-  JsonValue,
-} from "jsr:@psk/handy/json";
+import { PrettyError } from "jsr:@psk/handy/json";
 
-const a: JsonPrimitive = "some string"; // or number, boolean, null
-const b: JsonArray = [1, ["2", true], { a: null }];
-const c: JsonObject = { a: 1, b: ["2", true], d: { e: null } };
-// JsonValue = any of the above
+new PrettyError("Message", {/* A JSON object to pretty-print */});
+```
+
+### `Json` namespace
+
+A convenience wrapper around baseline JSON utils and types. The utils are also available under `jsr:@psk/handy/json/utils`, and the types under `jsr:@psk/handy/json/types`.
+
+```ts
+import { Json } from "jsr:@psk/handy/json";
+
+const a: Json.Primitive = "some string"; // or number, boolean, null
+const b: Json.Array = [1, ["2", true], { a: null }];
+const c: Json.Object = { a: 1, b: ["2", true], d: { e: null } };
+// Json.Value = any of the above
+
+const value = "example";
+
+type T = Json.TypeName; // "string" | "number" | "boolean" | "null" | "object" | "array"
+Json.typeOf(value); // returns a Json.TypeName
+Json.shallowTypeOf(value); // doesn't check array/obj children
+
+Json.clone(value);
+Json.prettyPrint(value);
+Json.minify(value);
+Json.parse("{}");
+
+Json.equals({ a: 1 }, { b: 2 }); // deep equality per JSON Patch spec
+
+// Type guards
+Json.isValue(value);
+Json.isPrimitive(value);
+Json.isArray(value);
+Json.isObject(value);
+Json.isObjectShallow(value); // confirms it's not null, Array, Map, Set, etc.
 ```
 
 ## `md`
