@@ -16,6 +16,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 - [`js`](#js)
 - [`json`](#json)
   - [`Json` namespace](#json-namespace)
+  - [`JsonMergePatch` namespace](#jsonmergepatch-namespace)
 - [`md`](#md)
 - [`mermaid`](#mermaid)
 - [`number`](#number)
@@ -267,6 +268,32 @@ Json.isPrimitive(value);
 Json.isArray(value);
 Json.isObject(value);
 Json.isObjectShallow(value); // confirms it's not null, Array, Map, Set, etc.
+```
+
+### `JsonMergePatch` namespace
+
+Homegrown JSON Merge Patch utilities based on [the official spec](https://datatracker.ietf.org/doc/html/rfc7396).
+
+```ts
+import { assertEquals } from "@std/assert/equals";
+import { JsonMergePatch } from "jsr:@psk/handy/json";
+
+JsonMergePatch.MEDIA_TYPE; // "application/merge-patch+json"
+
+// Diff to create a patch
+const before = { A: 7, B: { C: true } };
+const after = { A: 7, B: { D: ["Hello"] } };
+
+assertEquals(
+  JsonMergePatch.diff(before, after),
+  { B: { C: null, D: ["Hello"] } },
+);
+
+// Apply patches
+const target = { A: { B: { C: true } } };
+const patch = { A: { B: { C: false, D: ["Hello"] } } }; // update C, insert D
+
+JsonMergePatch.apply(target, patch); // Mutates target
 ```
 
 ## `md`

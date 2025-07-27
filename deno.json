@@ -66,6 +66,7 @@
     "./json": "./json/mod.ts",
     "./json/errors": "./json/errors.ts",
     "./json/Json": "./json/Json.ts",
+    "./json/JsonMergePatch": "./json/JsonMergePatch.ts",
     "./json/types": "./json/types.ts",
     "./json/utils": "./json/utils.ts",
     "./md": "./md/mod.ts",
