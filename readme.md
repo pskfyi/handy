@@ -144,6 +144,18 @@ for (const [path, module] of Object.entries(modules)) {
 }
 ```
 
+Shortcuts for file system operations:
+
+```ts
+import {
+  readJsonFile,
+  replaceJsonFile,
+  replaceTextFile,
+  writeJsonFile,
+} from "jsr:@psk/handy/fs";
+// sync variants are also available
+```
+
 ## `git`
 
 Git-related utilities.

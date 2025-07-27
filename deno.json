@@ -40,6 +40,8 @@
     "./fs/findNearestFile": "./fs/findNearestFile.ts",
     "./fs/glob": "./fs/glob.ts",
     "./fs/globImport": "./fs/globImport.ts",
+    "./fs/json": "./fs/json.ts",
+    "./fs/replaceTextFile": "./fs/replaceTextFile.ts",
     "./git": "./git/mod.ts",
     "./git/asserts": "./git/asserts.ts",
     "./git/commit": "./git/commit/mod.ts",
