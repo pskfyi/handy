@@ -17,6 +17,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 - [`json`](#json)
   - [`Json` namespace](#json-namespace)
   - [`JsonMergePatch` namespace](#jsonmergepatch-namespace)
+  - [`JsonPatch` namespace](#jsonpatch-namespace)
   - [`JsonPointer` namespace](#jsonpointer-namespace)
   - [`JsonTree` namespace](#jsontree-namespace)
 - [`md`](#md)
@@ -297,6 +298,10 @@ const patch = { A: { B: { C: false, D: ["Hello"] } } }; // update C, insert D
 
 JsonMergePatch.apply(target, patch); // Mutates target
 ```
+
+### `JsonPatch` namespace
+
+JSON Patch implementation based on [the official spec](https://datatracker.ietf.org/doc/html/rfc6902), and related utilities. See the module for more details.
 
 ### `JsonPointer` namespace
 
