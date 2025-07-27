@@ -8,12 +8,8 @@ import { create as createIndented } from "./indented.ts";
  * @example create("const a = 1;")
  * // "    const a = 1;" // unfenced
  *
- * @example create("const a = 1;", { fenced: true })
- * // "```\nconst a = 1;\n```"
- *
- * @example create("const a: number = 1;", { fenced: "`", lang: "`" })
- * // "~~~`\nconst a:number = 1;\n~~~"
- * // ignored `fenced` option */
+ * @example create("const a = 1;", { char: "`" })
+ * // "```\nconst a = 1;\n```" */
 export function create(
   code: string,
   options: CreateFencedOptions = {},
