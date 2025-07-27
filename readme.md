@@ -34,11 +34,13 @@ Array-related utilities.
 ```ts
 import { mapOnInterval } from "jsr:@psk/handy/array";
 
-mapOnInterval([3, 2, 1, "go!"], 100, (item) => console.log(item));
-// logs: 3
-// 100ms later, logs: 2
-// 100ms later, logs: 1
-// 100ms later, logs: "go!"
+const say = (item: unknown) => {/* No-op for demonstration */};
+
+await mapOnInterval([3, 2, 1, "go!"], 1, say);
+// say: 3
+// 100ms later, say: 2
+// 100ms later, say: 1
+// 100ms later, say: "go!"
 ```
 
 ```ts
@@ -63,7 +65,7 @@ CLI-related utilities.
 import { cmd, cmds, consoleWidth } from "jsr:@psk/handy/cli";
 
 await cmd("deno -V"); // ex: "deno 1.34.0"
-await cmds(['echo "Hello"', 'echo "World"']); // executes all and provides a summary of successes and failures
+await cmds(["deno -V", "deno -h"]); // executes all and provides a summary of successes and failures
 consoleWidth(80); // real width of terminal, or fallback of 80
 ```
 
@@ -126,7 +128,7 @@ await determine("./_test/fixture/deno", {/* Options */});
 
 ### `exports/script/update`
 
-```no-eval
+```
 Updates the exports field in a deno.json file to include .ts files in the current directory and its subdirectories, sorted by key. Excludes files and directories that start with a dot or underscore, and test files.
 
 Usage:
@@ -173,14 +175,14 @@ Git-related utilities.
 ```ts
 import { assertUnmodified, commit, tag } from "jsr:@psk/handy/git";
 
-await tag.getLatest().catch(console.log); // ex. "v1.0.0"
+await tag.getLatest().catch(); // ex. "v1.0.0"
 
-await commit.sha("HEAD").catch(console.log); // ex. "a1b2c3d4e5f6..."
-await commit.get("HEAD").catch(console.log); // { message: "...", ... }
+await commit.sha("HEAD").catch(() => {}); // ex. "a1b2c3d4e5f6..."
+await commit.get("HEAD").catch(() => {}); // { message: "...", ... }
 commit.conventional.parse("feat(scope)!: description"); // { type: "feat", ... }
 
-await assertUnmodified().catch(console.log); // throws if there are unstaged changes
-await assertUnmodified("deno.json").catch(console.log); // can check a specific file
+await assertUnmodified().catch(() => {/* unstaged changes detected */});
+await assertUnmodified("deno.json").catch(() => {/* can target files */});
 ```
 
 ### `script/makeReleaseNotes`
@@ -193,7 +195,7 @@ import { makeReleaseNotes } from "jsr:@psk/handy/git/script/makeReleaseNotes";
 
 When run as a script, it will generate release notes for the repo in the current working directory. The directory can be overridden by the first argument, and the `--to-clipboard` flag will copy the release notes to the clipboard instead of printing them to stdout.
 
-```no-eval
+```
 Usage:
   deno run -A jsr:@psk/handy/git/script/makeReleaseNotes [options] [path]
 
@@ -240,8 +242,8 @@ Assorted I/O utilities which don't fit in other categories.
 ```ts
 import { clipboard } from "jsr:@psk/handy/io";
 
-clipboard.copy("foo").catch(console.log);
-clipboard.paste().catch(console.log); // "foo"
+await clipboard.copy("foo").catch(console.log);
+await clipboard.paste().catch(console.log); // "foo"
 ```
 
 ## `js`
@@ -296,18 +298,6 @@ For a markdown file, execute each TS or JS code block in the file. Useful for ch
 ```ts
 import { evalCodeBlocks } from "jsr:@psk/handy/md/script/evalCodeBlocks";
 ```
-
-Code blocks can individually opt out of evaluation by placing `no-eval` in the [info string](https://spec.commonmark.org/0.30/#info-string).
-
-````no-eval
-```no-eval
-Without language code.
-```
-
-```ts no-eval
-console.log("With language code.");
-```
-````
 
 When run as a script, it will execute the code blocks in the file specified by the first argument. The second and third arguments are optional, and are used to find and replace a string in the file before executing the code blocks.
 
