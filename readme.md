@@ -386,6 +386,8 @@ Each script supports CLI usage including a `--help` / `-h` flag, or a programmat
 
 ### `makeReleaseNotes`
 
+<!-- start make-release-notes -->
+
 ```
 In a git repo, scan the commit history for conventional commits since the last tag and generate a markdown-formatted list of features and fixes.
 
@@ -414,7 +416,11 @@ Examples:
     --types=feat,custom --custom="Custom's Section Heading"
 ```
 
+<!-- end make-release-notes -->
+
 ### `updateExports`
+
+<!-- start update-exports -->
 
 ```
 Updates the exports field in a deno.json file to include .ts files in the current directory and its subdirectories, sorted by key. Excludes files and directories that start with a dot or underscore, and test files.
@@ -438,6 +444,8 @@ Examples:
 
   deno run -A jsr:@psk/handy/script/updateExports.ts --root=src
 ```
+
+<!-- end update-exports -->
 
 ## `string`
 

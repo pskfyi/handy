@@ -81,6 +81,12 @@ jobs:
         if: (success() || failure()) && matrix.os == 'ubuntu-latest'
         run: deno task update-exports
 
+      - name: Check Readme
+        # Intentionally only on Linux because output will be the same on all
+        # platforms and Linux is the least expensive.
+        if: (success() || failure()) && matrix.os == 'ubuntu-latest'
+        run: deno task update-readme
+
       - name: Test
         run: deno test -A --allow-none
 
