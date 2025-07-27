@@ -17,8 +17,8 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: ${{ github.event.pull_request.commits }}
-          # Without the following setting, a merge commit is created, which 
-          # causes the SHAs within GitHub Actions to be misaligned with their 
+          # Without the following setting, a merge commit is created, which
+          # causes the SHAs within GitHub Actions to be misaligned with their
           # values in local development and the GitHub UI. This would cause
           # the release notes to contain the wrong commit SHAs.
           ref: ${{ github.event.pull_request.head.sha }}
@@ -64,20 +64,20 @@ jobs:
           edit-mode: replace
 
       - name: Lint
-        # Intentionally only on Linux because output will be the same on all 
+        # Intentionally only on Linux because output will be the same on all
         # platforms and Linux is the least expensive.
         if: (success() || failure()) && matrix.os == 'ubuntu-latest'
         run: deno lint
 
       - name: Check Formatting
-        # Intentionally only on Linux because output will be the same on all 
+        # Intentionally only on Linux because output will be the same on all
         # platforms and Linux is the least expensive.
         if: (success() || failure()) && matrix.os == 'ubuntu-latest'
         run: deno fmt --check
 
       - name: Test
         run: deno test -A --allow-none
-      
+
       - name: Test Readme
         if: (success() || failure())
         run: deno task test-readme
