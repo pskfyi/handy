@@ -4,6 +4,7 @@ import { resolve } from "@std/path/resolve";
 import { dirname } from "@std/path/dirname";
 import { determine } from "../deno/exports/determine.ts";
 import { assertUnmodified } from "../git/asserts.ts";
+import { replaceJsonFile } from "../fs/json.ts";
 
 function assertFile(path: string): asserts path is string {
   if (!Deno.statSync(path).isFile) {
@@ -54,16 +55,10 @@ export async function updateExports(
     return;
   }
 
-  const denoJson: Record<string, unknown> = JSON.parse(
-    await Deno.readTextFile(denoJsonPath),
-  );
-
-  denoJson.exports = exportsField;
-
-  await Deno.writeTextFile(
-    denoJsonPath,
-    JSON.stringify(denoJson, null, 2) + "\n",
-  );
+  await replaceJsonFile(denoJsonPath, (json) => {
+    json.exports = exportsField;
+    return json;
+  });
 }
 
 export const HELP_MESSAGE: string = `
