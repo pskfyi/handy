@@ -1,15 +1,15 @@
 import { parseArgs } from "@std/cli/parse-args";
-import { clipboard } from "../../io/mod.ts";
-import { indent } from "../../string/indent.ts";
+import { clipboard } from "../io/mod.ts";
+import { indent } from "../string/indent.ts";
 import {
   type ConventionalCommit,
   parse as parseCommit,
-} from "../commit/conventional.ts";
-import { getSpan as getCommitSpan } from "../commit/get.ts";
-import type { CommitDescription } from "../commit/types.ts";
-import { getLatest as getLatestTag } from "../tag.ts";
-import { consoleWidth } from "../../cli/consoleSize.ts";
-import { elideEnd } from "../../string/elide.ts";
+} from "../git/commit/conventional.ts";
+import { getSpan as getCommitSpan } from "../git/commit/get.ts";
+import type { CommitDescription } from "../git/commit/types.ts";
+import { getLatest as getLatestTag } from "../git/tag.ts";
+import { consoleWidth } from "../cli/consoleSize.ts";
+import { elideEnd } from "../string/elide.ts";
 
 type CommitInfo = ConventionalCommit & Omit<CommitDescription, "message">;
 
@@ -239,8 +239,13 @@ function typeNames(flags: Record<string, unknown>): Record<string, string> {
 }
 
 export const HELP_MESSAGE: string = `
+In a git repo, scan the commit history for conventional commits since the last tag and generate a markdown-formatted list of features and fixes.
+
 Usage:
-  deno run -A jsr:@psk/handy/git/script/makeReleaseNotes [options] [path]
+  deno run -A jsr:@psk/handy/script/makeReleaseNotes [options] [path]
+
+Arguments:
+  path    Path to a git repo to scan. Defaults to the current working directory.
 
 Options:
   -h, --help          Show this help message
@@ -253,11 +258,11 @@ Options:
   --<type>=<name>     Name to use for a type's H2 when grouping by type
 
 Examples:
-  deno run -A jsr:@psk/handy/git/script/makeReleaseNotes -cgv
+  deno run -A jsr:@psk/handy/script/makeReleaseNotes -cgv
 
-  deno run -A jsr:@psk/handy/git/script/makeReleaseNotes --commit v1.0.0
+  deno run -A jsr:@psk/handy/script/makeReleaseNotes --commit v1.0.0
 
-  deno run -A jsr:@psk/handy/git/script/makeReleaseNotes \\
+  deno run -A jsr:@psk/handy/script/makeReleaseNotes \\
     --types=feat,custom --custom="Custom's Section Heading"
 `.trim();
 

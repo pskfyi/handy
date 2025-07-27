@@ -8,10 +8,8 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 - [`cli`](#cli)
 - [`collection`](#collection)
 - [`deno`](#deno)
-  - [`exports/script/update`](#exportsscriptupdate)
 - [`fs`](#fs)
 - [`git`](#git)
-  - [`script/makeReleaseNotes`](#scriptmakereleasenotes)
 - [`graph`](#graph)
 - [`io`](#io)
 - [`js`](#js)
@@ -23,6 +21,9 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 - [`os`](#os)
 - [`parser`](#parser)
 - [`path`](#path)
+- [`scripts`](#scripts)
+  - [`makeReleaseNotes`](#makereleasenotes)
+  - [`updateExports`](#updateexports)
 - [`string`](#string)
 - [`ts`](#ts)
 
@@ -125,30 +126,6 @@ await determine("./_test/fixture/deno", {/* Options */});
 // { ".": "./mod.ts", "some/path": "some/path.ts" }
 ```
 
-### `exports/script/update`
-
-```
-Updates the exports field in a deno.json file to include .ts files in the current directory and its subdirectories, sorted by key. Excludes files and directories that start with a dot or underscore, and test files.
-
-Usage:
-  deno run -A jsr:@psk/handy/deno/script/updateExports [path]
-
-Arguments:
-  path    A deno.json file or directory containing one. Searches the current directory by default.
-
-Options:
-  -h, --help         Show this help message
-  -d, --dry-run      Show what would be done without making any changes
-  -r, --root=<path>  Make export paths relative to the provided path. Defaults to the deno.json file's directory.
-
-Examples:
-  deno run -A jsr:@psk/handy/deno/script/updateExports
-
-  deno run -A jsr:@psk/handy/deno/script/updateExports ./path/to/deno.json
-
-  deno run -A jsr:@psk/handy/deno/script/updateExports -root=src
-```
-
 ## `fs`
 
 File system-related utilities.
@@ -182,39 +159,6 @@ commit.conventional.parse("feat(scope)!: description"); // { type: "feat", ... }
 
 await assertUnmodified().catch(() => {/* unstaged changes detected */});
 await assertUnmodified("deno.json").catch(() => {/* can target files */});
-```
-
-### `script/makeReleaseNotes`
-
-For a git repo, scan the commit history for conventional commits since the last tag and generate a markdown-formatted list of features and fixes.
-
-```ts
-import { makeReleaseNotes } from "jsr:@psk/handy/git/script/makeReleaseNotes";
-```
-
-When run as a script, it will generate release notes for the repo in the current working directory. The directory can be overridden by the first argument, and the `--to-clipboard` flag will copy the release notes to the clipboard instead of printing them to stdout.
-
-```
-Usage:
-  deno run -A jsr:@psk/handy/git/script/makeReleaseNotes [options] [path]
-
-Options:
-  -h, --help          Show this help message
-  -c, --to-clipboard  Copy release notes to clipboard
-  -i, --inclusive     Include the first commit
-  -v, --verbose       Print verbose output
-  -g, --group-by-type Group commits by type using H2 headings
-  --commit=<commit>   Commit to use as base for release notes
-  --types=<types>     Comma-separated list of types to include
-  --<type>=<name>     Name to use for a type's H2 when grouping by type
-
-Examples:
-  deno run -A jsr:@psk/handy/git/script/makeReleaseNotes -cgv
-
-  deno run -A jsr:@psk/handy/git/script/makeReleaseNotes --commit v1.0.0
-
-  deno run -A jsr:@psk/handy/git/script/makeReleaseNotes \
-    --types=feat,custom --custom="Custom's Section Heading"
 ```
 
 ## `graph`
@@ -403,6 +347,65 @@ dir("/path/to/file"); // "/path/to"
 dir("C:\\\\a\\b\\c"); // "C:\\a\\b"
 
 globRoot("a/b/**/*.ts"); // "a/b/"
+```
+
+## `scripts`
+
+Each script supports CLI usage including a `--help` / `-h` flag, or a programmatic API.
+
+### `makeReleaseNotes`
+
+```
+In a git repo, scan the commit history for conventional commits since the last tag and generate a markdown-formatted list of features and fixes.
+
+Usage:
+  deno run -A jsr:@psk/handy/script/makeReleaseNotes [options] [path]
+
+Arguments:
+  path    Path to a git repo to scan. Defaults to the current working directory.
+
+Options:
+  -h, --help          Show this help message
+  -c, --to-clipboard  Copy release notes to clipboard
+  -i, --inclusive     Include the first commit
+  -v, --verbose       Print verbose output
+  -g, --group-by-type Group commits by type using H2 headings
+  --commit=<commit>   Commit to use as base for release notes
+  --types=<types>     Comma-separated list of types to include
+  --<type>=<name>     Name to use for a type's H2 when grouping by type
+
+Examples:
+  deno run -A jsr:@psk/handy/script/makeReleaseNotes -cgv
+
+  deno run -A jsr:@psk/handy/script/makeReleaseNotes --commit v1.0.0
+
+  deno run -A jsr:@psk/handy/script/makeReleaseNotes \\
+    --types=feat,custom --custom="Custom's Section Heading"
+```
+
+### `updateExports`
+
+```
+Updates the exports field in a deno.json file to include .ts files in the current directory and its subdirectories, sorted by key. Excludes files and directories that start with a dot or underscore, and test files.
+
+Usage:
+  deno run -A jsr:@psk/handy/script/updateExports [path]
+
+Arguments:
+  path    A deno.json file or directory containing one. Searches the current directory by default.
+
+Options:
+  -h, --help         Show this help message
+  -d, --dry-run      Show what would be done without making any changes
+  -a, --assert       Returns exit code 1 if the file has unstaged changes after running the script. Defaults to true in CI and false otherwise.
+  -r, --root=<path>  Make export paths relative to the provided path. Defaults to the deno.json file's directory.
+
+Examples:
+  deno run -A jsr:@psk/handy/script/updateExports.ts
+
+  deno run -A jsr:@psk/handy/script/updateExports.ts ./path/to/deno.json
+
+  deno run -A jsr:@psk/handy/script/updateExports.ts --root=src
 ```
 
 ## `string`

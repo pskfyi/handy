@@ -1,8 +1,8 @@
 import { assertEquals } from "@std/assert";
 import { afterAll, beforeAll, it } from "@std/testing/bdd";
-import { _internals } from "../../_test/_internals.ts";
-import { type CmdStub, stubCmd } from "../../cli/cmd.stub.ts";
-import { dedent } from "../../string/dedent.ts";
+import { _internals } from "../_test/_internals.ts";
+import { type CmdStub, stubCmd } from "../cli/cmd.stub.ts";
+import { dedent } from "../string/dedent.ts";
 import { makeReleaseNotes } from "./makeReleaseNotes.ts";
 
 const commits: Record<string, string> = {
