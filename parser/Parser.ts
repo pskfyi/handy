@@ -9,7 +9,7 @@ import {
   type Result,
   type Value,
 } from "./core.ts";
-import { IgnoredParser, NonIgnored } from "./ignored.ts";
+import { IgnoredParser, type NonIgnored } from "./ignored.ts";
 
 export type ParseNode<Val> = {
   value: Val;

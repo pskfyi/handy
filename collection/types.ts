@@ -1,5 +1,5 @@
 import type { Tuple } from "../array/types.ts";
-import { Str } from "../string/types.ts";
+import type { Str } from "../string/types.ts";
 
 /** A type that can be indexed by a number and has a `length` property.
  *

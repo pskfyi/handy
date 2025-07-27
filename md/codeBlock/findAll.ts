@@ -1,7 +1,10 @@
 import { line } from "../../parser/named.ts";
-import { FencedCodeBlockSearchResult, parser as fenced } from "./fenced.ts";
 import {
-  IndentedCodeBlockSearchResult,
+  type FencedCodeBlockSearchResult,
+  parser as fenced,
+} from "./fenced.ts";
+import {
+  type IndentedCodeBlockSearchResult,
   parser as indented,
 } from "./indented.ts";
 

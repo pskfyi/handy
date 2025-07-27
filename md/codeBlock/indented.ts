@@ -3,6 +3,7 @@ import { string } from "../../parser/string.ts";
 import { line, newline, whitespace } from "../../parser/named.ts";
 import type { Text } from "../../string/Text.ts";
 import { indent } from "../../string/indent.ts";
+import type { Parser } from "@psk/handy/parser/Parser";
 
 export type IndentedCodeBlockDetails = {
   type: "indented";
@@ -22,10 +23,12 @@ const blankLines = indented.and(whitespace.inline)
   .zeroOrMore.join();
 
 const firstLine = indentedNonBlankLine;
-const subsequentLines = blankLines.and(indentedNonBlankLine).join()
+const subsequentLines: Parser<string> = blankLines
+  .and(indentedNonBlankLine).join()
   .zeroOrMore.join();
 
-export const parser = firstLine.and(subsequentLines).join()
+export const parser: Parser<IndentedCodeBlockDetails> = firstLine
+  .and(subsequentLines).join()
   .into((code) => ({ type: "indented" as const, code }))
   .named("md.codeBlock.indented");
 

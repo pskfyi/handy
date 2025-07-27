@@ -1,4 +1,4 @@
-import { create as createFenced, CreateFencedOptions } from "./fenced.ts";
+import { create as createFenced, type CreateFencedOptions } from "./fenced.ts";
 import { create as createIndented } from "./indented.ts";
 
 /** Create a markdown codeblock with optional language and metadata.

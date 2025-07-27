@@ -1,6 +1,6 @@
 import { TextCursor } from "../string/TextCursor.ts";
 import { ArrayParser, Parser } from "./Parser.ts";
-import { CoreParser, Parse } from "./core.ts";
+import type { CoreParser, Parse } from "./core.ts";
 
 /** A parser whose return value is a `RegExpMatchArray`, with special
  * methods. */

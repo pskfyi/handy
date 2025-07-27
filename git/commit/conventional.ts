@@ -1,8 +1,9 @@
-import { Language } from "../../parser/core.ts";
+import type { Language } from "../../parser/core.ts";
 import { regexp } from "../../parser/regexp.ts";
-import { sequence } from "../../parser/sequence.ts";
+import { type Sequence, sequence } from "../../parser/sequence.ts";
 import { string } from "../../parser/string.ts";
 import { end, line, newline, whitespace } from "../../parser/named.ts";
+import type { Parser } from "@psk/handy/parser/Parser";
 
 export type ConventionalCommitFooter = {
   key: string;
@@ -84,7 +85,16 @@ const message = sequence(
  *
  * @example
  * conventionalCommit.message.parse("fix(app)!: use correct type for `foo`"); */
-export const conventionalCommit = {
+export const conventionalCommit: {
+  type: Parser<string>;
+  scope: Parser<string>;
+  delimiter: Sequence<[Parser<boolean>, ": "]>;
+  description: Parser<string>;
+  body: Parser<{ body: string }>;
+  footer: Parser<ConventionalCommitFooter>;
+  footers: Parser<{ footers: ConventionalCommitFooter[] }>;
+  message: Parser<ConventionalCommit>;
+} = {
   type,
   scope,
   delimiter,

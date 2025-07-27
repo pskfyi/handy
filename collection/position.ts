@@ -1,7 +1,7 @@
-import { Tuple } from "../array/types.ts";
-import { Str } from "../string/types.ts";
-import { Satisfies } from "../ts/types.ts";
-import { IndexedCollection } from "./types.ts";
+import type { Tuple } from "../array/types.ts";
+import type { Str } from "../string/types.ts";
+import type { Satisfies } from "../ts/types.ts";
+import type { IndexedCollection } from "./types.ts";
 
 /** Describes index-like locations within an indexed collection, such as an
  * array or string. Unlike an index, a position refers to a location *between*

@@ -1,4 +1,4 @@
-import { Satisfies } from "../ts/types.ts";
+import type { Satisfies } from "../ts/types.ts";
 
 /** Maps `T` to a string literal type describing its number type.
  * - `number` for `number`

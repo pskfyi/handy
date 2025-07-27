@@ -1,5 +1,6 @@
 import { regexp } from "../../parser/regexp.ts";
 import { line } from "../../parser/named.ts";
+import type { Parser } from "@psk/handy/parser/Parser";
 
 export class InfoStringError extends TypeError {
   constructor(infoString: string) {
@@ -58,7 +59,7 @@ export function stringify({ lang, meta }: Info = {}): string {
 const lang = regexp(/^\S+/).match; // one or more non-whitespace characters
 const meta = line; // the rest of the line
 
-export const parser = lang.optional.and(meta.optional)
+export const parser: Parser<Info> = lang.optional.and(meta.optional)
   .into(([lang, meta]) => {
     const info: Info = {};
     meta = meta?.trim();
