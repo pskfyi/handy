@@ -1,4 +1,12 @@
-export type JsonPrimitive = string | number | boolean | null;
-export type JsonObject = { [K in string]?: JsonValue };
-export type JsonArray = JsonValue[];
-export type JsonValue = JsonPrimitive | JsonObject | JsonArray;
+export type Primitive = string | number | boolean | null;
+export type Object = { [K in string]?: Value };
+export type Array = Value[];
+export type Value = Primitive | Object | Array;
+
+export type TypeName =
+  | "string"
+  | "number"
+  | "boolean"
+  | "null"
+  | "object"
+  | "array";
