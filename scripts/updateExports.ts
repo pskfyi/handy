@@ -5,6 +5,7 @@ import { dirname } from "@std/path/dirname";
 import { determine } from "../deno/exports/determine.ts";
 import { assertUnmodified } from "../git/asserts.ts";
 import { replaceJsonFile } from "../fs/json.ts";
+import * as env from "../env/boolean.ts";
 
 function assertFile(path: string): asserts path is string {
   if (!Deno.statSync(path).isFile) {
@@ -85,9 +86,6 @@ Examples:
 `.trim();
 
 if (import.meta.main) {
-  const CI_RAW = Deno.env.get("CI") ?? "";
-  const CI = ["", "0", "false"].includes(CI_RAW) ? false : true;
-
   const flags = parseArgs(Deno.args, {
     alias: {
       a: "assert",
@@ -99,7 +97,7 @@ if (import.meta.main) {
     string: ["root"],
     stopEarly: true,
     default: {
-      assert: CI,
+      assert: env.boolean("CI"),
     },
   });
 
