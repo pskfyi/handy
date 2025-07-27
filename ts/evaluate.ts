@@ -1,4 +1,4 @@
-import { cmd, CmdOptions, CmdResult } from "../cli/cmd.ts";
+import { cmd, type CmdOptions, type CmdResult } from "../cli/cmd.ts";
 import type { Pretty } from "./types.ts";
 
 export type EvaluateTypeScriptOptions = Pretty<

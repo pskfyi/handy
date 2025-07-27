@@ -66,7 +66,7 @@ export async function updateExports(
   );
 }
 
-export const HELP_MESSAGE = `
+export const HELP_MESSAGE: string = `
 Updates the exports field in a deno.json file to include .ts files in the current directory and its subdirectories, sorted by key. Excludes files and directories that start with a dot or underscore, and test files.
 
 Usage:

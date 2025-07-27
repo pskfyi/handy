@@ -1,9 +1,10 @@
 import { regexp } from "../../parser/regexp.ts";
 import { line } from "../../parser/named.ts";
-import { Text } from "../../string/Text.ts";
+import type { Text } from "../../string/Text.ts";
 import { mostConsecutive } from "../../string/sequence.ts";
 import type { Pretty } from "../../ts/types.ts";
 import * as infoString from "./infoString.ts";
+import type { Parser } from "@psk/handy/parser/Parser";
 
 export type FencedCodeBlockDetails = Pretty<
   & {
@@ -63,7 +64,13 @@ const fence = regexp(/^(?<fence>`{3,}|~{3,})([\s\S]*?)(\r?\n|\r)^\k<fence>/m)
   .groups(1, 2)
   .toObject("fence", "data");
 
-export const parser = fence
+export const parser: Parser<{
+  type: "fenced";
+  fence: string;
+  code: string;
+  lang?: string | undefined;
+  meta?: string | undefined;
+}> = fence
   .into(({ fence, data }) => {
     const [{ lang, meta }, cursor] = infoString.parser.parse(data);
     const code = cursor.remainder;

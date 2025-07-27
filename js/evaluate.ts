@@ -1,4 +1,4 @@
-import { cmd, CmdOptions, CmdResult } from "../cli/cmd.ts";
+import { cmd, type CmdOptions, type CmdResult } from "../cli/cmd.ts";
 
 export type EvaluateJavaScriptOptions = Pick<CmdOptions, "cwd" | "env">;
 

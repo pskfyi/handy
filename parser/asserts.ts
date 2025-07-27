@@ -1,6 +1,6 @@
 import { assertEquals } from "@std/assert";
-import { Result } from "./core.ts";
-import { Ignored, IgnoredParser } from "./ignored.ts";
+import type { Result } from "./core.ts";
+import { type Ignored, IgnoredParser } from "./ignored.ts";
 
 /** Asserts that the parser result matches the expected value and remainder. */
 export function assertParseResult<T>(

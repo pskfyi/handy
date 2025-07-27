@@ -2,11 +2,11 @@ import { parseArgs } from "@std/cli/parse-args";
 import { clipboard } from "../../io/mod.ts";
 import { indent } from "../../string/indent.ts";
 import {
-  ConventionalCommit,
+  type ConventionalCommit,
   parse as parseCommit,
 } from "../commit/conventional.ts";
 import { getSpan as getCommitSpan } from "../commit/get.ts";
-import { CommitDescription } from "../commit/types.ts";
+import type { CommitDescription } from "../commit/types.ts";
 import { getLatest as getLatestTag } from "../tag.ts";
 import { consoleWidth } from "../../cli/consoleSize.ts";
 import { elideEnd } from "../../string/elide.ts";
@@ -238,7 +238,7 @@ function typeNames(flags: Record<string, unknown>): Record<string, string> {
   return typeNames;
 }
 
-export const HELP_MESSAGE = `
+export const HELP_MESSAGE: string = `
 Usage:
   deno run -A https://deno.land/x/handy/git/script/makeReleaseNotes.ts [options] [path]
 

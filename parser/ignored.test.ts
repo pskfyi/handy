@@ -3,7 +3,7 @@ import { test } from "@std/testing/bdd";
 import { TextCursor } from "../string/TextCursor.ts";
 import { assertIgnored, assertParseResult } from "./asserts.ts";
 import { CoreParser } from "./core.ts";
-import { Ignored, IgnoredParser, NonIgnored } from "./ignored.ts";
+import { type Ignored, IgnoredParser, type NonIgnored } from "./ignored.ts";
 
 test("types", () => {
   const _ignored: Ignored = IgnoredParser.SYMBOL;

@@ -1,8 +1,8 @@
 import { TextCursor } from "../string/TextCursor.ts";
 import { ArrayParser } from "./Parser.ts";
 import type { CoreParser, Value } from "./core.ts";
-import { Ignored, IgnoredParser } from "./ignored.ts";
-import { AsParsers, asParsers, ParserLike } from "./parserLike.ts";
+import { type Ignored, IgnoredParser } from "./ignored.ts";
+import { type AsParsers, asParsers, type ParserLike } from "./parserLike.ts";
 
 /** Extracts the non-ignored values of each input parser, preserving
  * tuple order. */

@@ -1,7 +1,7 @@
 import { assertEquals } from "@std/assert";
 import { afterAll, beforeAll, describe, it } from "@std/testing/bdd";
 import { _internals } from "../_test/_internals.ts";
-import { CmdStub, stubCmd } from "../cli/cmd.stub.ts";
+import { type CmdStub, stubCmd } from "../cli/cmd.stub.ts";
 import { get, getLatest } from "./tag.ts";
 
 describe("get", () => {

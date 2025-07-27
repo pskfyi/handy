@@ -3,12 +3,12 @@ import { test } from "@std/testing/bdd";
 import { TextCursor } from "../string/TextCursor.ts";
 import { assertParseResult } from "./asserts.ts";
 import {
-  Constructor,
+  type Constructor,
   CoreParser,
-  Parse,
+  type Parse,
   ParseError,
-  Result,
-  Value,
+  type Result,
+  type Value,
 } from "./core.ts";
 
 class ExampleParser extends CoreParser<string> {

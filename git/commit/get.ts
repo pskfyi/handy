@@ -1,6 +1,6 @@
 import { _internals } from "../../_test/_internals.ts";
 import { dedent } from "../../string/dedent.ts";
-import { CommitDescription } from "./types.ts";
+import type { CommitDescription } from "./types.ts";
 import { COMMIT_LOG_REGEX } from "./regex.ts";
 
 /** Given the raw output of `git log`, split it into an array of commits */

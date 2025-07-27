@@ -3,8 +3,8 @@ import { consoleWidth } from "../../cli/consoleSize.ts";
 import { elideEnd } from "../../string/elide.ts";
 import {
   evaluateAll,
-  EvaluateAllResult,
-  EvaluateOptions,
+  type EvaluateAllResult,
+  type EvaluateOptions,
   NoLanguageError,
   UnknownLanguageError,
 } from "../codeBlock/eval.ts";
