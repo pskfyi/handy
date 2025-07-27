@@ -67,6 +67,7 @@
     "./json/errors": "./json/errors.ts",
     "./json/Json": "./json/Json.ts",
     "./json/JsonMergePatch": "./json/JsonMergePatch.ts",
+    "./json/JsonPointer": "./json/JsonPointer.ts",
     "./json/JsonTree": "./json/JsonTree.ts",
     "./json/tree/entries": "./json/tree/entries.ts",
     "./json/tree/errors": "./json/tree/errors.ts",
