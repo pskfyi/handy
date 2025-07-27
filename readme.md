@@ -8,6 +8,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 - [`cli`](#cli)
 - [`collection`](#collection)
 - [`deno`](#deno)
+- [`env`](#env)
 - [`fs`](#fs)
 - [`git`](#git)
 - [`graph`](#graph)
@@ -124,6 +125,18 @@ import { determine } from "jsr:@psk/handy/deno/exports/determine";
 
 await determine("./_test/fixture/deno", {/* Options */});
 // { ".": "./mod.ts", "some/path": "some/path.ts" }
+```
+
+## `env`
+
+Environment variable utilities.
+
+```ts
+import * as env from "jsr:@psk/handy/env";
+
+env.boolean("MY_VAR"); // handles "false", "0", "", and undefined
+env.number("MY_VAR"); // returns env var as a number or null
+env.string("MY_VAR"); // returns env var as a string
 ```
 
 ## `fs`
