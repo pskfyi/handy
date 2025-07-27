@@ -7,8 +7,8 @@
   "lock": false,
   "tasks": {
     "test-readme": "deno test -A --doc ./readme.md",
-    "release-notes": "deno run -A ./git/script/makeReleaseNotes.ts -cg --types=feat,fix",
-    "update-exports": "deno run -A deno/script/updateExports.ts",
+    "release-notes": "deno run -A scripts/makeReleaseNotes.ts -cg --types=feat,fix",
+    "update-exports": "deno run -A scripts/updateExports.ts",
     "verify": "deno run -A _scripts/verify.ts"
   },
   "imports": {
@@ -36,7 +36,6 @@
     "./collection/smallest": "./collection/smallest.ts",
     "./collection/types": "./collection/types.ts",
     "./deno/exports/determine": "./deno/exports/determine.ts",
-    "./deno/script/updateExports": "./deno/script/updateExports.ts",
     "./fs": "./fs/mod.ts",
     "./fs/findNearestFile": "./fs/findNearestFile.ts",
     "./fs/glob": "./fs/glob.ts",
@@ -49,7 +48,6 @@
     "./git/commit/regex": "./git/commit/regex.ts",
     "./git/commit/sha": "./git/commit/sha.ts",
     "./git/commit/types": "./git/commit/types.ts",
-    "./git/script/makeReleaseNotes": "./git/script/makeReleaseNotes.ts",
     "./git/tag": "./git/tag.ts",
     "./graph": "./graph/mod.ts",
     "./graph/DirectedGraph": "./graph/DirectedGraph.ts",
@@ -93,6 +91,8 @@
     "./path": "./path/mod.ts",
     "./path/dir": "./path/dir.ts",
     "./path/globRoot": "./path/globRoot.ts",
+    "./scripts/makeReleaseNotes": "./scripts/makeReleaseNotes.ts",
+    "./scripts/updateExports": "./scripts/updateExports.ts",
     "./string": "./string/mod.ts",
     "./string/dedent": "./string/dedent.ts",
     "./string/elide": "./string/elide.ts",

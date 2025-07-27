@@ -43,7 +43,7 @@ jobs:
           # push name ("RELEASE_NOTES") + delimiter
           echo "RELEASE_NOTES<<$EOF" >> "$GITHUB_OUTPUT"
           # then push value
-          deno run -A git/script/makeReleaseNotes.ts -gi --commit=$FIRST_COMMIT_SHA >> "$GITHUB_OUTPUT"
+          deno run -A scripts/makeReleaseNotes.ts -gi --commit=$FIRST_COMMIT_SHA >> "$GITHUB_OUTPUT"
           # then another delimiter
           echo "$EOF" >> "$GITHUB_OUTPUT"
 
