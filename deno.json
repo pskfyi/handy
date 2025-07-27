@@ -9,6 +9,7 @@
     "test-readme": "deno test -A --doc ./readme.md",
     "release-notes": "deno run -A scripts/makeReleaseNotes.ts -cg --types=feat,fix",
     "update-exports": "deno run -A scripts/updateExports.ts",
+    "update-readme": "deno run -A _scripts/updateReadme.ts",
     "verify": "deno run -A _scripts/verify.ts"
   },
   "imports": {
