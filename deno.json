@@ -74,6 +74,7 @@
     "./md/codeBlock/infoString": "./md/codeBlock/infoString.ts",
     "./md/codeBlock/parse": "./md/codeBlock/parse.ts",
     "./md/codeBlock/types": "./md/codeBlock/types.ts",
+    "./md/fillCommentBlocks": "./md/fillCommentBlocks.ts",
     "./mermaid": "./mermaid/mod.ts",
     "./mermaid/flowchart": "./mermaid/flowchart.ts",
     "./number": "./number/mod.ts",
