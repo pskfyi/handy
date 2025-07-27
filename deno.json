@@ -6,7 +6,7 @@
   },
   "lock": false,
   "tasks": {
-    "test-readme": "deno run -A md/script/evalCodeBlocks.ts ./readme.md https://deno.land/x/handy .",
+    "test-readme": "deno run -A md/script/evalCodeBlocks.ts ./readme.md",
     "release-notes": "deno run -A ./git/script/makeReleaseNotes.ts -cg --types=feat,fix",
     "update-exports": "deno run -A deno/script/updateExports.ts",
     "verify": "deno run -A _scripts/verify.ts"

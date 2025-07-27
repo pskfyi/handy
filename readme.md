@@ -32,7 +32,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 Array-related utilities.
 
 ```ts
-import { mapOnInterval } from "https://deno.land/x/handy/array/mod.ts";
+import { mapOnInterval } from "jsr:@psk/handy/array";
 
 mapOnInterval([3, 2, 1, "go!"], 100, (item) => console.log(item));
 // logs: 3
@@ -42,10 +42,7 @@ mapOnInterval([3, 2, 1, "go!"], 100, (item) => console.log(item));
 ```
 
 ```ts
-import type {
-  Tuple,
-  TypedArray,
-} from "https://deno.land/x/handy/array/types.ts";
+import type { Tuple, TypedArray } from "jsr:@psk/handy/array";
 
 const arr: TypedArray = new Uint8Array();
 
@@ -63,7 +60,7 @@ type ThreeUnknowns = Tuple.OfLength<3>; // [unknown, unknown, unknown]
 CLI-related utilities.
 
 ```ts
-import { cmd, cmds, consoleWidth } from "https://deno.land/x/handy/cli/mod.ts";
+import { cmd, cmds, consoleWidth } from "jsr:@psk/handy/cli";
 
 await cmd("deno -V"); // ex: "deno 1.34.0"
 await cmds(['echo "Hello"', 'echo "World"']); // executes all and provides a summary of successes and failures
@@ -75,11 +72,7 @@ consoleWidth(80); // real width of terminal, or fallback of 80
 Utilities related to generic collection types, like `Iterable`s.
 
 ```ts
-import {
-  largest,
-  position,
-  smallest,
-} from "https://deno.land/x/handy/collection/mod.ts";
+import { largest, position, smallest } from "jsr:@psk/handy/collection";
 
 largest(["aaa", "b", "cc"]); // "aaa"
 smallest(["aaa", "b", "cc"]); // "b"
@@ -105,11 +98,7 @@ position.assert(0, []); // 0 is always valid
 ```
 
 ```ts
-import {
-  Index,
-  IndexedCollection,
-  Indices,
-} from "https://deno.land/x/handy/collection/types.ts";
+import { Index, IndexedCollection, Indices } from "jsr:@psk/handy/collection";
 
 const arr = ["a", "b", "c"] satisfies IndexedCollection;
 const str = "XY" satisfies IndexedCollection;
@@ -129,7 +118,7 @@ type TypedArrIndex = Index<typeof typedArr>; // number
 Deno exports utilities.
 
 ```ts
-import { determine } from "https://deno.land/x/handy/deno/exports/determine.ts";
+import { determine } from "jsr:@psk/handy/deno/exports/determine";
 
 await determine("./_test/fixture/deno", {/* Options */});
 // { ".": "./mod.ts", "some/path": "some/path.ts" }
@@ -141,7 +130,7 @@ await determine("./_test/fixture/deno", {/* Options */});
 Updates the exports field in a deno.json file to include .ts files in the current directory and its subdirectories, sorted by key. Excludes files and directories that start with a dot or underscore, and test files.
 
 Usage:
-  deno run -A https://deno.land/x/handy/deno/exports/script/update.ts [path]
+  deno run -A jsr:@psk/handy/deno/script/updateExports [path]
 
 Arguments:
   path    A deno.json file or directory containing one. Searches the current directory by default.
@@ -152,11 +141,11 @@ Options:
   -r, --root=<path>  Make export paths relative to the provided path. Defaults to the deno.json file's directory.
 
 Examples:
-  deno run -A https://deno.land/x/handy/deno/exports/script/update.ts
+  deno run -A jsr:@psk/handy/deno/script/updateExports
 
-  deno run -A https://deno.land/x/handy/deno/exports/script/update.ts ./path/to/deno.json
+  deno run -A jsr:@psk/handy/deno/script/updateExports ./path/to/deno.json
 
-  deno run -A https://deno.land/x/handy/deno/exports/script/update.ts -root=src
+  deno run -A jsr:@psk/handy/deno/script/updateExports -root=src
 ```
 
 ## `fs`
@@ -164,11 +153,7 @@ Examples:
 File system-related utilities.
 
 ```ts
-import {
-  findNearestFile,
-  glob,
-  globImport,
-} from "https://deno.land/x/handy/fs/mod.ts";
+import { findNearestFile, glob, globImport } from "jsr:@psk/handy/fs";
 
 await findNearestFile(".", "some.file"); // "../../some.file"
 await glob("./**/*.ts"); // all TS files in cwd and subdirs
@@ -186,7 +171,7 @@ for (const [path, module] of Object.entries(modules)) {
 Git-related utilities.
 
 ```ts
-import { assertUnmodified, commit, tag } from "./git/mod.ts";
+import { assertUnmodified, commit, tag } from "jsr:@psk/handy/git";
 
 await tag.getLatest().catch(console.log); // ex. "v1.0.0"
 
@@ -194,8 +179,8 @@ await commit.sha("HEAD").catch(console.log); // ex. "a1b2c3d4e5f6..."
 await commit.get("HEAD").catch(console.log); // { message: "...", ... }
 commit.conventional.parse("feat(scope)!: description"); // { type: "feat", ... }
 
-await assertUnmodified(); // throws if there are unstaged changes
-await assertUnmodified("deno.json"); // can check a specific file
+await assertUnmodified().catch(console.log); // throws if there are unstaged changes
+await assertUnmodified("deno.json").catch(console.log); // can check a specific file
 ```
 
 ### `script/makeReleaseNotes`
@@ -203,14 +188,14 @@ await assertUnmodified("deno.json"); // can check a specific file
 For a git repo, scan the commit history for conventional commits since the last tag and generate a markdown-formatted list of features and fixes.
 
 ```ts
-import { makeReleaseNotes } from "https://deno.land/x/handy/git/script/makeReleaseNotes.ts";
+import { makeReleaseNotes } from "jsr:@psk/handy/git/script/makeReleaseNotes";
 ```
 
 When run as a script, it will generate release notes for the repo in the current working directory. The directory can be overridden by the first argument, and the `--to-clipboard` flag will copy the release notes to the clipboard instead of printing them to stdout.
 
 ```no-eval
 Usage:
-  deno run -A https://deno.land/x/handy/git/script/makeReleaseNotes.ts [options] [path]
+  deno run -A jsr:@psk/handy/git/script/makeReleaseNotes [options] [path]
 
 Options:
   -h, --help          Show this help message
@@ -223,11 +208,11 @@ Options:
   --<type>=<name>     Name to use for a type's H2 when grouping by type
 
 Examples:
-  deno run -A https://deno.land/x/make_release_notes/mod.ts -cgv
+  deno run -A jsr:@psk/handy/git/script/makeReleaseNotes -cgv
 
-  deno run -A https://deno.land/x/make_release_notes/mod.ts --commit v1.0.0
+  deno run -A jsr:@psk/handy/git/script/makeReleaseNotes --commit v1.0.0
 
-  deno run -A https://deno.land/x/make_release_notes/mod.ts \
+  deno run -A jsr:@psk/handy/git/script/makeReleaseNotes \
     --types=feat,custom --custom="Custom's Section Heading"
 ```
 
@@ -236,7 +221,7 @@ Examples:
 Graph-related utilities.
 
 ```ts
-import { DirectedGraph } from "https://deno.land/x/handy/graph/mod.ts";
+import { DirectedGraph } from "jsr:@psk/handy/graph";
 
 const graph = new DirectedGraph<string>()
   .add("a")
@@ -253,7 +238,7 @@ Assorted I/O utilities which don't fit in other categories.
 > NOTE: Only supports MacOS and Windows
 
 ```ts
-import { clipboard } from "https://deno.land/x/handy/io/mod.ts";
+import { clipboard } from "jsr:@psk/handy/io";
 
 clipboard.copy("foo").catch(console.log);
 clipboard.paste().catch(console.log); // "foo"
@@ -264,7 +249,7 @@ clipboard.paste().catch(console.log); // "foo"
 JavaScript utilities.
 
 ```ts
-import { evaluate } from "https://deno.land/x/handy/js/mod.ts";
+import { evaluate } from "jsr:@psk/handy/js";
 
 const { stdout } = await evaluate("console.log('Hello!')");
 //         ^? "Hello!"
@@ -280,7 +265,7 @@ import {
   JsonObject,
   JsonPrimitive,
   JsonValue,
-} from "https://deno.land/x/handy/json/types.ts";
+} from "jsr:@psk/handy/json";
 
 const a: JsonPrimitive = "some string"; // or number, boolean, null
 const b: JsonArray = [1, ["2", true], { a: null }];
@@ -293,7 +278,7 @@ const c: JsonObject = { a: 1, b: ["2", true], d: { e: null } };
 Markdown-related utilities.
 
 ````ts
-import { codeBlock } from "https://deno.land/x/handy/md/mod.ts";
+import { codeBlock } from "jsr:@psk/handy/md";
 
 codeBlock.create("grep"); // "    grep"
 codeBlock.create("const a: number = 1", { lang: "ts" });
@@ -309,7 +294,7 @@ codeBlock.evaluate(
 For a markdown file, execute each TS or JS code block in the file. Useful for checking imports and examples in a readme.
 
 ```ts
-import { evalCodeBlocks } from "https://deno.land/x/handy/md/script/evalCodeBlocks.ts";
+import { evalCodeBlocks } from "jsr:@psk/handy/md/script/evalCodeBlocks";
 ```
 
 Code blocks can individually opt out of evaluation by placing `no-eval` in the [info string](https://spec.commonmark.org/0.30/#info-string).
@@ -328,7 +313,7 @@ When run as a script, it will execute the code blocks in the file specified by t
 
 ```sh no-eval
 deno run --allow-read --allow-run \
-  https://deno.land/x/handy/scripts/evalCodeBlocks.ts \
+  jsr:@psk/handy/scripts/evalCodeBlocks \
   ./readme.md \
   "some string to find" "replacement string" # optional
 ```
@@ -336,9 +321,9 @@ deno run --allow-read --allow-run \
 ## `mermaid`
 
 ```ts
-import { flowchart } from "https://deno.land/x/handy/mermaid/mod.ts";
-import { DirectedGraph } from "https://deno.land/x/handy/graph/mod.ts";
-import { codeBlock } from "https://deno.land/x/handy/md/mod.ts";
+import { flowchart } from "jsr:@psk/handy/mermaid";
+import { DirectedGraph } from "jsr:@psk/handy/graph";
+import { codeBlock } from "jsr:@psk/handy/md";
 
 const graph = new DirectedGraph<string>();
 
@@ -367,7 +352,7 @@ flowchart LR
 Number-related utilities.
 
 ```ts
-import { Num } from "https://deno.land/x/handy/number/types.ts";
+import { Num } from "jsr:@psk/handy/number";
 
 type T = Num.Type<1.1>; // "+float"
 type U = Num.Type<0>; // "zero"
@@ -392,14 +377,14 @@ type NotFloat = Num.Float<1>; // never
 Object-related utilities.
 
 ```ts
-import { setNestedEntry } from "https://deno.land/x/handy/object/mod.ts";
+import { setNestedEntry } from "jsr:@psk/handy/object";
 
 const S = Symbol("symbol");
 setNestedEntry({}, ["a", 10, S], "👋"); // { a: { 10: { [S]: "👋" } } }
 ```
 
 ```ts
-import type { Obj } from "https://deno.land/x/handy/object/types.ts";
+import type { Obj } from "jsr:@psk/handy/object";
 
 type Key = Obj.Key; // string | number | symbol
 type Empty = Obj.Entry; // Record<Key, never>
@@ -415,7 +400,7 @@ type Entries = Obj.ToEntries<MyObj>; // Array<["a", 1], ["b", null]>
 OS-related utilities.
 
 ```ts
-import { posixNewlines } from "https://deno.land/x/handy/os/mod.ts";
+import { posixNewlines } from "jsr:@psk/handy/os";
 
 posixNewlines("A\r\nB\rC"); // "A\nB\nC"
 ```
@@ -425,7 +410,7 @@ posixNewlines("A\r\nB\rC"); // "A\nB\nC"
 A parser combinator library.
 
 ```ts
-import { sequence, string } from "https://deno.land/x/handy/parser/mod.ts";
+import { sequence, string } from "jsr:@psk/handy/parser";
 
 const dash = string("-").ignore;
 const phoneNumber = sequence(/\d{3}/, dash, /\d{3}/, dash, /\d{4}/);
@@ -439,7 +424,7 @@ const [result] = phoneNumber.parse("123-456-7890");
 Path-related utilities.
 
 ```ts
-import { dir, globRoot } from "https://deno.land/x/handy/path/mod.ts";
+import { dir, globRoot } from "jsr:@psk/handy/path";
 
 dir(import.meta); // Node.js __dirname
 dir("/path/to/file"); // "/path/to"
@@ -465,7 +450,7 @@ import {
   splitOnFirst,
   Text,
   TextCursor,
-} from "https://deno.land/x/handy/string/mod.ts";
+} from "jsr:@psk/handy/string";
 
 dedent("  a\n   b\n    c"); // "a\n b\n  c"
 indent("a\nb\nc", 2); // "  a\n  b\n  c"
@@ -491,7 +476,7 @@ cursor.inspect(); // string depicting...
 ```
 
 ```ts
-import { Str } from "https://deno.land/x/handy/string/types.ts";
+import { Str } from "jsr:@psk/handy/string/types";
 
 type Char = Str.Char<"ABC">; // "A" | "B" | "C"
 type Index = Str.Index<"ABC">; // 0 | 1 | 2
@@ -504,14 +489,14 @@ type Tuple = Str.ToTuple<"ABC">; // ["A", "B", "C"]
 TypeScript-related utilities.
 
 ```ts
-import { evaluate } from "https://deno.land/x/handy/ts/mod.ts";
+import { evaluate } from "jsr:@psk/handy/ts";
 
 await evaluate("console.log('Hello!')")
   .then((res) => res.stdout); // "Hello!"
 ```
 
 ```ts
-import type { Pretty, Satisfies } from "https://deno.land/x/handy/ts/types.ts";
+import type { Pretty, Satisfies } from "jsr:@psk/handy/ts";
 
 type Input = { a: number } & { b: string };
 //     ^? { a: number } & { b: string }

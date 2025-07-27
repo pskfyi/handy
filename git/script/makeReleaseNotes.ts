@@ -240,7 +240,7 @@ function typeNames(flags: Record<string, unknown>): Record<string, string> {
 
 export const HELP_MESSAGE: string = `
 Usage:
-  deno run -A https://deno.land/x/handy/git/script/makeReleaseNotes.ts [options] [path]
+  deno run -A jsr:@psk/handy/git/script/makeReleaseNotes [options] [path]
 
 Options:
   -h, --help          Show this help message
@@ -253,11 +253,11 @@ Options:
   --<type>=<name>     Name to use for a type's H2 when grouping by type
 
 Examples:
-  deno run -A https://deno.land/x/handy/git/script/makeReleaseNotes.ts -cgv
+  deno run -A jsr:@psk/handy/git/script/makeReleaseNotes -cgv
 
-  deno run -A https://deno.land/x/handy/git/script/makeReleaseNotes.ts --commit v1.0.0
+  deno run -A jsr:@psk/handy/git/script/makeReleaseNotes --commit v1.0.0
 
-  deno run -A https://deno.land/x/handy/git/script/makeReleaseNotes.ts \\
+  deno run -A jsr:@psk/handy/git/script/makeReleaseNotes \\
     --types=feat,custom --custom="Custom's Section Heading"
 `.trim();
 
