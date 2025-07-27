@@ -248,7 +248,7 @@ const c: JsonObject = { a: 1, b: ["2", true], d: { e: null } };
 Markdown-related utilities.
 
 ````ts
-import { codeBlock } from "jsr:@psk/handy/md";
+import { codeBlock, fillCommentBlocks } from "jsr:@psk/handy/md";
 
 codeBlock.create("grep"); // "    grep"
 codeBlock.create("const a: number = 1", { lang: "ts" });
@@ -256,6 +256,12 @@ codeBlock.parse("```ts\nconst a: number = 1\n```");
 codeBlock.findAll("    grep\n```cd```"); // ["    grep", "```cd```"]
 codeBlock.evaluate(
   codeBlock.create('console.log("Hello!")', { lang: "ts" }),
+);
+
+fillCommentBlocks(
+  `<!-- start my-block -->
+<!-- end my-block -->`,
+  { "my-block": "Content to fill the block" },
 );
 ````
 
