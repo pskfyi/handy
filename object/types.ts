@@ -1,5 +1,9 @@
 import type { Pretty } from "../ts/types.ts";
 
+/** @module
+ *
+ * Utility types for working with objects. */
+
 /** A valid object key. */
 export type Key = string | number | symbol;
 
