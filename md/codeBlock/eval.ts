@@ -2,7 +2,7 @@ import { parse as parseCodeBlock } from "./parse.ts";
 import { findAll as findAllCodeBlocks } from "./findAll.ts";
 import type { CmdResult } from "../../cli/cmd.ts";
 import { evaluate as evalTS } from "../../ts/evaluate.ts";
-import { evaluate as evalJS } from "../../js/evaluate.ts";
+import { evaluate as evalJS } from "../../js/mod.ts";
 import type { CodeBlockDetails } from "./types.ts";
 import type { TextLocation } from "../../string/Text.ts";
 

@@ -1,6 +1,6 @@
 import { assert, assertEquals } from "@std/assert";
 import { describe, test } from "@std/testing/bdd";
-import { evaluate } from "./evaluate.ts";
+import { evaluate } from "./mod.ts";
 
 describe("evaluate TypeScript", () => {
   test("result.stdout", async () =>
