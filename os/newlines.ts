@@ -1,3 +1,7 @@
+/** @module
+ *
+ * Utils for homogenizing line endings. */
+
 /** Replace all `\r\n` and `\n` with `\r`. Handles existing `\r` correctly. */
 export function macNewlines(str: string): string {
   return str.replace(/\r?\n/g, "\r");
