@@ -6,6 +6,7 @@
   },
   "lock": false,
   "tasks": {
+    "test-coverage": "deno test -A --coverage=.coverage && deno run -A _scripts/coverage.ts",
     "test-readme": "deno test -A --doc ./readme.md",
     "release-notes": "deno run -A scripts/makeReleaseNotes.ts -cg --types=feat,fix",
     "update-exports": "deno run -A scripts/updateExports.ts",
