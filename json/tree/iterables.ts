@@ -3,6 +3,10 @@ import { isTree } from "./guards.ts";
 import { PrimitiveError } from "./errors.ts";
 import { _getChild } from "./_getChild.ts";
 
+/** @module
+ *
+ * Utils for traversing a JSON tree. */
+
 /** Construct an iterator that crawls through a tree's children depth-first. */
 export function childCrawler(
   root: JsonTree.Tree,

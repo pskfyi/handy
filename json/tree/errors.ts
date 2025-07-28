@@ -3,6 +3,10 @@ import { shallowTypeOf } from "../utils.ts";
 import type * as Json from "../types.ts";
 import type * as JsonTree from "./types.ts";
 
+/** @module
+ *
+ * Errors encountered when dealing with JSON as a tree. */
+
 export class EdgeTypeError extends PrettyError {
   constructor(
     tree: JsonTree.Tree,

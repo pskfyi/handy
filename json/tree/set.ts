@@ -4,6 +4,10 @@ import { parentPath } from "./parentPath.ts";
 import { assertTree } from "./guards.ts";
 import { EdgeTypeError } from "./errors.ts";
 
+/** @module
+ *
+ * Setting nodes in a JSON tree. */
+
 function _setChild(
   tree: JsonTree.Tree,
   edge: JsonTree.Edge,

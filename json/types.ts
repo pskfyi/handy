@@ -1,3 +1,7 @@
+/** @module
+ *
+ * JSON utility types. */
+
 export type Primitive = string | number | boolean | null;
 export type Object = { [K in string]?: Value };
 export type Array = Value[];

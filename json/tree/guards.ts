@@ -2,6 +2,10 @@ import { isValue } from "../utils.ts";
 import { TypeAssertionError } from "./errors.ts";
 import type * as JsonTree from "./types.ts";
 
+/** @module
+ *
+ * Guard functions for dealing with JSON as a tree. */
+
 export function isTree(input: unknown): input is JsonTree.Tree {
   const invalid = typeof input !== "object" || input === null ||
     input instanceof Map || input instanceof Set;

@@ -2,6 +2,10 @@ import type * as JsonTree from "./types.ts";
 import { get } from "./get.ts";
 import { equals } from "../utils.ts";
 
+/** @module
+ *
+ * Confirming the existence of nodes in a JSON tree. */
+
 /** Confirm if a node exists at a path in a tree. Checks for deep structural
  * equality using `Json.equals()`. */
 export function test(

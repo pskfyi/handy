@@ -10,6 +10,10 @@ import {
   walker,
 } from "./iterables.ts";
 
+/** @module
+ *
+ * Visitor functions for traversing a JSON tree. */
+
 /** Crawls through a tree's children depth-first, invoking the callback
  * function at each location encountered.
  *

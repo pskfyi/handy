@@ -5,6 +5,10 @@ import { assertTree } from "./guards.ts";
 import { EdgeTypeError } from "./errors.ts";
 import { PrettyError } from "../errors.ts";
 
+/** @module
+ *
+ * Inserting nodes into a JSON tree. */
+
 class ValueExistsError extends PrettyError {
   constructor(tree: JsonTree.Tree, edge: JsonTree.Edge) {
     super("A node already exists in the tree along this edge:", {

@@ -1,5 +1,9 @@
 import type * as Json from "./types.ts";
 
+/** @module
+ *
+ * JSON pretty printing error. */
+
 /** Ergonomic error class for pretty printing JSON data
  *
  * @example

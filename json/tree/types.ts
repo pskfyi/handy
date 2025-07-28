@@ -1,5 +1,9 @@
 import type * as Json from "../types.ts";
 
+/** @module
+ *
+ * Utility types for JSON Trees. */
+
 /** Numbers should be integers. */
 export type Edge = number | string;
 export type Path = Edge[];
