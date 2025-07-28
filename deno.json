@@ -25,7 +25,6 @@
   },
   "exports": {
     "./array": "./array/mod.ts",
-    "./array/mapOnInterval": "./array/mapOnInterval.ts",
     "./array/types": "./array/types.ts",
     "./cli": "./cli/mod.ts",
     "./cli/cmd": "./cli/cmd.ts",

@@ -38,7 +38,7 @@ Utility functions, classes, types, and scripts in uncompiled TS, for Deno.
 Array-related utilities.
 
 ```ts
-import { mapOnInterval } from "jsr:@psk/handy/array";
+import { mapOnInterval, Tuple, TypedArray } from "jsr:@psk/handy/array";
 
 const say = (item: unknown) => {/* No-op for demonstration */};
 
@@ -47,10 +47,6 @@ await mapOnInterval([3, 2, 1, "go!"], 1, say);
 // 100ms later, say: 2
 // 100ms later, say: 1
 // 100ms later, say: "go!"
-```
-
-```ts
-import type { Tuple, TypedArray } from "jsr:@psk/handy/array";
 
 const arr: TypedArray = new Uint8Array();
 
