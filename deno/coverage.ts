@@ -1,6 +1,10 @@
 import { cmd } from "../cli/cmd.ts";
 import { parser as markdownTableParser } from "../md/table/parse.ts";
 
+/** @module
+ *
+ * Coverage utilities for Deno. */
+
 export type CoverageOptions = {
   /** Coverage directory to scan. Deno default is `coverage`. */
   dir?: string;
