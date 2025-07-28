@@ -1,5 +1,9 @@
 import type { Pretty } from "../ts/types.ts";
 
+/** @module
+ *
+ * A util for running CLI commands. */
+
 /**
  * @example
  * "git status"
@@ -8,6 +12,7 @@ import type { Pretty } from "../ts/types.ts";
  */
 export type Command = string | string[];
 
+/** Options for the `cmd` util. */
 export type CmdOptions = {
   cwd?: string;
   env?: Record<string, string>;
@@ -16,6 +21,7 @@ export type CmdOptions = {
   fullResult?: boolean;
 };
 
+/** Result of the `cmd` util. */
 export type CmdResult = Pretty<
   & Pick<Deno.CommandOutput, "code" | "success">
   & {
@@ -25,6 +31,7 @@ export type CmdResult = Pretty<
   }
 >;
 
+/** Error thrown by the `cmd` util when a command fails. */
 export class CmdError extends Error implements CmdResult {
   readonly success = false;
 
