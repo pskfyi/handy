@@ -1,3 +1,7 @@
+/** @module
+ *
+ * Create a markdown table. */
+
 export type TableHeader = {
   label: string;
   alignment: "left" | "center" | "right" | null;

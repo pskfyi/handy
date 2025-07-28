@@ -1,6 +1,10 @@
 import { create as createFenced, type CreateFencedOptions } from "./fenced.ts";
 import { create as createIndented } from "./indented.ts";
 
+/** @module
+ *
+ * Create a markdown code block. */
+
 /** Create a markdown codeblock with optional language and metadata.
  *
  * @returns an indented code block (4 spaces) by default, or a fenced code block if `char`, `lang`, or `meta` are provided

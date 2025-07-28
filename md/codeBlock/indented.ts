@@ -5,6 +5,10 @@ import type { Text } from "../../string/Text.ts";
 import { indent } from "../../string/indent.ts";
 import type { Parser } from "../../parser/Parser.ts";
 
+/** @module
+ *
+ * Utils for working with non-fenced markdown code blocks. */
+
 export type IndentedCodeBlockDetails = {
   type: "indented";
   code: string;
