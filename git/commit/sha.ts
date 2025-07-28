@@ -1,6 +1,7 @@
 import { _internals } from "../../_test/_internals.ts";
 
-/** @module
+/**
+ * @module
  *
  * Util for Git SHA operations. */
 

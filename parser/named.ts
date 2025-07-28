@@ -2,7 +2,8 @@ import type { IgnoredParser } from "./ignored.ts";
 import type { Parser } from "./Parser.ts";
 import { regexp } from "./regexp.ts";
 
-/** @module
+/**
+ * @module
  *
  * Specially-named parsers for common patterns, such as whitespace. */
 

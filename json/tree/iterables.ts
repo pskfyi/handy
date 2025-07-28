@@ -3,7 +3,8 @@ import { isTree } from "./guards.ts";
 import { PrimitiveError } from "./errors.ts";
 import { _getChild } from "./_getChild.ts";
 
-/** @module
+/**
+ * @module
  *
  * Utils for traversing a JSON tree. */
 

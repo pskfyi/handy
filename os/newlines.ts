@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * Utils for homogenizing line endings. */
 

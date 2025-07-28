@@ -1,7 +1,8 @@
 import type { Pretty } from "../ts/types.ts";
 import * as _JsonPatch from "./_patch/mod.ts";
 
-/** @module
+/**
+ * @module
  *
  * JsonPatch namespace containing utilities and types for working with JSON
  * Patch. */

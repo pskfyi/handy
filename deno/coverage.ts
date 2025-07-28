@@ -1,7 +1,8 @@
 import { cmd } from "../cli/cmd.ts";
 import { parser as markdownTableParser } from "../md/table/parse.ts";
 
-/** @module
+/**
+ * @module
  *
  * Coverage utilities for Deno. */
 

@@ -6,7 +6,8 @@ import { evaluate as evalJS } from "../../js/mod.ts";
 import type { CodeBlockDetails } from "./types.ts";
 import type { TextLocation } from "../../string/Text.ts";
 
-/** @module
+/**
+ * @module
  *
  * Evaluate code in a markdown document. */
 

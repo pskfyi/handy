@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * Fill comment blocks in a markdown string. */
 

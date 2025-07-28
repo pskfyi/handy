@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * A sophisticated stub for the `cmd` util. */
 

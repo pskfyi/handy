@@ -1,6 +1,7 @@
 import { RegExpParser } from "./RegExpParser.ts";
 
-/** @module
+/**
+ * @module
  *
  * A parser for regular expressions. */
 

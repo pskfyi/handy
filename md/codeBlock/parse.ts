@@ -2,7 +2,8 @@ import { parse as parseFenced } from "./fenced.ts";
 import { parse as parseIndented } from "./indented.ts";
 import type { CodeBlockDetails } from "./types.ts";
 
-/** @module
+/**
+ * @module
  *
  * Parse a markdown code block. */
 

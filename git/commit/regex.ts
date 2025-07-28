@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * Regex pattern for commit log parsing. */
 

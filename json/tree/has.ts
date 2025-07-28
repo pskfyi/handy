@@ -1,7 +1,8 @@
 import type * as JsonTree from "./types.ts";
 import { get } from "./get.ts";
 
-/** @module
+/**
+ * @module
  *
  * Determining the presence of nodes in a JSON tree. */
 

@@ -4,7 +4,8 @@ import { at } from "./visitors.ts";
 import { parentPath } from "./parentPath.ts";
 import { EdgeNotFoundError, EdgeTypeError, PrimitiveError } from "./errors.ts";
 
-/** @module
+/**
+ * @module
  *
  * Removing nodes from a JSON tree. */
 

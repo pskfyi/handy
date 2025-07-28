@@ -1,6 +1,7 @@
 import { dirname, resolve } from "@std/path";
 
-/** @module
+/**
+ * @module
  *
  * Util for finding files in a directory structure. */
 

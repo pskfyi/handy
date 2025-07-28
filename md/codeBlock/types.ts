@@ -1,7 +1,8 @@
 import type { FencedCodeBlockDetails } from "./fenced.ts";
 import type { IndentedCodeBlockDetails } from "./indented.ts";
 
-/** @module
+/**
+ * @module
  *
  * Shared markdown code block types. */
 

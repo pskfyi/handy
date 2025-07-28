@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * Directed Graph data structure. */
 

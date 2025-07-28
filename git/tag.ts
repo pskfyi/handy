@@ -1,6 +1,12 @@
 import { compare, format, parse } from "@std/semver";
 import { _internals } from "../_test/_internals.ts";
 
+/**
+ * @module
+ *
+ * Git tag utilities for Deno.
+ */
+
 /** Get all tags in the git repository at the current working directory. */
 export async function get(): Promise<string[]>;
 /** Get all tags in the git repository at the given path. */

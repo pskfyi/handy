@@ -3,7 +3,8 @@ import type { Str } from "../string/types.ts";
 import type { Satisfies } from "../ts/types.ts";
 import type { IndexedCollection } from "./types.ts";
 
-/** @module
+/**
+ * @module
  *
  * Utils and types for working with positions in indexed collections, with
  * helpful string representations useful for debugging, logging, and error

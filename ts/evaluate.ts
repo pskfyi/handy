@@ -1,7 +1,8 @@
 import { cmd, type CmdOptions, type CmdResult } from "../cli/cmd.ts";
 import type { Pretty } from "./types.ts";
 
-/** @module
+/**
+ * @module
  *
  * Util for evaluating TypeScript code. */
 

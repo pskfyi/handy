@@ -3,7 +3,8 @@ import { dedent } from "../../string/dedent.ts";
 import type { CommitDescription } from "./types.ts";
 import { COMMIT_LOG_REGEX } from "./regex.ts";
 
-/** @module
+/**
+ * @module
  *
  * Utils for obtaining commit information from Git. */
 

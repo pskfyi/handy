@@ -8,7 +8,8 @@ import {
 } from "../../parser/mod.ts";
 import { Table, type TableHeader } from "./class.ts";
 
-/** @module
+/**
+ * @module
  *
  * Parse a markdown table. */
 

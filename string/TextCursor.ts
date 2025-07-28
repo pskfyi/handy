@@ -4,7 +4,8 @@ import { Text } from "./Text.ts";
 import { elideAround } from "./elide.ts";
 import { escapeTerse } from "./escape.ts";
 
-/** @module
+/**
+ * @module
  *
  * Utilities for working with a position within a string. */
 

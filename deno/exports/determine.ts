@@ -2,7 +2,8 @@ import { walk } from "@std/fs/walk";
 import { relative } from "@std/path/relative";
 import { dirname } from "@std/path/dirname";
 
-/** @module
+/**
+ * @module
  *
  * Determines a sane default exports object from a directory of TS files in
  * the style of the Deno standard library. */

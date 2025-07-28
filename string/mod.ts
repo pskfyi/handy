@@ -9,6 +9,7 @@ export * from "./escape.ts";
 export * from "./Text.ts";
 export * from "./TextCursor.ts";
 
-/** @module
+/**
+ * @module
  *
  * Utilities for working with strings. */

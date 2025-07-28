@@ -1,7 +1,8 @@
 import type { Pretty } from "../ts/types.ts";
 import * as _JsonMergePatch from "./_mergePatch/mod.ts";
 
-/** @module
+/**
+ * @module
  *
  * JsonMergePatch namespace containing utilities and types for working with
  * JSON Merge Patches. */

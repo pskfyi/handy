@@ -1,6 +1,7 @@
 export * from "./evaluate.ts";
 export * from "./types.ts";
 
-/** @module
+/**
+ * @module
  *
  * Utils for working with TypeScript. */

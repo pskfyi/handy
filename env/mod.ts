@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * Utils for handling environment variables in Deno. Normally env vars are all
  * strings, though many times they are intended to be used as booleans or

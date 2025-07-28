@@ -1,6 +1,7 @@
 import type { Tuple } from "../array/types.ts";
 
-/** @module
+/**
+ * @module
  *
  * Types for working with strings. */
 

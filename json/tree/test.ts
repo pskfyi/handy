@@ -2,7 +2,8 @@ import type * as JsonTree from "./types.ts";
 import { get } from "./get.ts";
 import { equals } from "../utils.ts";
 
-/** @module
+/**
+ * @module
  *
  * Confirming the existence of nodes in a JSON tree. */
 

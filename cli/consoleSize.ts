@@ -1,6 +1,7 @@
 export type ConsoleSize = { columns: number; rows: number };
 
-/** @module
+/**
+ * @module
  *
  * A util for getting the size of the console. */
 

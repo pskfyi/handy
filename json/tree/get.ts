@@ -1,7 +1,8 @@
 import type * as JsonTree from "./types.ts";
 import { at } from "./visitors.ts";
 
-/** @module
+/**
+ * @module
  *
  * Get a node from a JSON tree. */
 

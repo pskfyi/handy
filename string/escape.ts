@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * Escape sequences for strings. */
 

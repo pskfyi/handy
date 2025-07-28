@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * Utilities for working with string sequences. */
 

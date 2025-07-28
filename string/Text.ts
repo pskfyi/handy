@@ -1,6 +1,7 @@
 import { toPosition } from "../collection/position.ts";
 
-/** @module
+/**
+ * @module
  *
  * A utility for working with blocks of text such as paragraphs or files. */
 

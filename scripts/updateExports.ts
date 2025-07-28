@@ -7,7 +7,8 @@ import { assertUnmodified } from "../git/asserts.ts";
 import { replaceJsonFile } from "../fs/json.ts";
 import * as env from "../env/mod.ts";
 
-/** @module
+/**
+ * @module
  *
  * Updates the exports field in a deno.json file. */
 

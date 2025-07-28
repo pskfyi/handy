@@ -4,7 +4,8 @@ import { parentPath } from "./parentPath.ts";
 import { assertTree } from "./guards.ts";
 import { EdgeTypeError } from "./errors.ts";
 
-/** @module
+/**
+ * @module
  *
  * Setting nodes in a JSON tree. */
 

@@ -2,7 +2,8 @@ import type { Pretty } from "../ts/types.ts";
 import * as _JsonTree from "./tree/_mod.ts";
 import type * as JsonTreeTypes from "./tree/types.ts";
 
-/** @module
+/**
+ * @module
  *
  * JsonTree namespace containing utilities and types for working with JSON as a
  * tree graph. */

@@ -2,7 +2,8 @@ import { consoleWidth } from "../cli/consoleSize.ts";
 import { TextCursor } from "../string/TextCursor.ts";
 import { escapeTerse } from "../string/escape.ts";
 
-/** @module
+/**
+ * @module
  *
  * Core parser functionality. */
 

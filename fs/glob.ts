@@ -2,7 +2,8 @@ import { globToRegExp } from "@std/path";
 import { walk } from "@std/fs/walk";
 import { globRoot } from "../path/globRoot.ts";
 
-/** @module
+/**
+ * @module
  *
  * Util for finding files matching a glob pattern. */
 
