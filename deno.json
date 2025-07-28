@@ -56,8 +56,6 @@
     "./git/commit/types": "./git/commit/types.ts",
     "./git/tag": "./git/tag.ts",
     "./graph": "./graph/mod.ts",
-    "./graph/DirectedGraph": "./graph/DirectedGraph.ts",
-    "./graph/errors": "./graph/errors.ts",
     "./io": "./io/mod.ts",
     "./io/clipboard": "./io/clipboard.ts",
     "./js": "./js/mod.ts",
