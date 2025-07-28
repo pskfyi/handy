@@ -1,5 +1,9 @@
 import { _internals } from "../../_test/_internals.ts";
 
+/** @module
+ *
+ * Util for Git SHA operations. */
+
 /** Get the full SHA hash of a revision.
  *
  * @example
