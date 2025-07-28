@@ -1,6 +1,6 @@
 import { regexp } from "../../parser/regexp.ts";
 import { line } from "../../parser/named.ts";
-import type { Parser } from "@psk/handy/parser/Parser";
+import type { Parser } from "../../parser/Parser.ts";
 
 export class InfoStringError extends TypeError {
   constructor(infoString: string) {

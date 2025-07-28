@@ -66,7 +66,7 @@ export const HELP_MESSAGE: string = `
 Updates the exports field in a deno.json file to include .ts files in the current directory and its subdirectories, sorted by key. Excludes files and directories that start with a dot or underscore, and test files.
 
 Usage:
-  deno run -A jsr:@psk/handy/script/updateExports [path]
+  deno run -A jsr:@psk/handy/scripts/updateExports [path]
 
 Arguments:
   path    A deno.json file or directory containing one. Searches the current directory by default.
@@ -78,11 +78,11 @@ Options:
   -r, --root=<path>  Make export paths relative to the provided path. Defaults to the deno.json file's directory.
 
 Examples:
-  deno run -A jsr:@psk/handy/script/updateExports.ts
+  deno run -A jsr:@psk/handy/scripts/updateExports
 
-  deno run -A jsr:@psk/handy/script/updateExports.ts ./path/to/deno.json
+  deno run -A jsr:@psk/handy/scripts/updateExports ./path/to/deno.json
 
-  deno run -A jsr:@psk/handy/script/updateExports.ts --root=src
+  deno run -A jsr:@psk/handy/scripts/updateExports --root=src
 `.trim();
 
 if (import.meta.main) {

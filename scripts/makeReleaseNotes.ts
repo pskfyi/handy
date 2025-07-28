@@ -242,7 +242,7 @@ export const HELP_MESSAGE: string = `
 In a git repo, scan the commit history for conventional commits since the last tag and generate a markdown-formatted list of features and fixes.
 
 Usage:
-  deno run -A jsr:@psk/handy/script/makeReleaseNotes [options] [path]
+  deno run -A jsr:@psk/handy/scripts/makeReleaseNotes [options] [path]
 
 Arguments:
   path    Path to a git repo to scan. Defaults to the current working directory.
@@ -258,11 +258,11 @@ Options:
   --<type>=<name>     Name to use for a type's H2 when grouping by type
 
 Examples:
-  deno run -A jsr:@psk/handy/script/makeReleaseNotes -cgv
+  deno run -A jsr:@psk/handy/scripts/makeReleaseNotes -cgv
 
-  deno run -A jsr:@psk/handy/script/makeReleaseNotes --commit v1.0.0
+  deno run -A jsr:@psk/handy/scripts/makeReleaseNotes --commit v1.0.0
 
-  deno run -A jsr:@psk/handy/script/makeReleaseNotes \\
+  deno run -A jsr:@psk/handy/scripts/makeReleaseNotes \\
     --types=feat,custom --custom="Custom's Section Heading"
 `.trim();
 

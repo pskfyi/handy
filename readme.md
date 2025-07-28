@@ -470,7 +470,7 @@ Each script supports CLI usage including a `--help` / `-h` flag, or a programmat
 In a git repo, scan the commit history for conventional commits since the last tag and generate a markdown-formatted list of features and fixes.
 
 Usage:
-  deno run -A jsr:@psk/handy/script/makeReleaseNotes [options] [path]
+  deno run -A jsr:@psk/handy/scripts/makeReleaseNotes [options] [path]
 
 Arguments:
   path    Path to a git repo to scan. Defaults to the current working directory.
@@ -486,11 +486,11 @@ Options:
   --<type>=<name>     Name to use for a type's H2 when grouping by type
 
 Examples:
-  deno run -A jsr:@psk/handy/script/makeReleaseNotes -cgv
+  deno run -A jsr:@psk/handy/scripts/makeReleaseNotes -cgv
 
-  deno run -A jsr:@psk/handy/script/makeReleaseNotes --commit v1.0.0
+  deno run -A jsr:@psk/handy/scripts/makeReleaseNotes --commit v1.0.0
 
-  deno run -A jsr:@psk/handy/script/makeReleaseNotes \\
+  deno run -A jsr:@psk/handy/scripts/makeReleaseNotes \\
     --types=feat,custom --custom="Custom's Section Heading"
 ```
 
@@ -504,7 +504,7 @@ Examples:
 Updates the exports field in a deno.json file to include .ts files in the current directory and its subdirectories, sorted by key. Excludes files and directories that start with a dot or underscore, and test files.
 
 Usage:
-  deno run -A jsr:@psk/handy/script/updateExports [path]
+  deno run -A jsr:@psk/handy/scripts/updateExports [path]
 
 Arguments:
   path    A deno.json file or directory containing one. Searches the current directory by default.
@@ -516,11 +516,11 @@ Options:
   -r, --root=<path>  Make export paths relative to the provided path. Defaults to the deno.json file's directory.
 
 Examples:
-  deno run -A jsr:@psk/handy/script/updateExports.ts
+  deno run -A jsr:@psk/handy/scripts/updateExports
 
-  deno run -A jsr:@psk/handy/script/updateExports.ts ./path/to/deno.json
+  deno run -A jsr:@psk/handy/scripts/updateExports ./path/to/deno.json
 
-  deno run -A jsr:@psk/handy/script/updateExports.ts --root=src
+  deno run -A jsr:@psk/handy/scripts/updateExports --root=src
 ```
 
 <!-- end update-exports -->

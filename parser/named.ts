@@ -1,4 +1,4 @@
-import type { IgnoredParser } from "@psk/handy/parser/ignored";
+import type { IgnoredParser } from "./ignored.ts";
 import type { Parser } from "./Parser.ts";
 import { regexp } from "./regexp.ts";
 
