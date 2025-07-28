@@ -1,6 +1,6 @@
 import { assertEquals } from "@std/assert";
 import { test } from "@std/testing/bdd";
-import { mapOnInterval } from "./mapOnInterval.ts";
+import { mapOnInterval } from "./mod.ts";
 
 test("synchronous predicates", async () =>
   assertEquals(

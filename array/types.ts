@@ -1,3 +1,8 @@
+/** @module
+ *
+ * Provides utility types for working with arrays and tuples in TypeScript. */
+
+/** One of the JS built-in typed arrays. */
 export type TypedArray =
   | Int8Array
   | Uint8Array
