@@ -58,7 +58,6 @@
     "./graph": "./graph/mod.ts",
     "./io": "./io/mod.ts",
     "./js": "./js/mod.ts",
-    "./js/evaluate": "./js/evaluate.ts",
     "./json": "./json/mod.ts",
     "./json/errors": "./json/errors.ts",
     "./json/Json": "./json/Json.ts",
