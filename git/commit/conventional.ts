@@ -5,6 +5,10 @@ import { string } from "../../parser/string.ts";
 import { end, line, newline, whitespace } from "../../parser/named.ts";
 import type { Parser } from "../../parser/Parser.ts";
 
+/** @module
+ *
+ * Parses and stringifies Conventional Commits messages. */
+
 export type ConventionalCommitFooter = {
   key: string;
   value: string;

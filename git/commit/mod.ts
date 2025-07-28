@@ -1,3 +1,7 @@
+/** @module
+ *
+ * Utils for git operations. */
+
 export * from "./get.ts";
 export * from "./regex.ts";
 export * from "./sha.ts";
