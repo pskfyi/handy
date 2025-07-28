@@ -1,8 +1,7 @@
 import { smallest } from "../collection/smallest.ts";
 import { assert, assertEquals, assertThrows } from "@std/assert";
 import { beforeEach, describe, it, test } from "@std/testing/bdd";
-import { DirectedGraph } from "./DirectedGraph.ts";
-import { VertexError } from "./errors.ts";
+import { DirectedGraph, VertexError } from "./mod.ts";
 
 let graph: DirectedGraph<string>;
 
