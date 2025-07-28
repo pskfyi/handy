@@ -1,6 +1,10 @@
 import { create as createFencedCodeblock } from "../md/codeBlock/fenced.ts";
 import { frontmatter } from "./_frontmatter.ts";
 
+/** @module
+ *
+ * Create a Mermaid flowchart. */
+
 export type FlowchartOptions = {
   direction?: "TB" | "TD" | "BT" | "RL" | "LR";
   title?: string;
