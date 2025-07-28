@@ -5,7 +5,7 @@ import { dirname } from "@std/path/dirname";
 import { determine } from "../deno/exports/determine.ts";
 import { assertUnmodified } from "../git/asserts.ts";
 import { replaceJsonFile } from "../fs/json.ts";
-import * as env from "../env/boolean.ts";
+import * as env from "../env/mod.ts";
 
 function assertFile(path: string): asserts path is string {
   if (!Deno.statSync(path).isFile) {
