@@ -444,11 +444,7 @@ const [result] = phoneNumber.parse("123-456-7890");
 Path-related utilities.
 
 ```ts
-import { dir, globRoot } from "jsr:@psk/handy/path";
-
-dir(import.meta); // Node.js __dirname
-dir("/path/to/file"); // "/path/to"
-dir("C:\\\\a\\b\\c"); // "C:\\a\\b"
+import { globRoot } from "jsr:@psk/handy/path";
 
 globRoot("a/b/**/*.ts"); // "a/b/"
 ```

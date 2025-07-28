@@ -1,5 +1,9 @@
 import { isGlob } from "@std/path";
 
+/** @module
+ *
+ * A utility for working with glob patterns. */
+
 /** Given a glob pattern, return its non-glob beginning.
  *
  * @example
