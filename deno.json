@@ -116,7 +116,6 @@
     "./parser/sequence": "./parser/sequence.ts",
     "./parser/string": "./parser/string.ts",
     "./path": "./path/mod.ts",
-    "./path/dir": "./path/dir.ts",
     "./path/globRoot": "./path/globRoot.ts",
     "./scripts/makeReleaseNotes": "./scripts/makeReleaseNotes.ts",
     "./scripts/updateExports": "./scripts/updateExports.ts",
