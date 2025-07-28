@@ -1,3 +1,7 @@
+/** @module
+ *
+ * Utils for editing text files in Deno. */
+
 export async function replaceTextFile(
   path: string | URL,
   callback: (content: string) => string,
