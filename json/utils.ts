@@ -1,5 +1,9 @@
 import type * as Json from "./types.ts";
 
+/** @module
+ *
+ * JSON utilities. */
+
 /** Alias for `JSON.parse` with no options. */
 export function parse(string: string): Json.Value {
   return JSON.parse(string);

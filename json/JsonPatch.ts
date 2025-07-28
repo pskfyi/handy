@@ -1,6 +1,11 @@
 import type { Pretty } from "../ts/types.ts";
 import * as _JsonPatch from "./_patch/mod.ts";
 
+/** @module
+ *
+ * JsonPatch namespace containing utilities and types for working with JSON
+ * Patch. */
+
 /** JSON Patch implementation based on [the official
  * spec](https://datatracker.ietf.org/doc/html/rfc6902), and related utilities.
  *

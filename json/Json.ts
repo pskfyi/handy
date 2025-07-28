@@ -2,6 +2,10 @@ import * as JsonUtils from "./utils.ts";
 import type * as JsonType from "./types.ts";
 import type { Pretty } from "../ts/types.ts";
 
+/** @module
+ *
+ * Json namespace containing utilities and types for working with JSON data. */
+
 /** Convenience wrapper around baseline JSON utils and types. */
 const Json: Pretty<typeof JsonUtils> = JsonUtils;
 declare namespace Json {

@@ -2,6 +2,10 @@ import { set } from "./set.ts";
 import type * as JsonTree from "./types.ts";
 import { crawlLeaves } from "./visitors.ts";
 
+/** @module
+ *
+ * Like Object.entries except the keys are Paths. */
+
 /** Translates a tree into a collection of Path & leaf Node pairs. */
 export function entries(
   tree: JsonTree.Tree,

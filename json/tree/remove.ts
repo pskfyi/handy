@@ -4,6 +4,10 @@ import { at } from "./visitors.ts";
 import { parentPath } from "./parentPath.ts";
 import { EdgeNotFoundError, EdgeTypeError, PrimitiveError } from "./errors.ts";
 
+/** @module
+ *
+ * Removing nodes from a JSON tree. */
+
 function _removeChild(
   tree: JsonTree.Tree,
   edge: JsonTree.Edge,
