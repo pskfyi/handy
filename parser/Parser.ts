@@ -11,6 +11,10 @@ import {
 } from "./core.ts";
 import { IgnoredParser, type NonIgnored } from "./ignored.ts";
 
+/** @module
+ *
+ * Core Parser class. */
+
 export type ParseNode<Val> = {
   value: Val;
   start: Text.Location;

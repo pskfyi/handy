@@ -1,5 +1,9 @@
 import { RegExpParser } from "./RegExpParser.ts";
 
+/** @module
+ *
+ * A parser for regular expressions. */
+
 /** Matches against the given regular expressions in order.
  *
  * Patterns are expected to match the start of the string and will throw

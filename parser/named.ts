@@ -2,6 +2,10 @@ import type { IgnoredParser } from "./ignored.ts";
 import type { Parser } from "./Parser.ts";
 import { regexp } from "./regexp.ts";
 
+/** @module
+ *
+ * Specially-named parsers for common patterns, such as whitespace. */
+
 /** Matches an empty string. */
 export const end: IgnoredParser = regexp(/^$/).ignore
   .named("end");

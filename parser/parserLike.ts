@@ -3,6 +3,10 @@ import type { CoreParser } from "./core.ts";
 import { regexp } from "./regexp.ts";
 import { string } from "./string.ts";
 
+/** @module
+ *
+ * Utils for casting data types to parsers. */
+
 export type ParserLike = CoreParser | string | RegExp;
 
 export type AsParser<T extends ParserLike> = //

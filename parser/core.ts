@@ -2,6 +2,10 @@ import { consoleWidth } from "../cli/consoleSize.ts";
 import { TextCursor } from "../string/TextCursor.ts";
 import { escapeTerse } from "../string/escape.ts";
 
+/** @module
+ *
+ * Core parser functionality. */
+
 /*--- Types ---*/
 
 export type Value<P extends CoreParser | CoreParser[]> = //

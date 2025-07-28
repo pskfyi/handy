@@ -8,3 +8,7 @@ export * from "./regexp.ts";
 export * from "./parserLike.ts";
 export * from "./sequence.ts";
 export * from "./named.ts";
+
+/** @module
+ *
+ * A parser combinator library. */
