@@ -1,3 +1,7 @@
+/** @module
+ *
+ * Replacing multiple substrings in a string. */
+
 /** For each key/value pair in `replacements`, replaces all occurrences of
  * the key in `input` with the value. */
 export function replaceMany(

@@ -1,3 +1,7 @@
+/** @module
+ *
+ * Escape sequences for strings. */
+
 /** Replaces special characters with their escape sequences.
  *
  * Note: `escape` is a global function in JavaScript, so we use `escapeFull`. */

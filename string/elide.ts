@@ -1,3 +1,7 @@
+/** @module
+ *
+ * Like CSS text-overflow: ellipsis, but for strings. */
+
 export type ElideOptions = {
   /** The maximum length of the returned string.
    *

@@ -1,3 +1,8 @@
+/** @module
+ *
+ * A utility for working with string indentation. */
+
+/** Indent a string with the given string or number of spaces. */
 export function indent(str: string, indent: string | number): string {
   indent = typeof indent === "number" ? " ".repeat(indent) : indent;
   let indented = "";

@@ -4,6 +4,10 @@ import { Text } from "./Text.ts";
 import { elideAround } from "./elide.ts";
 import { escapeTerse } from "./escape.ts";
 
+/** @module
+ *
+ * Utilities for working with a position within a string. */
+
 export declare namespace TextCursor {
   export interface InspectOptions {
     /** The maximum length of the line to display. */

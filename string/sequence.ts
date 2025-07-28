@@ -1,3 +1,7 @@
+/** @module
+ *
+ * Utilities for working with string sequences. */
+
 /**
  * @example
  * sequences("o", "ofoo"); // ["o", "oo"]

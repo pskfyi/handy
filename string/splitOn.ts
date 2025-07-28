@@ -1,3 +1,7 @@
+/** @module
+ *
+ * Utilities for splitting strings. */
+
 /** @example splitOnFirst("--", "foo--bar--baz") // ["foo", "bar--baz"] */
 export function splitOnFirst(sep: string, str: string): [string, string] {
   if (!str || !sep) return [str, ""];

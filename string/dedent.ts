@@ -1,3 +1,8 @@
+/** @module
+ *
+ * A utility for working with string indentation. */
+
+/** Remove indentation from a string. */
 export function dedent(
   str: string,
   options?: { char?: string; returnIndentation?: false },
