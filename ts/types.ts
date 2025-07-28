@@ -1,3 +1,7 @@
+/** @module
+ *
+ * Utility types. */
+
 /** Represents a type with all properties merged into the top level, handling
  * intersections (`&`), often resulting in more legible shapes particularly
  * for object types.
