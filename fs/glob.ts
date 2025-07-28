@@ -2,8 +2,11 @@ import { globToRegExp } from "@std/path";
 import { walk } from "@std/fs/walk";
 import { globRoot } from "../path/globRoot.ts";
 
-/**
- * Find all filepaths matching a glob pattern. Expects an absolute or
+/** @module
+ *
+ * Util for finding files matching a glob pattern. */
+
+/** Find all filepaths matching a glob pattern. Expects an absolute or
  * relative pattern rather than separate base path.
  *
  * @example
@@ -11,8 +14,7 @@ import { globRoot } from "../path/globRoot.ts";
  *
  * const pattern = path.resolve(".", "**", "*.ts")
  *
- * await glob(pattern) // finds all ts files within "."
- */
+ * await glob(pattern) // finds all ts files within "." */
 export async function glob(globPattern: string): Promise<string[]> {
   const root = globRoot(globPattern);
 

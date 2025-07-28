@@ -1,5 +1,9 @@
 import type * as Json from "../json/types.ts";
 
+/** @module
+ *
+ * Utils for reading and writing JSON files in Deno. */
+
 export async function readJsonFile<T = Json.Object>(
   path: string | URL,
 ): Promise<T> {

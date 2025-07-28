@@ -1,6 +1,10 @@
 import { glob } from "./glob.ts";
 import { toFileUrl } from "@std/path";
 
+/** @module
+ *
+ * Util for importing files matching a glob pattern. */
+
 /** A callback that will open a file and return its contents.
  *
  * @example
