@@ -3,6 +3,12 @@ import type { Str } from "../string/types.ts";
 import type { Satisfies } from "../ts/types.ts";
 import type { IndexedCollection } from "./types.ts";
 
+/** @module
+ *
+ * Utils and types for working with positions in indexed collections, with
+ * helpful string representations useful for debugging, logging, and error
+ * messages. */
+
 /** Describes index-like locations within an indexed collection, such as an
  * array or string. Unlike an index, a position refers to a location *between*
  * items.
@@ -104,6 +110,14 @@ export function assert<C extends IndexedCollection>(
   }
 }
 
+/** Checks if the `value` is a valid position within the `collection`.
+ *
+ * @returns true if the value is a valid position, false otherwise.
+ *
+ * @example
+ * isPosition(0, []); // Every collection has a 0 position.
+ * isPosition(1, []); // false, no position after the 0.
+ * isPosition(1, ["a", "b"]); // true, the position after the "a". */
 export function isPosition<C extends IndexedCollection>(
   value: number,
   collection: C,
@@ -116,6 +130,13 @@ export function isPosition<C extends IndexedCollection>(
   }
 }
 
+/** Returns the next position in the collection, or `null` if there is no next
+ * position (i.e., if the value is equal to the collection's length).
+ *
+ * @example
+ * next(0, ["a", "b"]); // 1, the position after the "a"
+ * next(1, ["a", "b"]); // 2, the position after the "b"
+ * next(2, ["a", "b"]); // null, no position after the end */
 export function next<
   const C extends IndexedCollection,
   P extends Position<C>,
@@ -126,6 +147,13 @@ export function next<
   return (value < collection.length) ? (value + 1) as P : null;
 }
 
+/** Returns the previous position in the collection, or `null` if there is no
+ * previous position (i.e., if the value is `0`).
+ *
+ * @example
+ * previous(0, ["a", "b"]); // null
+ * previous(1, ["a", "b"]); // 0, the position before the "a"
+ * previous(2, ["a", "b"]); // 1, the position before the "b" */
 export function previous<
   const C extends IndexedCollection,
   P extends Position<C>,

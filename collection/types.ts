@@ -1,6 +1,10 @@
 import type { Tuple } from "../array/types.ts";
 import type { Str } from "../string/types.ts";
 
+/** @module
+ *
+ * Types related to collection indices. */
+
 /** A type that can be indexed by a number and has a `length` property.
  *
  * @example

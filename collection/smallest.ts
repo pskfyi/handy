@@ -1,3 +1,8 @@
+/** @module
+ *
+ * Util for finding the smallest items in a collection. Defaults to determining
+ * size by the `"length"` property, but it can be configured. */
+
 /** Returns the items in a collection with the smallest `"length"` property.
  *
  * @example
