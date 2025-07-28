@@ -11,6 +11,10 @@ import { getLatest as getLatestTag } from "../git/tag.ts";
 import { consoleWidth } from "../cli/consoleSize.ts";
 import { elideEnd } from "../string/elide.ts";
 
+/** @module
+ *
+ * Generates release notes from conventional commits in a git repository. */
+
 type CommitInfo = ConventionalCommit & Omit<CommitDescription, "message">;
 
 const TYPE_NAMES: Record<string, string> = {
