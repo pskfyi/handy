@@ -1,7 +1,7 @@
 import { HELP_MESSAGE as UE_HELP } from "../scripts/updateExports.ts";
 import { HELP_MESSAGE as MRN_HELP } from "../scripts/makeReleaseNotes.ts";
 import { replaceTextFile } from "../fs/replaceTextFile.ts";
-import { codeBlock } from "@psk/handy/md";
+import * as codeBlock from "../md/codeBlock/mod.ts";
 import { fillCommentBlocks } from "../md/fillCommentBlocks.ts";
 import * as env from "../env/mod.ts";
 import { assertUnmodified } from "../git/asserts.ts";

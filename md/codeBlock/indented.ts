@@ -3,7 +3,7 @@ import { string } from "../../parser/string.ts";
 import { line, newline, whitespace } from "../../parser/named.ts";
 import type { Text } from "../../string/Text.ts";
 import { indent } from "../../string/indent.ts";
-import type { Parser } from "@psk/handy/parser/Parser";
+import type { Parser } from "../../parser/Parser.ts";
 
 export type IndentedCodeBlockDetails = {
   type: "indented";

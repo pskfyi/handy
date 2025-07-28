@@ -3,7 +3,7 @@ import { regexp } from "../../parser/regexp.ts";
 import { type Sequence, sequence } from "../../parser/sequence.ts";
 import { string } from "../../parser/string.ts";
 import { end, line, newline, whitespace } from "../../parser/named.ts";
-import type { Parser } from "@psk/handy/parser/Parser";
+import type { Parser } from "../../parser/Parser.ts";
 
 export type ConventionalCommitFooter = {
   key: string;

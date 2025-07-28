@@ -4,7 +4,7 @@ import type { Text } from "../../string/Text.ts";
 import { mostConsecutive } from "../../string/sequence.ts";
 import type { Pretty } from "../../ts/types.ts";
 import * as infoString from "./infoString.ts";
-import type { Parser } from "@psk/handy/parser/Parser";
+import type { Parser } from "../../parser/Parser.ts";
 
 export type FencedCodeBlockDetails = Pretty<
   & {
