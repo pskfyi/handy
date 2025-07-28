@@ -36,6 +36,7 @@
     "./collection/position": "./collection/position.ts",
     "./collection/smallest": "./collection/smallest.ts",
     "./collection/types": "./collection/types.ts",
+    "./deno/coverage": "./deno/coverage.ts",
     "./deno/exports/determine": "./deno/exports/determine.ts",
     "./env": "./env/mod.ts",
     "./env/boolean": "./env/boolean.ts",

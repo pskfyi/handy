@@ -126,10 +126,13 @@ type TypedArrIndex = Index<typeof typedArr>; // number
 Deno exports utilities.
 
 ```ts
+import { coverage } from "jsr:@psk/handy/deno/coverage";
 import { determine } from "jsr:@psk/handy/deno/exports/determine";
 
 await determine("./_test/fixture/deno", {/* Options */});
 // { ".": "./mod.ts", "some/path": "some/path.ts" }
+
+await coverage().catch(() => {});
 ```
 
 ## `env`
