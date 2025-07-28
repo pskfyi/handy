@@ -1,3 +1,7 @@
+/** @module
+ *
+ * Fill comment blocks in a markdown string. */
+
 export type FillCommentBlocksOptions = {
   /**
    * @default "start"

@@ -6,6 +6,10 @@ import type { Pretty } from "../../ts/types.ts";
 import * as infoString from "./infoString.ts";
 import type { Parser } from "../../parser/Parser.ts";
 
+/** @module
+ *
+ * Utils for working with fenced code blocks. */
+
 export type FencedCodeBlockDetails = Pretty<
   & {
     type: "fenced";

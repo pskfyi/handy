@@ -8,6 +8,10 @@ import {
   parser as indented,
 } from "./indented.ts";
 
+/** @module
+ *
+ * Find code blocks in a markdown document. */
+
 export type SearchResult =
   | FencedCodeBlockSearchResult
   | IndentedCodeBlockSearchResult;

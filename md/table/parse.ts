@@ -8,6 +8,10 @@ import {
 } from "../../parser/mod.ts";
 import { Table, type TableHeader } from "./class.ts";
 
+/** @module
+ *
+ * Parse a markdown table. */
+
 const _optionalColumnSeparator = string("|").optional.ignore;
 const _columnSeparator = string("|").ignore;
 const _cellContent = regexp(/[^|\r\n]*/).match.into((val) => val.trim());
