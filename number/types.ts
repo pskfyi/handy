@@ -1,5 +1,9 @@
 import type { Satisfies } from "../ts/types.ts";
 
+/** @module
+ *
+ * Utility types for working with numbers. */
+
 /** Maps `T` to a string literal type describing its number type.
  * - `number` for `number`
  * - `zero` for `0` and `-0` (TS cannot distinguish between them)
