@@ -7,6 +7,10 @@ import { assertUnmodified } from "../git/asserts.ts";
 import { replaceJsonFile } from "../fs/json.ts";
 import * as env from "../env/mod.ts";
 
+/** @module
+ *
+ * Updates the exports field in a deno.json file. */
+
 function assertFile(path: string): asserts path is string {
   if (!Deno.statSync(path).isFile) {
     throw new Error(`Expected ${path} to be a file, but got a directory.`);
