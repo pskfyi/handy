@@ -316,7 +316,7 @@ Homegrown utilities for working with JSON as a tree structure. See the module fo
 Markdown-related utilities.
 
 ````ts
-import { codeBlock, fillCommentBlocks } from "jsr:@psk/handy/md";
+import { codeBlock, fillCommentBlocks, table } from "jsr:@psk/handy/md";
 
 codeBlock.create("grep"); // "    grep"
 codeBlock.create("const a: number = 1", { lang: "ts" });
@@ -330,6 +330,13 @@ fillCommentBlocks(
   `<!-- start my-block -->
 <!-- end my-block -->`,
   { "my-block": "Content to fill the block" },
+);
+
+const [result, cursor] = table.parser.parse(
+  `| Header 1 | Header 2 |
+| -------- | -------- |
+| Row 1    | Row 2    |
+| Row 3    | Row 4    |`,
 );
 ````
 
