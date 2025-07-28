@@ -1,6 +1,10 @@
 import { cmd, type CmdOptions, type CmdResult } from "../cli/cmd.ts";
 import type { Pretty } from "./types.ts";
 
+/** @module
+ *
+ * Util for evaluating TypeScript code. */
+
 export type EvaluateTypeScriptOptions = Pretty<
   & Pick<CmdOptions, "cwd" | "env">
   & { typeCheck?: boolean }
