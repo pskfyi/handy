@@ -1,5 +1,10 @@
 import { toPosition } from "../collection/position.ts";
 
+/** @module
+ *
+ * A utility for working with blocks of text such as paragraphs or files. */
+
+/** A location within a body of text. */
 export type TextLocation = {
   /** A zero-based positive integer describing an index in a body of text. */
   offset: number;

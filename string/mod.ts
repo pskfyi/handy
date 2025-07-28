@@ -8,3 +8,7 @@ export * from "./elide.ts";
 export * from "./escape.ts";
 export * from "./Text.ts";
 export * from "./TextCursor.ts";
+
+/** @module
+ *
+ * Utilities for working with strings. */

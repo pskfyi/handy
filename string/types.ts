@@ -1,5 +1,9 @@
 import type { Tuple } from "../array/types.ts";
 
+/** @module
+ *
+ * Types for working with strings. */
+
 /** Represents a tuple of the characters of `T`.
  *
  * @example
