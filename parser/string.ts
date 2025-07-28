@@ -1,6 +1,10 @@
 import { TextCursor } from "../string/TextCursor.ts";
 import { Parser } from "./Parser.ts";
 
+/** @module
+ *
+ * A parser for strings. */
+
 /** @example
  * const parser = string("hello");
  * parser.parse("hello"); // ["hello", TextCursor]
