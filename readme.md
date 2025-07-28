@@ -209,11 +209,10 @@ graph.edges; // new Set([["a", "c"]])
 
 Assorted I/O utilities which don't fit in other categories.
 
-> NOTE: Only supports MacOS and Windows
-
 ```ts
 import { clipboard } from "jsr:@psk/handy/io";
 
+// NOTE: Only supports MacOS and Windows
 await clipboard.copy("foo").catch(console.log);
 await clipboard.paste().catch(console.log); // "foo"
 ```
