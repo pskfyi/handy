@@ -1,6 +1,7 @@
 {
   "name": "@psk/handy",
   "version": "0.5.0",
+  "license": "0BSD",
   "fmt": {
     "proseWrap": "never"
   },
