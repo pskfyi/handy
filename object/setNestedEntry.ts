@@ -1,3 +1,7 @@
+/** @module
+ *
+ * Similar to _.set */
+
 /**
  * Mutates `obj` adding or overwriting a `val` at the end of a chain of `keys`,
  * creating intermediate objects as needed.
