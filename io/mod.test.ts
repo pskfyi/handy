@@ -1,6 +1,6 @@
 import { assertEquals } from "@std/assert";
 import { afterAll, beforeAll, describe, it } from "@std/testing/bdd";
-import { copy, paste } from "./clipboard.ts";
+import { copy, paste } from "./mod.ts";
 
 const ignore = Deno.build.os !== "darwin" && Deno.build.os !== "windows";
 

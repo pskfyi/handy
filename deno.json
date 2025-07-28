@@ -57,7 +57,6 @@
     "./git/tag": "./git/tag.ts",
     "./graph": "./graph/mod.ts",
     "./io": "./io/mod.ts",
-    "./io/clipboard": "./io/clipboard.ts",
     "./js": "./js/mod.ts",
     "./js/evaluate": "./js/evaluate.ts",
     "./json": "./json/mod.ts",
