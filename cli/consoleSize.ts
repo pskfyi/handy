@@ -1,5 +1,9 @@
 export type ConsoleSize = { columns: number; rows: number };
 
+/** @module
+ *
+ * A util for getting the size of the console. */
+
 /** Get the size of the console or fallback to the given size. */
 export function consoleSize(fallback: ConsoleSize): ConsoleSize {
   try {

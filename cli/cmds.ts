@@ -2,6 +2,10 @@ import { indent } from "../string/indent.ts";
 import { cmd, type CmdResult, type Command } from "./cmd.ts";
 import { FAILURE, SUCCESS } from "./icons.ts";
 
+/** @module
+ *
+ * A util for running multiple CLI commands. */
+
 function _summary(result: CmdResult) {
   const icon = result.success ? SUCCESS : FAILURE;
 
