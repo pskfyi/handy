@@ -8,7 +8,8 @@ import {
   parser as indented,
 } from "./indented.ts";
 
-/** @module
+/**
+ * @module
  *
  * Find code blocks in a markdown document. */
 

@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * Clipboard utilities for copying and pasting text. */
 

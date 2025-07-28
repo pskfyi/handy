@@ -1,6 +1,7 @@
 import type * as JsonTree from "./types.ts";
 
-/** @module
+/**
+ * @module
  *
  * Like dirname, but for JSON Paths. */
 

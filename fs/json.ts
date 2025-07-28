@@ -1,6 +1,7 @@
 import type * as Json from "../json/types.ts";
 
-/** @module
+/**
+ * @module
  *
  * Utils for reading and writing JSON files in Deno. */
 

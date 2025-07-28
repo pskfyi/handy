@@ -3,7 +3,8 @@ import { shallowTypeOf } from "../utils.ts";
 import type * as Json from "../types.ts";
 import type * as JsonTree from "./types.ts";
 
-/** @module
+/**
+ * @module
  *
  * Errors encountered when dealing with JSON as a tree. */
 

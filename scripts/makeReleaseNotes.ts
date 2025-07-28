@@ -11,7 +11,8 @@ import { getLatest as getLatestTag } from "../git/tag.ts";
 import { consoleWidth } from "../cli/consoleSize.ts";
 import { elideEnd } from "../string/elide.ts";
 
-/** @module
+/**
+ * @module
  *
  * Generates release notes from conventional commits in a git repository. */
 

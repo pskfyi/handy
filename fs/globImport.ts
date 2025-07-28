@@ -1,7 +1,8 @@
 import { glob } from "./glob.ts";
 import { toFileUrl } from "@std/path";
 
-/** @module
+/**
+ * @module
  *
  * Util for importing files matching a glob pattern. */
 

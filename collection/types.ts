@@ -1,7 +1,8 @@
 import type { Tuple } from "../array/types.ts";
 import type { Str } from "../string/types.ts";
 
-/** @module
+/**
+ * @module
  *
  * Types related to collection indices. */
 

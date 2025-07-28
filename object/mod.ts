@@ -1,6 +1,7 @@
 export * from "./types.ts";
 export * from "./setNestedEntry.ts";
 
-/** @module
+/**
+ * @module
  *
  * Utils for working with objects. */

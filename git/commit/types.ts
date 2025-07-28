@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * Types shared by git utils. */
 

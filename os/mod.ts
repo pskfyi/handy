@@ -1,5 +1,6 @@
 export * from "./newlines.ts";
 
-/** @module
+/**
+ * @module
  *
  * Utils for working with os-specific functionality. */

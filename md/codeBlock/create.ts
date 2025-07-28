@@ -1,7 +1,8 @@
 import { create as createFenced, type CreateFencedOptions } from "./fenced.ts";
 import { create as createIndented } from "./indented.ts";
 
-/** @module
+/**
+ * @module
  *
  * Create a markdown code block. */
 

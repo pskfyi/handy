@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * Similar to _.set */
 

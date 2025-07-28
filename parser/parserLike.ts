@@ -3,7 +3,8 @@ import type { CoreParser } from "./core.ts";
 import { regexp } from "./regexp.ts";
 import { string } from "./string.ts";
 
-/** @module
+/**
+ * @module
  *
  * Utils for casting data types to parsers. */
 

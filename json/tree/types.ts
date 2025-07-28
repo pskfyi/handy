@@ -1,6 +1,7 @@
 import type * as Json from "../types.ts";
 
-/** @module
+/**
+ * @module
  *
  * Utility types for JSON Trees. */
 

@@ -1,7 +1,8 @@
 import { create as createFencedCodeblock } from "../md/codeBlock/fenced.ts";
 import { frontmatter } from "./_frontmatter.ts";
 
-/** @module
+/**
+ * @module
  *
  * Create a Mermaid flowchart. */
 

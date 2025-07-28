@@ -2,7 +2,8 @@ import { TextCursor } from "../string/TextCursor.ts";
 import { ArrayParser, Parser } from "./Parser.ts";
 import type { CoreParser, Parse } from "./core.ts";
 
-/** @module
+/**
+ * @module
  *
  * Core regex parser implementation. */
 

@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * Utils for editing text files in Deno. */
 

@@ -1,7 +1,8 @@
 import { TextCursor } from "../string/TextCursor.ts";
 import { CoreParser, type Parse, type Value } from "./core.ts";
 
-/** @module
+/**
+ * @module
  *
  * Special parser whose output is ignored. */
 

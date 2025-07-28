@@ -5,7 +5,8 @@ import { assertTree } from "./guards.ts";
 import { EdgeTypeError } from "./errors.ts";
 import { PrettyError } from "../errors.ts";
 
-/** @module
+/**
+ * @module
  *
  * Inserting nodes into a JSON tree. */
 

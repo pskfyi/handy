@@ -1,6 +1,7 @@
 import type { Pretty } from "../ts/types.ts";
 
-/** @module
+/**
+ * @module
  *
  * A util for running CLI commands. */
 

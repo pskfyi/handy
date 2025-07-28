@@ -2,7 +2,8 @@ import { isValue } from "../utils.ts";
 import { TypeAssertionError } from "./errors.ts";
 import type * as JsonTree from "./types.ts";
 
-/** @module
+/**
+ * @module
  *
  * Guard functions for dealing with JSON as a tree. */
 

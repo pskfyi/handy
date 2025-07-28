@@ -9,6 +9,7 @@ export * from "./parserLike.ts";
 export * from "./sequence.ts";
 export * from "./named.ts";
 
-/** @module
+/**
+ * @module
  *
  * A parser combinator library. */

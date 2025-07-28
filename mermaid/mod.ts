@@ -1,5 +1,6 @@
 export * from "./flowchart.ts";
 
-/** @module
+/**
+ * @module
  *
  * Utils for working with mermaid diagrams. */

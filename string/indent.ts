@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * A utility for working with string indentation. */
 

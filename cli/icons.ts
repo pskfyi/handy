@@ -1,6 +1,7 @@
 import { gray, green, red } from "@std/fmt/colors";
 
-/** @module
+/**
+ * @module
  *
  * Colored unicode icons used in CLI output. */
 

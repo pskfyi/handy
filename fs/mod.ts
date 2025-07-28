@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * Utils for handling file operations in Deno. */
 

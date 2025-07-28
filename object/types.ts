@@ -1,6 +1,7 @@
 import type { Pretty } from "../ts/types.ts";
 
-/** @module
+/**
+ * @module
  *
  * Utility types for working with objects. */
 

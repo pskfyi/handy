@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * Like CSS text-overflow: ellipsis, but for strings. */
 

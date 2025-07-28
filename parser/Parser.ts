@@ -11,7 +11,8 @@ import {
 } from "./core.ts";
 import { IgnoredParser, type NonIgnored } from "./ignored.ts";
 
-/** @module
+/**
+ * @module
  *
  * Core Parser class. */
 

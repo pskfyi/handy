@@ -1,6 +1,7 @@
 import { isGlob } from "@std/path";
 
-/** @module
+/**
+ * @module
  *
  * A utility for working with glob patterns. */
 

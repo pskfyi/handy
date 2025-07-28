@@ -2,7 +2,8 @@ import { regexp } from "../../parser/regexp.ts";
 import { line } from "../../parser/named.ts";
 import type { Parser } from "../../parser/Parser.ts";
 
-/** @module
+/**
+ * @module
  *
  * Metadata attached to the first line of a fenced markdown code block. */
 

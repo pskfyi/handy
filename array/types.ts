@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * Provides utility types for working with arrays and tuples in TypeScript. */
 

@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * Replacing multiple substrings in a string. */
 

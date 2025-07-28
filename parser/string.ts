@@ -1,7 +1,8 @@
 import { TextCursor } from "../string/TextCursor.ts";
 import { Parser } from "./Parser.ts";
 
-/** @module
+/**
+ * @module
  *
  * A parser for strings. */
 

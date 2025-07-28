@@ -1,7 +1,8 @@
 import type { Pretty } from "../ts/types.ts";
 import * as _JsonPointer from "./_pointer/mod.ts";
 
-/** @module
+/**
+ * @module
  *
  * JsonPointer namespace containing utilities and types for working with JSON
  * Pointer. */

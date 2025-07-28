@@ -2,7 +2,8 @@ import { assertEquals } from "@std/assert";
 import type { Result } from "./core.ts";
 import { type Ignored, IgnoredParser } from "./ignored.ts";
 
-/** @module
+/**
+ * @module
  *
  * Asserts for parser results. */
 

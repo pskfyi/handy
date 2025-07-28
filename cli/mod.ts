@@ -1,4 +1,5 @@
-/** @module
+/**
+ * @module
  *
  * CLI-related utils. */
 
